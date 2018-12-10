@@ -3,47 +3,42 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 import common.Player;
 import common.World;
 
-@SuppressWarnings("serial")
 public class UpdateGraphic extends JComponent {
 	public World world;
 	Player player;
-	@SuppressWarnings("rawtypes")
-	Class playerclass;
+	Class<?> playerclass;
 	Player p;
+	BufferedImage playerImage;
 
 	public UpdateGraphic(World world) throws IOException {
 		this.world = world;
 		player = new Player(0);
 		playerclass = player.getClass();
+		playerImage = ImageIO.read(getClass().getResource("worm.png"));
 	}
 
 	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		System.out.println("in updateGraphic paintComponent");
-
 		LinkedList<Object> list = world.getWorld();
-		System.out.println("world list size in updateGraphic " + list.size());
-
-		for (Object o : list) {
-			System.out.println(o);
-			@SuppressWarnings("rawtypes")
-			Class c = o.getClass();
+		LinkedList<Object> copyList = list;
+		
+		for (int z = 0; z < copyList.size(); z++) {
+			Object o = copyList.get(z);
+			Class<?> c = o.getClass();
 
 			if (c == playerclass) {
 				p = (Player)o;
-				System.out.println("player in updateGraphic " + p);
 			}
 
 			int x = p.getPosx();
 			int y = p.getPosy();
-			BufferedImage bi = p.getPlayer();
 
-			g.drawImage(bi,x,y,null);	
+			g.drawImage(playerImage,x,y,null);	
 		}	
 	}
 }

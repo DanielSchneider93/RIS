@@ -1,4 +1,5 @@
 package common;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -13,10 +14,8 @@ public class WorkingThread implements Runnable {
 	public WorkingThread(World world) {
 		this.world = world;
 		netMessageHandlerMap = new HashMap<>();
-
 		netMessageHandlerMap.put(ChatMessage.class, new ChatMessageHandler());
 		netMessageHandlerMap.put(PosMessage.class, new PosMessageHandler());
-
 		messages = new LinkedBlockingQueue<>();
 	}
 
@@ -24,9 +23,9 @@ public class WorkingThread implements Runnable {
 		messages.offer(netMessage);
 	}
 
-	//Thread that get Messages from Manager via add and handles them in the correct Handler.
 	@Override
 	public void run() {
+	
 		while(true) {
 			try {
 				NetMessage n = messages.take();

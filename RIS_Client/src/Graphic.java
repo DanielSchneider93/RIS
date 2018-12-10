@@ -6,7 +6,6 @@ import javax.swing.JFrame;
 
 import common.World;
 
-@SuppressWarnings("serial")
 public class Graphic extends JFrame implements KeyListener{
 	private UpdateGraphic draw;
 	public World world;
@@ -29,6 +28,7 @@ public class Graphic extends JFrame implements KeyListener{
 		return draw;
 	}
 
+    // TODO: find correct player with ID in world and update
 	public void keyPressed(KeyEvent e) {
     	/*if(e.getKeyCode()== KeyEvent.VK_RIGHT)
             //manipulate player with correct id in world object at client

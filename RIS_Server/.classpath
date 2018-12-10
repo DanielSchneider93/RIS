@@ -7,5 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/RIS_Common"/>
+	<classpathentry kind="src" path="/RIS_Client"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

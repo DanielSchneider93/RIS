@@ -2,23 +2,18 @@ import java.util.PriorityQueue;
 
 public class EventQueueThread implements Runnable {
 	
-	private InteractionEvent ie;
-	private PriorityQueue<InteractionEvent> queue = new PriorityQueue<InteractionEvent>();
+	private RenderEvent ie;
+	private PriorityQueue<RenderEvent> queue = new PriorityQueue<RenderEvent>();
 	private UpdateGraphic updategraphic;
 	
 	public EventQueueThread(UpdateGraphic ug) {
 		this.updategraphic = ug;
-		
-		ie = new InteractionEvent(updategraphic);
-		
-		// Fill queue with events from World (Item Spawns...)
+		ie = new RenderEvent(updategraphic);
 		queue.add(ie);
-		
-		System.out.println("first Event added");
-		//run();
+		System.out.println("Started Rendering Event");
 	}
 
-	public void add(InteractionEvent event) {
+	public void add(RenderEvent event) {
 		synchronized (queue) {
 			queue.offer(event);
 			queue.notify();
@@ -33,8 +28,7 @@ public class EventQueueThread implements Runnable {
 					long timeout = queue.peek().time - System.currentTimeMillis();
 					if (timeout <= 0) {
 						queue.poll().execute();
-						System.out.println("next event added");
-						InteractionEvent e = new InteractionEvent(updategraphic);
+						RenderEvent e = new RenderEvent(updategraphic);
 						queue.add(e);
 					}
 					else {

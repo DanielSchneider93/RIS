@@ -7,11 +7,12 @@ import common.WorkingThread;
 import common.World;
 
 public class Client {
-	final int port = 9090;
+	final int port = 9091;
 	final String host = "localhost";
 
 	WorkingThread workingThread;
 	Manager manager;
+	List<Manager> ManagerList;
 	Object playerpos;
 	World world;
 
@@ -20,19 +21,40 @@ public class Client {
 	}
 
 	public Client() throws UnknownHostException, IOException {
+		ManagerList = new ArrayList<>();
+		
 		try (Socket socket = new Socket(host, port)) {
+			World world = new World(ManagerList);
+			Thread worldThread = new Thread(world);
+			worldThread.setDaemon(true);
+			worldThread.start();
 
 			workingThread = new WorkingThread(world);
-			new Thread(workingThread).start();
-			manager = new Manager(socket.getInputStream(), socket.getOutputStream(), workingThread, true, null);
-			new Thread(manager).start();
-			World world = new World(null, manager);
+			Thread workingT = new Thread(workingThread);
+			workingT.setDaemon(true);
+			workingT.start();
+			System.out.println("started Client Working Thread");
+			
+			ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+			ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+			
+			manager = new Manager(inputStream, outputStream, workingThread, true, ManagerList);
+			Thread thread = new Thread(manager); 
+			thread.setDaemon(true);
+			thread.start();
+			
+			System.out.println("started Client Manager Thread");
+					
+			ManagerList.add(manager);
 
 			Graphic graphic = new Graphic(world);
 			UpdateGraphic ug = graphic.getUpdategraphic();
+			
 			EventQueueThread q = new EventQueueThread(ug);
+			Thread eventQueueThread = new Thread(q);
+			eventQueueThread.setDaemon(true);
+			eventQueueThread.start();
 
-			// Client Loop
 			while (true) {
 				Thread.yield();
 				// System.out.println("write message to Server");

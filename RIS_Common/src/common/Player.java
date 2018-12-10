@@ -1,15 +1,10 @@
 package common;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
-
-import javax.imageio.ImageIO;
 
 public class Player implements Serializable{
 	
-	transient BufferedImage player = null;
 	File file;
 	int posx = 200;
 	int posy = 200;
@@ -23,17 +18,8 @@ public class Player implements Serializable{
 		this.playerID = playerID;
 	}
 
-	public Player(int playerID) throws IOException {
-		this.player = ImageIO.read(getClass().getResource("worm.png"));
+	public Player(int playerID) {
 		this.playerID = playerID;
-	}
-
-	public BufferedImage getPlayer() {
-		return player;
-	}
-
-	public void setPlayer(BufferedImage player) {
-		this.player = player;
 	}
 
 	public int getPosx() {
