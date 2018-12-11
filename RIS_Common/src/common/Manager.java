@@ -42,6 +42,10 @@ public class Manager implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
+	public void writeID(NetMessage netMessage) throws IOException {
+		OutputStream.writeUnshared(netMessage); 
+	}
 
 	public ObjectOutputStream getOutputStream() {
 		return OutputStream;

@@ -14,7 +14,7 @@ public class WorkingThread implements Runnable {
 	public WorkingThread(World world) {
 		this.world = world;
 		netMessageHandlerMap = new HashMap<>();
-		netMessageHandlerMap.put(ChatMessage.class, new ChatMessageHandler());
+		netMessageHandlerMap.put(IDMessage.class, new IDMessageHandler());
 		netMessageHandlerMap.put(PosMessage.class, new PosMessageHandler());
 		messages = new LinkedBlockingQueue<>();
 	}
@@ -25,7 +25,6 @@ public class WorkingThread implements Runnable {
 
 	@Override
 	public void run() {
-	
 		while(true) {
 			try {
 				NetMessage n = messages.take();

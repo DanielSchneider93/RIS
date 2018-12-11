@@ -14,7 +14,7 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
     	this.world = world;
 		PosMessage p = (PosMessage)netMessage;
         Object o = p.getMsg();
+        //TODO Check if Object in World if yes update if no add
         world.addObjectToWorld(o);
-
     }
 }

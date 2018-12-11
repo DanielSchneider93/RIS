@@ -12,33 +12,24 @@ import common.World;
 public class UpdateGraphic extends JComponent {
 	public World world;
 	Player player;
-	Class<?> playerclass;
-	Player p;
 	BufferedImage playerImage;
+	int playerID;
+	LinkedList<Player> players = new LinkedList<Player>();
 
 	public UpdateGraphic(World world) throws IOException {
 		this.world = world;
-		player = new Player(0);
-		playerclass = player.getClass();
 		playerImage = ImageIO.read(getClass().getResource("worm.png"));
+		this.playerID = world.getPlayerID();
+		this.player = world.findPlayer(playerID);
 	}
 
 	public void paintComponent(Graphics g) {
-		LinkedList<Object> list = world.getWorld();
-		LinkedList<Object> copyList = list;
+		players = world.getPlayers();
+		for(Player p : players) {
+			int tempx = p.getPosx();
+			int tempy = p.getPosy();
+			g.drawImage(playerImage,tempx,tempy,null);	
+		}
 		
-		for (int z = 0; z < copyList.size(); z++) {
-			Object o = copyList.get(z);
-			Class<?> c = o.getClass();
-
-			if (c == playerclass) {
-				p = (Player)o;
-			}
-
-			int x = p.getPosx();
-			int y = p.getPosy();
-
-			g.drawImage(playerImage,x,y,null);	
-		}	
 	}
 }

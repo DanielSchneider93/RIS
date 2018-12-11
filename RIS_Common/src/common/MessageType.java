@@ -1,7 +1,7 @@
 package common;
 public enum MessageType {
 	
-    CHAT((byte)0), POS((byte)1);
+    ID((byte)0), POS((byte)1);
 	
     private byte b;
     
@@ -17,7 +17,7 @@ public enum MessageType {
     public static MessageType getMessageType(byte b) {
         switch(b) {
             case 0:
-                return CHAT;
+                return ID;
             case 1:
             	return POS;
             	

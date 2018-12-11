@@ -28,6 +28,7 @@ public class EventQueueThread implements Runnable {
 					long timeout = queue.peek().time - System.currentTimeMillis();
 					if (timeout <= 0) {
 						queue.poll().execute();
+						//TODO: exclude to own function
 						RenderEvent e = new RenderEvent(updategraphic);
 						queue.add(e);
 					}

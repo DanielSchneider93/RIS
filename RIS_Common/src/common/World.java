@@ -4,15 +4,33 @@ package common;
 import java.util.LinkedList;
 import java.util.List;
 
-public class World implements Runnable {
+public class World {
 
 	List<Manager> managerList;
-	Manager manager;
 	LinkedList<Object> world;
+	UpdateWorld updateWorld;
+	int playerID;
+	Class<?> playerclass;
+
+
+	public int getPlayerID() {
+		return playerID;
+	}
+
+	public void setPlayerID(int playerID) {
+		this.playerID = playerID;
+	}
 
 	public World(List<Manager> managerList) {
 		this.managerList = managerList;
 		world = new LinkedList<Object>();
+		updateWorld = new UpdateWorld(world,managerList);
+		Player player = new Player(0);
+		playerclass = player.getClass();
+	}
+
+	public UpdateWorld getUpdateWorld() {
+		return updateWorld;
 	}
 
 	public void addObjectToWorld(Object o) {
@@ -26,20 +44,43 @@ public class World implements Runnable {
 	public LinkedList<Object> getWorld() {
 		return world;
 	}
-
-	//TODO eigene Klasse für den Loop, send message only after change
-	@Override
-	public void run() {
-		while (true) {
-			LinkedList<Object> worldcopy = world;
-			for (int x = 0; x < worldcopy.size(); x++) {
-				Object o = worldcopy.get(x);
-				PosMessage msg = new PosMessage(o);
-				for (Manager m : managerList) {
-					m.write(msg);
+	
+	public void triggerUpdateWorld() {
+		updateWorld.sendUpdatedWorld();
+	}
+	
+	public LinkedList<Player> getPlayers() {
+		LinkedList<Object> copyList = world;
+		LinkedList<Player> result = new LinkedList<Player>();
+		
+		for (int z = 0; z < copyList.size(); z++) {
+			Object o = copyList.get(z);
+			Class<?> c = o.getClass();
+			if (c == playerclass) {
+				Player p = (Player)o;
+				result.add(p);
 				}
 			}
-			Thread.yield();
-		}
+		return result;
+	}
+
+	public Player findPlayer(int playerID) {
+		LinkedList<Object> copyList = world;
+		Player player = null;
+		System.out.println(playerID);
+		System.out.println(world.size());
+
+		for (int z = 0; z < copyList.size(); z++) {
+			Object o = copyList.get(z);
+			Class<?> c = o.getClass();
+			if (c == playerclass) {
+				Player p = (Player)o;
+				if (p.getPlayerID() == playerID) {
+					System.out.println("found player in world object at client" + p);
+					player = p;
+					}
+				}
+			}
+		return player;
 	}
 }
