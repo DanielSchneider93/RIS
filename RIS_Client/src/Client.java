@@ -27,7 +27,7 @@ public class Client {
 		Socket socket = new Socket(host, port);
 		World world = new World(ManagerList);
 
-		workingThread = new WorkingThread(world);
+		workingThread = new WorkingThread(world, false); // false -> is not Server
 		Thread workingT = new Thread(workingThread);
 		workingT.setDaemon(true);
 		workingT.start();
@@ -36,7 +36,7 @@ public class Client {
 		ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 		ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
-		manager = new Manager(inputStream, outputStream, workingThread, true, ManagerList);
+		manager = new Manager(inputStream, outputStream, workingThread, ManagerList);
 		Thread thread = new Thread(manager); 
 		thread.setDaemon(true);
 		thread.start();

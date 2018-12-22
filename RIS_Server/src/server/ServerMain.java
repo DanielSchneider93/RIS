@@ -35,10 +35,11 @@ public class ServerMain {
 		world = new World(ManagerList);
 	
 		System.out.println("Created Working Thread");
-		workingThread = new WorkingThread(world);
+		workingThread = new WorkingThread(world, true); // true -> isServer
 		Thread t = new Thread(workingThread);
 		t.setDaemon(true);
 		t.start();
+		
 
 		ServerSocket listener = new ServerSocket(port);
 		System.out.println("Server waiting for connections on Port 9090");
@@ -51,7 +52,7 @@ public class ServerMain {
 			ObjectOutputStream outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
 			ObjectInputStream inputStream = new ObjectInputStream(clientSocket.getInputStream());
 			
-			Manager handlerThread = new Manager(inputStream, outputStream, workingThread, false, ManagerList);
+			Manager handlerThread = new Manager(inputStream, outputStream, workingThread, ManagerList);
 			Thread thread = new Thread(handlerThread); 
 			thread.start();
 			
@@ -61,12 +62,12 @@ public class ServerMain {
 			Player player = new Player(playerID);
 			world.addObjectToWorld(player);
 			ManagerList.add(handlerThread); 
-						
-			UpdateWorld w = world.getUpdateWorld();
-			w.sendUpdatedWorld();
-			
+
 			IDMessage msg = new IDMessage(playerID);
 			handlerThread.writeID(msg);
+						
+			UpdateWorld w = world.getUpdateWorld();
+			w.sendUpdatedWorld(player);
 			
 			System.out.println("Added Player: " + playerID +  " to World");
 			playerID++;

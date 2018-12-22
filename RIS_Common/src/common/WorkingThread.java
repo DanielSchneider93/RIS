@@ -8,11 +8,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class WorkingThread implements Runnable {
 	BlockingQueue<NetMessage> messages;
 	World world;
+	boolean isServer;
 
 	private Map<Class<? extends NetMessage>, NetMessageInterface<? extends NetMessage>> netMessageHandlerMap;
 
-	public WorkingThread(World world) {
+	public WorkingThread(World world, boolean isServer) {
 		this.world = world;
+		this.isServer = isServer;
 		netMessageHandlerMap = new HashMap<>();
 		netMessageHandlerMap.put(IDMessage.class, new IDMessageHandler());
 		netMessageHandlerMap.put(PosMessage.class, new PosMessageHandler());
@@ -28,7 +30,7 @@ public class WorkingThread implements Runnable {
 		while(true) {
 			try {
 				NetMessage n = messages.take();
-				netMessageHandlerMap.get(n.getClass()).handle(n, world);
+				netMessageHandlerMap.get(n.getClass()).handle(n, world, isServer);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

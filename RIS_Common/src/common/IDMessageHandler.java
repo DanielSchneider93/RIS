@@ -8,7 +8,7 @@ public class IDMessageHandler implements NetMessageInterface<IDMessage> {
     }
 
     @Override
-    public void handle(NetMessage netMessage, World world) {
+    public void handle(NetMessage netMessage, World world, boolean isServer) {
     	this.world = world;
         IDMessage c = (IDMessage)netMessage;
         int id = c.getMsg();

@@ -45,8 +45,9 @@ public class World {
 		return world;
 	}
 	
-	public void triggerUpdateWorld() {
-		updateWorld.sendUpdatedWorld();
+	public void triggerPosChange(Player player) {
+		Player p = player;
+		updateWorld.sendUpdatedWorld(p);
 	}
 	
 	public LinkedList<Player> getPlayers() {
@@ -67,8 +68,8 @@ public class World {
 	public Player findPlayer(int playerID) {
 		LinkedList<Object> copyList = world;
 		Player player = null;
-		System.out.println(playerID);
-		System.out.println(world.size());
+		System.out.println("player id " + playerID);
+		System.out.println("world size " + world.size());
 
 		for (int z = 0; z < copyList.size(); z++) {
 			Object o = copyList.get(z);
