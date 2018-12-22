@@ -11,7 +11,6 @@ import common.World;
 
 public class UpdateGraphic extends JComponent {
 	public World world;
-	Player player;
 	BufferedImage playerImage;
 	int playerID;
 	LinkedList<Player> players = new LinkedList<Player>();
@@ -20,7 +19,6 @@ public class UpdateGraphic extends JComponent {
 		this.world = world;
 		playerImage = ImageIO.read(getClass().getResource("worm.png"));
 		this.playerID = world.getPlayerID();
-		this.player = world.findPlayer(playerID);
 	}
 
 	public void paintComponent(Graphics g) {
