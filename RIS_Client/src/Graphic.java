@@ -40,12 +40,14 @@ public class Graphic extends JFrame implements KeyListener{
     		
     		this.player = world.findPlayer(playerID);
             player.setPosx(player.getPosx() + 10);
+            player.setDirection(1);
     		world.triggerPosChange(player);
     	}
         else if(e.getKeyCode()== KeyEvent.VK_LEFT)
         {
         	this.player = world.findPlayer(playerID);
         	player.setPosx(player.getPosx() - 10);
+        	 player.setDirection(0);
     		world.triggerPosChange(player);
         }
         else if(e.getKeyCode()== KeyEvent.VK_DOWN)

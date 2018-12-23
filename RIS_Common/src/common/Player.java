@@ -9,6 +9,15 @@ public class Player implements Serializable{
 	int posx = 200;
 	int posy = 200;
 	int playerID = 0;
+	int direction = 0;
+
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
 
 	public int getPlayerID() {
 		return playerID;

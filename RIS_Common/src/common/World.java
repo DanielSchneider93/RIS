@@ -33,12 +33,12 @@ public class World {
 	}
 
 	public void addObjectToWorld(Object o) {
-		System.out.println("add Object to World " + o);
+		//System.out.println("add Object to World " + o);
 		world.add(o);
 	}
 
 	public void removeObjecteFromWorld(Object o) {
-		System.out.println("remove Object from World " + o);
+		//System.out.println("remove Object from World " + o);
 		world.remove(o);
 	}
 

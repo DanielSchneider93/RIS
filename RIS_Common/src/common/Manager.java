@@ -5,8 +5,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
-
-
 public class Manager implements Runnable {
 
 	private final ObjectInputStream InputStream;
@@ -14,7 +12,8 @@ public class Manager implements Runnable {
 	private WorkingThread workingThread;
 	private List<Manager> clientlist;
 
-	public Manager(ObjectInputStream is, ObjectOutputStream os, WorkingThread workingThread, List<Manager> managerList) {
+	public Manager(ObjectInputStream is, ObjectOutputStream os, WorkingThread workingThread,
+			List<Manager> managerList) {
 		this.InputStream = is;
 		this.OutputStream = os;
 		this.workingThread = workingThread;
@@ -23,10 +22,7 @@ public class Manager implements Runnable {
 
 	public void write(NetMessage netMessage) {
 		try {
-			for (Manager ma : clientlist) {
-				ObjectOutputStream tempstream = ma.getOutputStream();
-				tempstream.writeUnshared(netMessage);
-			}
+			OutputStream.writeUnshared(netMessage);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
