@@ -4,6 +4,11 @@ public class Apple {
 	int posx = 0;
 	int posy = 0;
 
+	public Apple(int x, int y) {
+		this.posx = x;
+		this.posy = y;
+	}
+
 	public int getPosx() {
 		return posx;
 	}

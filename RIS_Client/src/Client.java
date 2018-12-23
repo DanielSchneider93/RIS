@@ -48,7 +48,7 @@ public class Client {
 		Graphic graphic = new Graphic(world);
 		ug = graphic.getUpdategraphic();
 
-		EventQueueThread q = new EventQueueThread(ug);
+		EventQueueThread q = new EventQueueThread(ug, world);
 		Thread eventQueueThread = new Thread(q);
 		eventQueueThread.setDaemon(true);
 		eventQueueThread.start();

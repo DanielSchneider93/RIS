@@ -11,6 +11,7 @@ public class World {
 	UpdateWorld updateWorld;
 	int playerID;
 	Class<?> playerclass;
+	Class<?> appleclass;
 
 	public int getPlayerID() {
 		return playerID;
@@ -26,6 +27,8 @@ public class World {
 		updateWorld = new UpdateWorld(world, managerList);
 		Player player = new Player(0);
 		playerclass = player.getClass();
+		Apple apple = new Apple(0,0);
+		appleclass = apple.getClass();
 	}
 
 	public UpdateWorld getUpdateWorld() {
@@ -33,12 +36,12 @@ public class World {
 	}
 
 	public void addObjectToWorld(Object o) {
-		//System.out.println("add Object to World " + o);
+		// System.out.println("add Object to World " + o);
 		world.add(o);
 	}
 
 	public void removeObjecteFromWorld(Object o) {
-		//System.out.println("remove Object from World " + o);
+		// System.out.println("remove Object from World " + o);
 		world.remove(o);
 	}
 
@@ -48,13 +51,26 @@ public class World {
 
 	public void triggerPosChange(Player player) {
 		Player p = player;
-		updateWorld.sendUpdatedWorld(p);
+		updateWorld.sendPlayerMessage(p);
+	}
+
+	public LinkedList<Apple> getApples() {
+		LinkedList<Object> copyList = world;
+		LinkedList<Apple> result = new LinkedList<Apple>();
+
+		for (int z = 0; z < copyList.size(); z++) {
+			Object o = copyList.get(z);
+			if (o.getClass() == appleclass) {
+				Apple p = (Apple) o;
+				result.add(p);
+			}
+		}
+		return result;
 	}
 
 	public LinkedList<Player> getPlayers() {
 		LinkedList<Object> copyList = world;
 		LinkedList<Player> result = new LinkedList<Player>();
-		//System.out.println("world size " + world.size() );
 
 		for (int z = 0; z < copyList.size(); z++) {
 			Object o = copyList.get(z);

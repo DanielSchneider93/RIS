@@ -1,19 +1,28 @@
 import java.util.PriorityQueue;
 
+import common.World;
+
 public class EventQueueThread implements Runnable {
 	
-	private RenderEvent ie;
-	private PriorityQueue<RenderEvent> queue = new PriorityQueue<RenderEvent>();
+	private Event ie;
+	private PriorityQueue<Event> queue = new PriorityQueue<Event>();
 	private UpdateGraphic updategraphic;
+	private World world;
 	
-	public EventQueueThread(UpdateGraphic ug) {
+	public EventQueueThread(UpdateGraphic ug, World world1) {
 		this.updategraphic = ug;
-		ie = new RenderEvent(updategraphic);
+		this.world = world1;
+		
+		ie = new Event(world, updategraphic, queue, 0, 16); //0 = RenderEvent 16 = 16 ms -> 60 Hz
 		queue.add(ie);
 		System.out.println("Started Rendering Event");
+		
+		Event e = new Event(world, updategraphic, queue, 1, 5000);
+		queue.add(e);
+		System.out.println("Started Apple Event");
 	}
 
-	public void add(RenderEvent event) {
+	public void add(Event event) {
 		synchronized (queue) {
 			queue.offer(event);
 			queue.notify();
@@ -28,9 +37,6 @@ public class EventQueueThread implements Runnable {
 					long timeout = queue.peek().time - System.currentTimeMillis();
 					if (timeout <= 0) {
 						queue.poll().execute();
-						//TODO: exclude to own function
-						RenderEvent e = new RenderEvent(updategraphic);
-						queue.add(e);
 					}
 					else {
 						queue.wait(timeout);
