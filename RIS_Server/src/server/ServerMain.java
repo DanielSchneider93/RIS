@@ -52,8 +52,8 @@ public class ServerMain {
 			ObjectOutputStream outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
 			ObjectInputStream inputStream = new ObjectInputStream(clientSocket.getInputStream());
 			
-			Manager handlerThread = new Manager(inputStream, outputStream, workingThread, ManagerList);
-			Thread thread = new Thread(handlerThread); 
+			Manager connectionManager = new Manager(inputStream, outputStream, workingThread, ManagerList);
+			Thread thread = new Thread(connectionManager); 
 			thread.start();
 			
 			System.out.println("Created Server Manager for Client " + playerID);
@@ -61,13 +61,13 @@ public class ServerMain {
 			//Create Player, Add to World with ID and send ID to the new Client to let him know what his player is
 			Player player = new Player(playerID);
 			world.addObjectToWorld(player);
-			ManagerList.add(handlerThread); 
+			ManagerList.add(connectionManager); 
 
 			IDMessage msg = new IDMessage(playerID);
-			handlerThread.writeID(msg);
+			connectionManager.writeID(msg);
 						
 			UpdateWorld w = world.getUpdateWorld();
-			w.sendUpdatedWorld(player);
+			w.sendClientThePlayer(player, connectionManager);
 			
 			System.out.println("Added Player: " + playerID +  " to World");
 			playerID++;

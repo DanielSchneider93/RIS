@@ -1,6 +1,6 @@
 public class RenderEvent implements Comparable<RenderEvent>{
 
-	public long time = System.currentTimeMillis() + 16;  //circa 60Hz
+	public long time = System.currentTimeMillis() + 1600;  //circa 60Hz
 	UpdateGraphic graphic;
 	EventQueueThread queue;
 

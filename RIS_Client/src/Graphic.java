@@ -25,7 +25,7 @@ public class Graphic extends JFrame implements KeyListener{
         setTitle("Daniel Schneider - RIS");          
         setResizable(false);
         add(draw);
-        setSize(800, 800);
+        setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 	}

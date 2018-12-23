@@ -28,6 +28,5 @@ public class UpdateGraphic extends JComponent {
 			int tempy = p.getPosy();
 			g.drawImage(playerImage,tempx,tempy,null);	
 		}
-		
 	}
 }

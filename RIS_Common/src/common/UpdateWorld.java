@@ -23,6 +23,11 @@ public class UpdateWorld {
 			m.write(msg);
 		}
 	}
+	
+	public void sendClientThePlayer(Player p, Manager connectionManager) {
+		PosMessage msg = new PosMessage(p);
+		connectionManager.write(msg);	
+	}
 
 	public void shareWorldWithClients() {
 		for (Object o : world) {
