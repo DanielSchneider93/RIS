@@ -1,7 +1,7 @@
 import java.util.PriorityQueue;
 import java.util.Random;
 
-import common.Apple;
+import common.GameObject;
 import common.World;
 
 public class Event implements Comparable<Event> {
@@ -32,11 +32,10 @@ public class Event implements Comparable<Event> {
 		if (type == 1) { //Apple Event
 			int randomNumber1 = random.nextInt(200 + 1 - 100) + 100;
 			int randomNumber2 = random.nextInt(200 + 1 - 100) + 100;
-			Apple apple = new Apple(randomNumber1,randomNumber2);
+			GameObject apple = new GameObject(20, randomNumber1,randomNumber2);
 			world.addObjectToWorld(apple);
-			//TODO: tell Server that apples exists, -> recode handler
+			world.triggerPosChange(apple);
 		}
-
 	}
 
 	@Override

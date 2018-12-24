@@ -16,46 +16,38 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 		boolean isS = false;
 		this.world = world;
 		isS = isServer;
-		Player play = new Player(0); // to get Class
-		PosMessage p = (PosMessage) netMessage;
-		Player playerFromMessage = (Player) p.getMsg();
 
-		if (world.getWorld().size() == 0) {
-			world.addObjectToWorld(playerFromMessage);
+		LinkedList<GameObject> worldcopy = world.getWorld();
 
-		} else {
+		PosMessage message = (PosMessage) netMessage;
 
-			LinkedList<Object> worldcopy = world.getWorld();
-			int doLoopThisMuchTimes = worldcopy.size();
+		GameObject objectFromMessage = (GameObject) message.getMsg();
 
-			for (int z = 0; z < doLoopThisMuchTimes; z++) {
-				Object currentWorldObject = worldcopy.get(z);
+		isInWorld = checkIfObjectExistsInWorld(worldcopy, objectFromMessage, isInWorld);
 
-				Class toCheckObjectClass = currentWorldObject.getClass();
-				Class toCheckPlayerClass = play.getClass();
+		if (!isInWorld) {
+			world.addObjectToWorld(objectFromMessage);
+		}
 
-				if (toCheckObjectClass == toCheckPlayerClass) {
+		if (isS == true) {
+			world.getUpdateWorld().shareWorldWithClients();
+		}
+	}
 
-					Player toCheckTempPlayer = (Player) currentWorldObject;
-					if (toCheckTempPlayer.getPlayerID() == playerFromMessage.getPlayerID()) {
-						isInWorld = true;
-						world.removeObjecteFromWorld(toCheckTempPlayer);
-						world.addObjectToWorld(playerFromMessage);
-					}
-				}
-			}
+	public boolean checkIfObjectExistsInWorld(LinkedList<GameObject> worldcopy, GameObject objectFromMessage,
+			boolean isInWorld) {
 
-			if (!isInWorld) {
-				world.addObjectToWorld(playerFromMessage);
+		int count = worldcopy.size();
 
-			}
-			else {
-				
-			}
-			
-			if (isS == true) {
-				world.getUpdateWorld().shareWorldWithClients();
+		for (int z = 0; z < count; z++) {
+			GameObject currentWorldObject = worldcopy.get(z);
+
+			if (currentWorldObject.getID() == objectFromMessage.getID()) {
+				isInWorld = true;
+				world.removeObjecteFromWorld(currentWorldObject);
+				world.addObjectToWorld(objectFromMessage);
 			}
 		}
+		return isInWorld;
 	}
 }

@@ -5,20 +5,19 @@ import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
-
-import common.Apple;
-import common.Player;
+import common.GameObject;
 import common.World;
 
 public class UpdateGraphic extends JComponent {
+	private static final long serialVersionUID = 1L;
 	public World world;
 	BufferedImage playerImage;
 	BufferedImage playerImage_r;
 	BufferedImage apple;
 
 	int playerID;
-	LinkedList<Player> players = new LinkedList<Player>();
-	LinkedList<Apple> apples = new LinkedList<Apple>();
+	LinkedList<GameObject> players = new LinkedList<GameObject>();
+	LinkedList<GameObject> apples = new LinkedList<GameObject>();
 
 	public UpdateGraphic(World world) throws IOException {
 		this.world = world;
@@ -32,7 +31,7 @@ public class UpdateGraphic extends JComponent {
 
 	public void paintComponent(Graphics g) {
 		players = world.getPlayers();
-		for (Player p : players) {
+		for (GameObject p : players) {
 			int tempx = p.getPosx();
 			int tempy = p.getPosy();
 			if (p.getDirection() == 0) {
@@ -43,11 +42,10 @@ public class UpdateGraphic extends JComponent {
 		}
 
 		apples = world.getApples();
-		for (Apple a : apples) {
-			int tempx = a.getPosx();
-			int tempy = a.getPosy();
+		for (GameObject tempApple : apples) {
+			int tempx = tempApple.getPosx();
+			int tempy = tempApple.getPosy();
 			g.drawImage(apple, tempx, tempy, null);
-		}
-		
+		}		
 	}
 }

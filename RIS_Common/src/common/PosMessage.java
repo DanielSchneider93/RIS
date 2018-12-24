@@ -2,7 +2,7 @@ package common;
 public class PosMessage implements NetMessage {
     Object msg;
     
-    public PosMessage(Object objectToSend) {
+    public PosMessage(GameObject objectToSend) {
         this.msg = objectToSend;
     }
 

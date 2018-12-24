@@ -4,14 +4,14 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
-import common.Player;
+import common.GameObject;
 import common.World;
 
 public class Graphic extends JFrame implements KeyListener{
 	private UpdateGraphic draw;
 	public World world;
 	int playerID;
-	Player player;
+	GameObject player;
 	
 	public Graphic(World world) throws IOException{
 		this.world = world;

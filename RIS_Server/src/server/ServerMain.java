@@ -6,7 +6,7 @@ import java.util.*;
 
 import common.IDMessage;
 import common.Manager;
-import common.Player;
+import common.GameObject;
 import common.PosMessage;
 import common.UpdateWorld;
 import common.Vectorlist;
@@ -59,7 +59,7 @@ public class ServerMain {
 			System.out.println("Created Server Manager for Client " + playerID);
 			
 			//Create Player, Add to World with ID and send ID to the new Client to let him know what his player is
-			Player player = new Player(playerID);
+			GameObject player = new GameObject(playerID, 200, 200);
 			world.addObjectToWorld(player);
 			ManagerList.add(connectionManager); 
 

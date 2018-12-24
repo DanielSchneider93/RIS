@@ -7,7 +7,7 @@ import java.util.List;
 public class World {
 
 	List<Manager> managerList;
-	LinkedList<Object> world;
+	LinkedList<GameObject> world;
 	UpdateWorld updateWorld;
 	int playerID;
 	Class<?> playerclass;
@@ -23,80 +23,67 @@ public class World {
 
 	public World(List<Manager> managerList) {
 		this.managerList = managerList;
-		world = new LinkedList<Object>();
+		world = new LinkedList<GameObject>();
 		updateWorld = new UpdateWorld(world, managerList);
-		Player player = new Player(0);
-		playerclass = player.getClass();
-		Apple apple = new Apple(0,0);
-		appleclass = apple.getClass();
 	}
 
 	public UpdateWorld getUpdateWorld() {
 		return updateWorld;
 	}
 
-	public void addObjectToWorld(Object o) {
-		// System.out.println("add Object to World " + o);
+	public void addObjectToWorld(GameObject o) {
 		world.add(o);
 	}
 
-	public void removeObjecteFromWorld(Object o) {
-		// System.out.println("remove Object from World " + o);
+	public void removeObjecteFromWorld(GameObject o) {
 		world.remove(o);
 	}
 
-	public LinkedList<Object> getWorld() {
+	public LinkedList<GameObject> getWorld() {
 		return world;
 	}
 
-	public void triggerPosChange(Player player) {
-		Player p = player;
+	public void triggerPosChange(GameObject object) {
+		GameObject p = object;
 		updateWorld.sendPlayerMessage(p);
 	}
 
-	public LinkedList<Apple> getApples() {
-		LinkedList<Object> copyList = world;
-		LinkedList<Apple> result = new LinkedList<Apple>();
+	public LinkedList<GameObject> getApples() {
+		LinkedList<GameObject> copyList = world;
+		LinkedList<GameObject> result = new LinkedList<GameObject>();
 
 		for (int z = 0; z < copyList.size(); z++) {
-			Object o = copyList.get(z);
-			if (o.getClass() == appleclass) {
-				Apple p = (Apple) o;
-				result.add(p);
+			GameObject o = copyList.get(z);
+			if (o.getID() >= 20 && o.getID() <= 30) {
+				result.add(o);
 			}
 		}
 		return result;
 	}
 
-	public LinkedList<Player> getPlayers() {
-		LinkedList<Object> copyList = world;
-		LinkedList<Player> result = new LinkedList<Player>();
+	public LinkedList<GameObject> getPlayers() {
+		LinkedList<GameObject> copyList = world;
+		LinkedList<GameObject> result = new LinkedList<GameObject>();
 
 		for (int z = 0; z < copyList.size(); z++) {
-			Object o = copyList.get(z);
-			Class<?> c = o.getClass();
-			if (c == playerclass) {
-				Player p = (Player) o;
-				result.add(p);
+			GameObject o = copyList.get(z);
+			if (o.getID() >= 1 && o.getID() <= 10) {
+				result.add(o);
 			}
 		}
 		return result;
 	}
 
-	public Player findPlayer(int playerID) {
-		LinkedList<Object> copyList = world;
-		Player player = null;
+	public GameObject findPlayer(int ObjectID) {
+		LinkedList<GameObject> copyList = world;
+		GameObject player = null;
 
 		for (int z = 0; z < copyList.size(); z++) {
-			Object o = copyList.get(z);
-			Class<?> c = o.getClass();
-			if (c == playerclass) {
-				Player p = (Player) o;
-				if (p.getPlayerID() == playerID) {
-					player = p;
+			GameObject o = copyList.get(z);
+				if (o.getID() == ObjectID) {
+					player = o;
 				}
 			}
-		}
 		return player;
 	}
 }

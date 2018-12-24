@@ -6,39 +6,31 @@ import java.util.List;
 public class UpdateWorld {
 
 	List<Manager> managerList;
-	LinkedList<Object> world;
-	Player player = new Player(0);
-	Class<?> pClass;
+	LinkedList<GameObject> world;
 
-	public UpdateWorld(LinkedList<Object> world, List<Manager> managerList) {
+	public UpdateWorld(LinkedList<GameObject> world, List<Manager> managerList) {
 		this.world = world;
 		this.managerList = managerList;
-		pClass = player.getClass();
-
 	}
 
-	public void sendPlayerMessage(Player p) {
+	public void sendPlayerMessage(GameObject p) {
 		PosMessage msg = new PosMessage(p);
 		for (Manager m : managerList) {
 			m.write(msg);
 		}
 	}
-	
-	public void sendClientThePlayer(Player p, Manager connectionManager) {
+
+	public void sendClientThePlayer(GameObject p, Manager connectionManager) {
 		PosMessage msg = new PosMessage(p);
-		connectionManager.write(msg);	
+		connectionManager.write(msg);
 	}
 
 	public void shareWorldWithClients() {
-		for (Object o : world) {
-			if (o.getClass() == pClass) {
-				Player tempPlayer = (Player) o;
-				PosMessage msg = new PosMessage(tempPlayer);
-				for (Manager m : managerList) {
-					m.write(msg);
-				}
+		for (GameObject o : world) {
+			PosMessage msg = new PosMessage(o);
+			for (Manager m : managerList) {
+				m.write(msg);
 			}
 		}
 	}
-
 }

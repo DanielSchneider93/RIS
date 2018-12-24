@@ -3,12 +3,12 @@ package common;
 import java.io.File;
 import java.io.Serializable;
 
-public class Player implements Serializable{
+public class GameObject implements Serializable{
 	
 	File file;
 	int posx = 200;
 	int posy = 200;
-	int playerID = 0;
+	int objectID = 0; //1-10 = player 20-30 = apple
 	int direction = 0;
 
 	public int getDirection() {
@@ -19,16 +19,18 @@ public class Player implements Serializable{
 		this.direction = direction;
 	}
 
-	public int getPlayerID() {
-		return playerID;
+	public int getID() {
+		return objectID;
 	}
 
-	public void setPlayerID(int playerID) {
-		this.playerID = playerID;
+	public void setID(int objectID) {
+		this.objectID = objectID;
 	}
 
-	public Player(int playerID) {
-		this.playerID = playerID;
+	public GameObject(int objectID, int posx, int posy) {
+		this.objectID = objectID;
+		this.posx = posx;
+		this.posy = posy;
 	}
 
 	public int getPosx() {
