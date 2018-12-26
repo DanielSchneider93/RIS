@@ -13,6 +13,7 @@ public class UpdateWorld {
 		this.managerList = managerList;
 	}
 
+	//Client calls this
 	public void sendPlayerMessage(GameObject p) {
 		PosMessage msg = new PosMessage(p);
 		for (Manager m : managerList) {
@@ -20,6 +21,7 @@ public class UpdateWorld {
 		}
 	}
 
+	//Server Calls this
 	public void sendClientThePlayer(GameObject p, Manager connectionManager) {
 		PosMessage msg = new PosMessage(p);
 		connectionManager.write(msg);

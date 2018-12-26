@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 	World world;
+	CollisionDetection cd = new CollisionDetection();
 
 	@Override
 	public MessageType getHandledMessageType() {
@@ -34,8 +35,7 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 		}
 	}
 
-	public boolean checkIfObjectExistsInWorld(LinkedList<GameObject> worldcopy, GameObject objectFromMessage,
-			boolean isInWorld) {
+	public boolean checkIfObjectExistsInWorld(LinkedList<GameObject> worldcopy, GameObject objectFromMessage, boolean isInWorld) {
 
 		int count = worldcopy.size();
 
@@ -44,8 +44,11 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 
 			if (currentWorldObject.getID() == objectFromMessage.getID()) {
 				isInWorld = true;
+				cd.detect(currentWorldObject, objectFromMessage, worldcopy);
+				//If Collision decide what to do
 				world.removeObjecteFromWorld(currentWorldObject);
 				world.addObjectToWorld(objectFromMessage);
+				
 			}
 		}
 		return isInWorld;

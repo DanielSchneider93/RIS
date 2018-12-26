@@ -21,6 +21,7 @@ public class ServerMain {
 	WorkingThread workingThread;
 	World world;
 	private int playerID = 1;
+	int playerHitBox = 100;
 
 	public static void main(String[] args) throws IOException {
 		new ServerMain();
@@ -59,7 +60,7 @@ public class ServerMain {
 			System.out.println("Created Server Manager for Client " + playerID);
 			
 			//Create Player, Add to World with ID and send ID to the new Client to let him know what his player is
-			GameObject player = new GameObject(playerID, 200, 200);
+			GameObject player = new GameObject(playerID, 200, 200, playerHitBox);
 			world.addObjectToWorld(player);
 			ManagerList.add(connectionManager); 
 

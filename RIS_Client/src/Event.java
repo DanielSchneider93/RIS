@@ -30,9 +30,9 @@ public class Event implements Comparable<Event> {
 			queue.add(e);
 		}
 		if (type == 1) { //Apple Event
-			int randomNumber1 = random.nextInt(200 + 1 - 100) + 100;
-			int randomNumber2 = random.nextInt(200 + 1 - 100) + 100;
-			GameObject apple = new GameObject(20, randomNumber1,randomNumber2);
+			//int randomNumber1 = random.nextInt(200 + 1 - 100) + 100;
+			//int randomNumber2 = random.nextInt(200 + 1 - 100) + 100;
+			GameObject apple = new GameObject(20, 100,100, 50);
 			world.addObjectToWorld(apple);
 			world.triggerPosChange(apple);
 		}
