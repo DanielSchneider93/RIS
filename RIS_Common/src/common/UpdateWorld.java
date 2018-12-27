@@ -13,7 +13,7 @@ public class UpdateWorld {
 		this.managerList = managerList;
 	}
 
-	//Client calls this
+	//Send Solo Message
 	public void sendPlayerMessage(GameObject p) {
 		PosMessage msg = new PosMessage(p);
 		for (Manager m : managerList) {
@@ -21,12 +21,13 @@ public class UpdateWorld {
 		}
 	}
 
-	//Server Calls this
+	//Server send Player
 	public void sendClientThePlayer(GameObject p, Manager connectionManager) {
 		PosMessage msg = new PosMessage(p);
 		connectionManager.write(msg);
 	}
 
+	//Share Whole World
 	public void shareWorldWithClients() {
 		for (GameObject o : world) {
 			PosMessage msg = new PosMessage(o);

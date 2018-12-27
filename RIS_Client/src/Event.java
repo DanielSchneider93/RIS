@@ -11,7 +11,7 @@ public class Event implements Comparable<Event> {
 	PriorityQueue<Event> queue;
 	World world;
 	int type;
-	int duration; 
+	int duration;
 	Random random;
 
 	public Event(World world, UpdateGraphic ug, PriorityQueue<Event> queue, Integer type, Integer duration) {
@@ -29,10 +29,10 @@ public class Event implements Comparable<Event> {
 			Event e = new Event(world, graphic, queue, 0, 16);
 			queue.add(e);
 		}
-		if (type == 1) { //Apple Event
-			//int randomNumber1 = random.nextInt(200 + 1 - 100) + 100;
-			//int randomNumber2 = random.nextInt(200 + 1 - 100) + 100;
-			GameObject apple = new GameObject(20, 100,100, 50);
+		if (type == 1) { // Apple Event
+			int rnd1 = random.nextInt(200 + 1 - 100) + 100;
+			int rnd2 = random.nextInt(200 + 1 - 100) + 100;
+			GameObject apple = new GameObject(20, rnd1, rnd2, 50, true);
 			world.addObjectToWorld(apple);
 			world.triggerPosChange(apple);
 		}

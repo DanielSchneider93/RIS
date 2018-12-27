@@ -35,7 +35,7 @@ public class World {
 		world.add(o);
 	}
 
-	public void removeObjecteFromWorld(GameObject o) {
+	public void removeObjectFromWorld(GameObject o) {
 		world.remove(o);
 	}
 

@@ -17,7 +17,7 @@ public class EventQueueThread implements Runnable {
 		queue.add(ie);
 		System.out.println("Started Rendering Event");
 		
-		Event e = new Event(world, updategraphic, queue, 1, 5000);
+		Event e = new Event(world, updategraphic, queue, 1, 2000);
 		queue.add(e);
 		System.out.println("Started Apple Event");
 	}
