@@ -23,16 +23,15 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 		PosMessage message = (PosMessage) netMessage;
 
 		GameObject oFromMessage = (GameObject) message.getMsg();
+		System.out.println("id " + oFromMessage.getID() + " delete: "  +   oFromMessage.isDeleteThis() + " eatable: " + oFromMessage.isEatable());
 		
-		
-		//Test why this is never called & fix it
-		System.out.println("delete this = " + oFromMessage.isDeleteThis());
+
 		
 		if(oFromMessage.isDeleteThis() == true) {
 			world.getWorld().remove(oFromMessage);
 			return;
 		}
-
+		
 		isInWorld = checkIfObjectExistsInWorld(worldcopy, oFromMessage, isInWorld, isS);
 
 		if (!isInWorld) {
@@ -51,16 +50,17 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 		GameObject o = objectFromMessage;
 		int count = worldcopy.size();
 		boolean isServ = isS;
+		LinkedList<GameObject> worldCopyTemp = worldcopy;
 
 		for (int z = 0; z < count; z++) {
-			GameObject currentWorldObject = worldcopy.get(z);
+			GameObject currentWorldObject = worldCopyTemp.get(z);
 			CollisionDetection collisionDetection = new CollisionDetection();
 
 			if (currentWorldObject.getID() == o.getID()) {
 				isInWorld = true;
 
 				if (isServ) {
-					boolean collision = collisionDetection.detect(currentWorldObject, objectFromMessage, worldcopy);
+					boolean collision = collisionDetection.detect(currentWorldObject, objectFromMessage, worldCopyTemp);
 					//System.out.println("collision? = " + collision);
 					if (!collision) {
 						world.removeObjectFromWorld(currentWorldObject);
@@ -70,10 +70,15 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 						GameObject collidedWith = collisionDetection.getCollisionWithThisObject();
 						if(collidedWith.isEatable()) {
 							
+							GameObject toSendDeleteObject = collidedWith;
+							toSendDeleteObject.setDeleteThis(true);
+							toSendDeleteObject.setEatable(false);
+							System.out.println(" deleted set? " + toSendDeleteObject.isDeleteThis());
+							world.getUpdateWorld().sendPlayerMessage(toSendDeleteObject);
+							System.out.println(" after setting the variables of object, id " + collidedWith.getID() + " delete: "  +   collidedWith.isDeleteThis() + " eatable: " + collidedWith.isEatable());
+							
 							world.getWorld().remove(collidedWith);
-							collidedWith.setDeleteThis(true);
-							world.getUpdateWorld().sendPlayerMessage(collidedWith);
-							System.out.println("delete Message send");
+							System.out.println("delete Message send & delete from server world");
 						}
 					}
 					

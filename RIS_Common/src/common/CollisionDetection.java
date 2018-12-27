@@ -37,7 +37,7 @@ public class CollisionDetection {
 
 				CollisionCircle ccTemp = new CollisionCircle(tempradius, tempPosx, tempPosy);
 				boolean collison = hasCollision(ccToCheck, ccTemp); 
-				System.out.println("collison: " + collison + " id of object to check " +  tempObject.getID() );
+				//System.out.println("collison: " + collison + " id of object to check " +  tempObject.getID() );
 
 				if (collison) {
 					collisionDetected = true;
