@@ -12,41 +12,47 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 
 	@Override
 	public void handle(NetMessage netMessage, World world, boolean isServer) {
-		//System.out.println("world size start handle " + world.getWorld().size());
+		// System.out.println("world size start handle " + world.getWorld().size());
 		boolean isInWorld = false;
 		boolean isS = false;
 		this.world = world;
 		isS = isServer;
+		boolean end = false;
 
 		LinkedList<GameObject> worldcopy = world.getWorld();
 
 		PosMessage message = (PosMessage) netMessage;
 
 		GameObject oFromMessage = (GameObject) message.getMsg();
-		System.out.println("id " + oFromMessage.getID() + " delete: "  +   oFromMessage.isDeleteThis() + " eatable: " + oFromMessage.isEatable());
-		
 
-		
-		if(oFromMessage.isDeleteThis() == true) {
-			world.getWorld().remove(oFromMessage);
-			return;
-		}
-		
-		isInWorld = checkIfObjectExistsInWorld(worldcopy, oFromMessage, isInWorld, isS);
-
-		if (!isInWorld) {
-			//System.out.println("is not in world -> add");
-			world.addObjectToWorld(oFromMessage);
+		for (GameObject o : world.getWorld()) {
+			System.out.println("o. " + o.getID());
+			if (oFromMessage.getID() == o.getID())
+				if (oFromMessage.isDelete() == true & !isS) {
+					System.out.println("remove object from world " + o.getID());
+					world.getWorld().remove(o);
+					end = true;
+				}
 		}
 
-		if (isS == true) {
-			//System.out.println("is server and share with clients");
-			world.getUpdateWorld().shareWorldWithClients();
+		if (!end) {
+			isInWorld = checkIfObjectExistsInWorld(worldcopy, oFromMessage, isInWorld, isS);
+
+			if (!isInWorld) {
+				// System.out.println("is not in world -> add");
+				world.addObjectToWorld(oFromMessage);
+			}
+
+			if (isS == true) {
+				// System.out.println("is server and share with clients");
+				world.getUpdateWorld().shareWorldWithClients();
+			}
+			System.out.println("world size end handle " + world.getWorld().size());
 		}
-		System.out.println("world size end handle " + world.getWorld().size());
 	}
 
-	public boolean checkIfObjectExistsInWorld(LinkedList<GameObject> worldcopy, GameObject objectFromMessage, boolean isInWorld, boolean isS) {
+	public boolean checkIfObjectExistsInWorld(LinkedList<GameObject> worldcopy, GameObject objectFromMessage,
+			boolean isInWorld, boolean isS) {
 		GameObject o = objectFromMessage;
 		int count = worldcopy.size();
 		boolean isServ = isS;
@@ -61,27 +67,26 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 
 				if (isServ) {
 					boolean collision = collisionDetection.detect(currentWorldObject, objectFromMessage, worldCopyTemp);
-					//System.out.println("collision? = " + collision);
+					// System.out.println("collision? = " + collision);
 					if (!collision) {
 						world.removeObjectFromWorld(currentWorldObject);
-					}
-					else {
-						//System.out.println("get the collided object");
+					} else {
+						// System.out.println("get the collided object");
 						GameObject collidedWith = collisionDetection.getCollisionWithThisObject();
-						if(collidedWith.isEatable()) {
-							
-							GameObject toSendDeleteObject = collidedWith;
-							toSendDeleteObject.setDeleteThis(true);
-							toSendDeleteObject.setEatable(false);
-							System.out.println(" deleted set? " + toSendDeleteObject.isDeleteThis());
-							world.getUpdateWorld().sendPlayerMessage(toSendDeleteObject);
-							System.out.println(" after setting the variables of object, id " + collidedWith.getID() + " delete: "  +   collidedWith.isDeleteThis() + " eatable: " + collidedWith.isEatable());
-							
+						if (collidedWith.isEatable()) {
+							int counter = 0;
+							for (GameObject go : world.getWorld()) {
+								counter++;
+								//counter wrong
+								if (go.getID() == collidedWith.getID()) {
+									System.out.println("collided with " + collidedWith.getID());
+									world.getWorld().get(counter).setDelete(true);
+								}
+							}
 							world.getWorld().remove(collidedWith);
-							System.out.println("delete Message send & delete from server world");
 						}
 					}
-					
+
 				} else {
 					world.removeObjectFromWorld(currentWorldObject);
 					world.addObjectToWorld(objectFromMessage);

@@ -17,7 +17,6 @@ public class UpdateWorld {
 	public void sendPlayerMessage(GameObject p) {
 		PosMessage msg = new PosMessage(p);
 		for (Manager m : managerList) {
-			System.out.println("Object to delete?: " + p.isDeleteThis());
 			m.write(msg);
 		}
 	}

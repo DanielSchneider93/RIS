@@ -11,7 +11,7 @@ public class GameObject implements Serializable {
 	private int direction = 0; // 0 = left - 1 = right
 	private int collisonRadius = 0;
 	private boolean eatable = false;
-	private boolean toDelete = false;
+	private boolean delete = false;
 
 	public GameObject(int objectID, int posx, int posy, int collisonRadius, boolean eatable) {
 		this.objectID = objectID;
@@ -21,12 +21,12 @@ public class GameObject implements Serializable {
 		this.eatable = eatable;
 	}
 
-	public boolean isDeleteThis() {
-		return toDelete;
+	public boolean isDelete() {
+		return delete;
 	}
 
-	public void setDeleteThis(boolean deleteThis) {
-		this.toDelete = deleteThis;
+	public void setDelete(boolean delete) {
+		this.delete = delete;
 	}
 
 	public boolean isEatable() {
