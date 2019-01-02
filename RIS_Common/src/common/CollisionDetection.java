@@ -8,9 +8,9 @@ public class CollisionDetection {
 	GameObject currentWorldObject;
 	int toCheckID;
 	GameObject collisionWithThisObject;
-	
 
-	public boolean detect(GameObject currentWorldObject, GameObject objectFromMessage, LinkedList<GameObject> worldCopyToCheckCollision) {
+	public boolean detect(GameObject currentWorldObject, GameObject objectFromMessage,
+			LinkedList<GameObject> worldCopyToCheckCollision) {
 		boolean collisionDetected = false;
 		this.worldcopy = worldCopyToCheckCollision;
 		this.currentWorldObject = currentWorldObject;
@@ -36,8 +36,7 @@ public class CollisionDetection {
 				double tempPosy = tempObject.getPosy() + tempradius;
 
 				CollisionCircle ccTemp = new CollisionCircle(tempradius, tempPosx, tempPosy);
-				boolean collison = hasCollision(ccToCheck, ccTemp); 
-				//System.out.println("collison: " + collison + " id of object to check " +  tempObject.getID() );
+				boolean collison = hasCollision(ccToCheck, ccTemp);
 
 				if (collison) {
 					collisionDetected = true;
@@ -56,7 +55,8 @@ public class CollisionDetection {
 		double xDiff = circle1.getX() - circle2.getX();
 		double yDiff = circle1.getY() - circle2.getY();
 		double distanceSquared = xDiff * xDiff + yDiff * yDiff;
-		boolean collision = distanceSquared < (circle1.getRadius() + circle2.getRadius()) * (circle1.getRadius() + circle2.getRadius());
+		boolean collision = distanceSquared < (circle1.getRadius() + circle2.getRadius())
+				* (circle1.getRadius() + circle2.getRadius());
 		return collision;
 	}
 

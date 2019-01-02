@@ -1,6 +1,7 @@
 
 package common;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,10 +9,19 @@ public class World {
 
 	List<Manager> managerList;
 	LinkedList<GameObject> world;
+	ArrayList<WorldSegment> segmentList;
 	UpdateWorld updateWorld;
 	int playerID;
 	Class<?> playerclass;
 	Class<?> appleclass;
+
+	public ArrayList<WorldSegment> getSegmentList() {
+		return segmentList;
+	}
+
+	public void setSegmentList(ArrayList<WorldSegment> segmentList) {
+		this.segmentList = segmentList;
+	}
 
 	public int getPlayerID() {
 		return playerID;
@@ -46,6 +56,17 @@ public class World {
 	public void triggerPosChange(GameObject object) {
 		GameObject p = object;
 		updateWorld.sendPlayerMessage(p);
+	}
+	
+	public void removeObjectFromWorldWithID(Integer id) {
+		LinkedList<GameObject> copyList = world;
+
+		for (int z = 0; z < copyList.size(); z++) {
+			GameObject o = copyList.get(z);
+			if (o.getID() == id) {
+				world.remove(o);
+			}
+		}
 	}
 
 	public LinkedList<GameObject> getApples() {

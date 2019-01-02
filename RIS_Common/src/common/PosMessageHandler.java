@@ -4,6 +4,12 @@ import java.util.LinkedList;
 
 public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 	World world;
+	LinkedList<GameObject> wList;
+
+	public PosMessageHandler(World w) {
+		this.world = w;
+		this.wList = world.getWorld();
+	}
 
 	@Override
 	public MessageType getHandledMessageType() {
@@ -11,88 +17,96 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 	}
 
 	@Override
-	public void handle(NetMessage netMessage, World world, boolean isServer) {
-		// System.out.println("world size start handle " + world.getWorld().size());
-		boolean isInWorld = false;
-		boolean isS = false;
-		this.world = world;
-		isS = isServer;
+	public void handle(NetMessage netMessage, boolean isS) {
+
+		boolean isServer = isS;
 		boolean end = false;
-
-		LinkedList<GameObject> worldcopy = world.getWorld();
-
 		PosMessage message = (PosMessage) netMessage;
-
 		GameObject oFromMessage = (GameObject) message.getMsg();
 
-		for (GameObject o : world.getWorld()) {
-			System.out.println("o. " + o.getID());
-			if (oFromMessage.getID() == o.getID())
-				if (oFromMessage.isDelete() == true & !isS) {
-					System.out.println("remove object from world " + o.getID());
-					world.getWorld().remove(o);
-					end = true;
-				}
-		}
+		// -------------------------------------------Server-------------------------------------------------
 
-		if (!end) {
-			isInWorld = checkIfObjectExistsInWorld(worldcopy, oFromMessage, isInWorld, isS);
+		if (isServer) {
+			boolean isInWorld = false;
 
-			if (!isInWorld) {
-				// System.out.println("is not in world -> add");
-				world.addObjectToWorld(oFromMessage);
-			}
+			int count = wList.size();
 
-			if (isS == true) {
-				// System.out.println("is server and share with clients");
-				world.getUpdateWorld().shareWorldWithClients();
-			}
-			System.out.println("world size end handle " + world.getWorld().size());
-		}
-	}
+			for (int z = 0; z < count; z++) {
+				GameObject currentGameObject = wList.get(z);
+				CollisionDetection collisionDetection = new CollisionDetection();
 
-	public boolean checkIfObjectExistsInWorld(LinkedList<GameObject> worldcopy, GameObject objectFromMessage,
-			boolean isInWorld, boolean isS) {
-		GameObject o = objectFromMessage;
-		int count = worldcopy.size();
-		boolean isServ = isS;
-		LinkedList<GameObject> worldCopyTemp = worldcopy;
+				if (currentGameObject.getID() == oFromMessage.getID()) {
+					isInWorld = true;
 
-		for (int z = 0; z < count; z++) {
-			GameObject currentWorldObject = worldCopyTemp.get(z);
-			CollisionDetection collisionDetection = new CollisionDetection();
+					boolean collision = collisionDetection.detect(currentGameObject, oFromMessage, wList);
 
-			if (currentWorldObject.getID() == o.getID()) {
-				isInWorld = true;
-
-				if (isServ) {
-					boolean collision = collisionDetection.detect(currentWorldObject, objectFromMessage, worldCopyTemp);
-					// System.out.println("collision? = " + collision);
 					if (!collision) {
-						world.removeObjectFromWorld(currentWorldObject);
+						world.removeObjectFromWorldWithID(currentGameObject.getID());
+						world.addObjectToWorld(oFromMessage);
 					} else {
-						// System.out.println("get the collided object");
+
 						GameObject collidedWith = collisionDetection.getCollisionWithThisObject();
+
 						if (collidedWith.isEatable()) {
 							int counter = 0;
 							for (GameObject go : world.getWorld()) {
-								counter++;
-								//counter wrong
+								// counter++;
+								int element = 0;
 								if (go.getID() == collidedWith.getID()) {
 									System.out.println("collided with " + collidedWith.getID());
-									world.getWorld().get(counter).setDelete(true);
+									world.getWorld().get(element).setDelete(true);
 								}
+								counter++;
 							}
 							world.getWorld().remove(collidedWith);
 						}
 					}
-
-				} else {
-					world.removeObjectFromWorld(currentWorldObject);
-					world.addObjectToWorld(objectFromMessage);
 				}
 			}
+
+			if (!isInWorld) {
+				world.addObjectToWorld(oFromMessage);
+			}
+			world.getUpdateWorld().shareWorldWithClients();
 		}
-		return isInWorld;
+
+		// --------------------------------------------Client-------------------------------------------------
+
+		if (!isServer) {
+			boolean isInWorld = false;
+
+			// Check if Objects should be deleted
+			int times = wList.size();
+			for (int z = 0; z < times; z++) {
+				GameObject gameO = wList.get(z);
+				if (oFromMessage.getID() == gameO.getID())
+					if (oFromMessage.isDelete() == true) {
+						System.out.println("remove object from world " + gameO.getID());
+						world.removeObjectFromWorldWithID(gameO.getID());
+						end = true;
+					}
+			}
+
+			// If Object is deleted -> stop
+			if (!end) {
+				int count = wList.size();
+				for (int z = 0; z < count; z++) {
+					GameObject currentWorldObject = wList.get(z);
+
+					if (currentWorldObject.getID() == oFromMessage.getID()) {
+						isInWorld = true;
+						world.removeObjectFromWorldWithID(currentWorldObject.getID());
+						world.addObjectToWorld(oFromMessage);
+					}
+				}
+
+				if (!isInWorld) {
+					world.addObjectToWorld(oFromMessage);
+				}
+			}
+
+		}
+
+		System.out.println("world size end handle " + wList.size());
 	}
 }

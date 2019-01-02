@@ -2,9 +2,11 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import common.GenerateWorld;
 import common.Manager;
 import common.WorkingThread;
 import common.World;
+import common.WorldSegment;
 
 public class Client {
 	final int port = 9090;
@@ -47,6 +49,10 @@ public class Client {
 
 		Graphic graphic = new Graphic(world);
 		ug = graphic.getUpdategraphic();
+		
+		GenerateWorld gw = new GenerateWorld();
+		ArrayList<WorldSegment> segmentList = gw.generateMap();
+		world.setSegmentList(segmentList);
 
 		EventQueueThread q = new EventQueueThread(ug, world);
 		Thread eventQueueThread = new Thread(q);

@@ -16,8 +16,8 @@ public class WorkingThread implements Runnable {
 		this.world = world;
 		this.isServer = isServer;
 		netMessageHandlerMap = new HashMap<>();
-		netMessageHandlerMap.put(IDMessage.class, new IDMessageHandler());
-		netMessageHandlerMap.put(PosMessage.class, new PosMessageHandler());
+		netMessageHandlerMap.put(IDMessage.class, new IDMessageHandler(world));
+		netMessageHandlerMap.put(PosMessage.class, new PosMessageHandler(world));
 		messages = new LinkedBlockingQueue<>();
 	}
 
@@ -30,7 +30,7 @@ public class WorkingThread implements Runnable {
 		while(true) {
 			try {
 				NetMessage n = messages.take();
-				netMessageHandlerMap.get(n.getClass()).handle(n, world, isServer);
+				netMessageHandlerMap.get(n.getClass()).handle(n, isServer);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
