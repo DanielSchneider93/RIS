@@ -36,23 +36,26 @@ public class Graphic extends JFrame implements KeyListener{
 
 
 	public void keyPressed(KeyEvent e) {
-    	if(e.getKeyCode()== KeyEvent.VK_RIGHT) {
+    	if(e.getKeyCode()== KeyEvent.VK_LEFT) {
     		
     		this.player = world.findPlayer(playerID);
-            player.setPosx(player.getPosx() + 10);
-            player.setDirection(1);
+            player.setPosx(player.getPosx() - 10);
+            draw.windowOffsetX += 10;
+            player.setDirection(0);
     		world.triggerPosChange(player);
     	}
-        else if(e.getKeyCode()== KeyEvent.VK_LEFT)
+        else if(e.getKeyCode()== KeyEvent.VK_RIGHT)
         {
         	this.player = world.findPlayer(playerID);
-        	player.setPosx(player.getPosx() - 10);
-        	 player.setDirection(0);
+        	player.setPosx(player.getPosx() + 10);
+        	draw.windowOffsetX -= 10;
+        	player.setDirection(1);
     		world.triggerPosChange(player);
         }
         else if(e.getKeyCode()== KeyEvent.VK_DOWN)
         {
         	this.player = world.findPlayer(playerID);
+        	draw.windowOffsetY -= 10;
         	player.setPosy(player.getPosy() + 10);
     		world.triggerPosChange(player);
         }
@@ -60,6 +63,7 @@ public class Graphic extends JFrame implements KeyListener{
         {
         	this.player = world.findPlayer(playerID);
         	player.setPosy(player.getPosy() - 10);
+        	draw.windowOffsetY += 10;
     		world.triggerPosChange(player);
         }
     }

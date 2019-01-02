@@ -9,7 +9,7 @@ import common.World;
 import common.WorldSegment;
 
 public class Client {
-	final int port = 9090;
+	final int port = 9091;
 	final String host = "localhost";
 
 	WorkingThread workingThread;

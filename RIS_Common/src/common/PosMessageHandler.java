@@ -51,7 +51,7 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 							int counter = 0;
 							for (GameObject go : world.getWorld()) {
 								// counter++;
-								int element = 0;
+								int element = 1;
 								if (go.getID() == collidedWith.getID()) {
 									System.out.println("collided with " + collidedWith.getID());
 									world.getWorld().get(element).setDelete(true);

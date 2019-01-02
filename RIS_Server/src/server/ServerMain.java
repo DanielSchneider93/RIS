@@ -16,7 +16,7 @@ import common.World;
 
 public class ServerMain {
 
-	static int port = 9090;
+	static int port = 9091;
 	List<Manager> ManagerList;
 	WorkingThread workingThread;
 	World world;
@@ -61,7 +61,7 @@ public class ServerMain {
 			System.out.println("Created Server Manager for Client " + playerID);
 			
 			//Create Player, Add to World with ID and send ID to the new Client to let him know what his player is
-			GameObject player = new GameObject(playerID, 250, 250, playerHitBox, isEatable);
+			GameObject player = new GameObject(playerID, 400, 400, playerHitBox, isEatable);
 			world.addObjectToWorld(player);
 			ManagerList.add(connectionManager); 
 
