@@ -46,13 +46,13 @@ public class Client {
 		System.out.println("started Client Manager Thread");
 
 		ManagerList.add(manager);
-
-		Graphic graphic = new Graphic(world);
-		ug = graphic.getUpdategraphic();
 		
 		GenerateWorld gw = new GenerateWorld();
 		ArrayList<WorldSegment> segmentList = gw.generateMap();
 		world.setSegmentList(segmentList);
+
+		Graphic graphic = new Graphic(world);
+		ug = graphic.getUpdategraphic();
 
 		EventQueueThread q = new EventQueueThread(ug, world);
 		Thread eventQueueThread = new Thread(q);

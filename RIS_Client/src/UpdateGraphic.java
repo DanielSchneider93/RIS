@@ -25,6 +25,7 @@ public class UpdateGraphic extends JComponent {
 	int playerID;
 	LinkedList<GameObject> players = new LinkedList<GameObject>();
 	LinkedList<GameObject> apples = new LinkedList<GameObject>();
+	ArrayList<WorldSegment> segmentList;
 
 	public UpdateGraphic(World world) throws IOException {
 		this.world = world;
@@ -34,10 +35,12 @@ public class UpdateGraphic extends JComponent {
 		grass = ImageIO.read(getClass().getResource("gras.png"));
 		wall = ImageIO.read(getClass().getResource("wall.png"));
 		this.playerID = world.getPlayerID();
+		segmentList = world.getSegmentList();
 	}
 
 	public void paintComponent(Graphics g) {
-		ArrayList<WorldSegment> segmentList = world.getSegmentList();
+		
+
 		for (WorldSegment s : segmentList) {
 			ArrayList<Integer> list = s.getList();
 			int posx = s.getX();
@@ -69,12 +72,12 @@ public class UpdateGraphic extends JComponent {
 				} else { // Look Right
 					g.drawImage(playerImage_r, staticPlayerPos, staticPlayerPos, null);
 				}
-			}
-			else {
+			} else {
 				if (player.getDirection() == 0) { // Look left
 					g.drawImage(playerImage, player.getPosx() + windowOffsetX, player.getPosy() + windowOffsetY, null);
 				} else { // Look Right
-					g.drawImage(playerImage_r, player.getPosx() + windowOffsetX, player.getPosy() + windowOffsetY, null);
+					g.drawImage(playerImage_r, player.getPosx() + windowOffsetX, player.getPosy() + windowOffsetY,
+							null);
 				}
 			}
 		}

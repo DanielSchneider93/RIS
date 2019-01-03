@@ -12,6 +12,7 @@ public class Graphic extends JFrame implements KeyListener{
 	public World world;
 	int playerID;
 	GameObject player;
+	int playerSpeed = 20;
 	
 	public Graphic(World world) throws IOException{
 		this.world = world;
@@ -39,31 +40,31 @@ public class Graphic extends JFrame implements KeyListener{
     	if(e.getKeyCode()== KeyEvent.VK_LEFT) {
     		
     		this.player = world.findPlayer(playerID);
-            player.setPosx(player.getPosx() - 10);
-            draw.windowOffsetX += 10;
+            player.setPosx(player.getPosx() - playerSpeed);
+            draw.windowOffsetX += playerSpeed;
             player.setDirection(0);
     		world.triggerPosChange(player);
     	}
         else if(e.getKeyCode()== KeyEvent.VK_RIGHT)
         {
         	this.player = world.findPlayer(playerID);
-        	player.setPosx(player.getPosx() + 10);
-        	draw.windowOffsetX -= 10;
+        	player.setPosx(player.getPosx() + playerSpeed);
+        	draw.windowOffsetX -= playerSpeed;
         	player.setDirection(1);
     		world.triggerPosChange(player);
         }
         else if(e.getKeyCode()== KeyEvent.VK_DOWN)
         {
         	this.player = world.findPlayer(playerID);
-        	draw.windowOffsetY -= 10;
-        	player.setPosy(player.getPosy() + 10);
+        	draw.windowOffsetY -= playerSpeed;
+        	player.setPosy(player.getPosy() + playerSpeed);
     		world.triggerPosChange(player);
         }
         else if(e.getKeyCode()== KeyEvent.VK_UP)
         {
         	this.player = world.findPlayer(playerID);
-        	player.setPosy(player.getPosy() - 10);
-        	draw.windowOffsetY += 10;
+        	player.setPosy(player.getPosy() - playerSpeed);
+        	draw.windowOffsetY += playerSpeed;
     		world.triggerPosChange(player);
         }
     }

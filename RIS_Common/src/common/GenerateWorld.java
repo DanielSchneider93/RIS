@@ -7,10 +7,9 @@ public class GenerateWorld {
 	ArrayList<WorldSegment> segmentList = new ArrayList<WorldSegment>();
 	long seed = 64542;
 
-	int howMuchSegmentX = 10;
-	int howMuchSegmentY = 10;
-	int segmentSize = 100;
-
+	private int howMuchSegmentX = 25;
+	private int howMuchSegmentY = 25;
+	private int segmentSize = 100;
 	private int grass = 0;
 	private int wall = 1;
 
@@ -22,8 +21,8 @@ public class GenerateWorld {
 	public void generate() {
 		Random rnd = new Random(seed);
 
-		for (int s = 0; s < howMuchSegmentX; ++s) {
-			for (int i = 0; i < howMuchSegmentY; ++i) {
+		for (int s = 0; s <= howMuchSegmentX; ++s) {
+			for (int i = 0; i <= howMuchSegmentY; ++i) {
 
 				WorldSegment segment = new WorldSegment();
 				segment.setX(s*segmentSize);

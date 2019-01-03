@@ -8,6 +8,7 @@ public class WorldSegment {
 	int size = 100;
 	int x = 0;
 	int y = 0;
+	boolean active = false;
 
 	public int getSize() {
 		return size;
