@@ -13,7 +13,7 @@ public class Graphic extends JFrame implements KeyListener{
 	public World world;
 	int playerID;
 	GameObject player;
-	int playerSpeed = 20;
+	int playerSpeed = 50;
 	MapCache mc;
 	
 	public Graphic(World world, MapCache mc) throws IOException{

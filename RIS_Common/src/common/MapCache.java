@@ -82,9 +82,12 @@ public class MapCache implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			// TODO: checkSegment in own Thread
-			//checkSegment with Key s
-			
+			checkSegment();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
