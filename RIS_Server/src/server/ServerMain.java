@@ -7,16 +7,16 @@ import java.util.*;
 import common.IDMessage;
 import common.Manager;
 import common.GameObject;
-import common.PosMessage;
+import common.GenerateWorld;
 import common.UpdateWorld;
-import common.Vectorlist;
 import common.WorkingThread;
 import common.World;
+import common.WorldSegment;
 
 
 public class ServerMain {
 
-	static int port = 9091;
+	static int port = 9090;
 	List<Manager> ManagerList;
 	WorkingThread workingThread;
 	World world;
@@ -42,7 +42,10 @@ public class ServerMain {
 		t.setDaemon(true);
 		t.start();
 		
-
+		GenerateWorld gw = new GenerateWorld();
+		ArrayList<WorldSegment> segmentList = gw.generateMap();
+		world.setSegmentList(segmentList);
+		
 		ServerSocket listener = new ServerSocket(port);
 		System.out.println("Server waiting for connections on Port 9090");
 

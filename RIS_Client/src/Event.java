@@ -6,7 +6,7 @@ import common.World;
 
 public class Event implements Comparable<Event> {
 
-	public long time; // circa 60Hz
+	public long time; 
 	UpdateGraphic graphic;
 	PriorityQueue<Event> queue;
 	World world;
@@ -26,7 +26,7 @@ public class Event implements Comparable<Event> {
 	public void execute() {
 		if (type == 0) { // Render Event
 			graphic.repaint();
-			Event e = new Event(world, graphic, queue, 0, 16);
+			Event e = new Event(world, graphic, queue, 0, 16); // circa 60Hz = 16 ms
 			queue.add(e);
 		}
 		if (type == 1) { // Apple Event

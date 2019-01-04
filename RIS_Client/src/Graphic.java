@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 
 import common.GameObject;
+import common.MapCache;
 import common.World;
 
 public class Graphic extends JFrame implements KeyListener{
@@ -13,9 +14,11 @@ public class Graphic extends JFrame implements KeyListener{
 	int playerID;
 	GameObject player;
 	int playerSpeed = 20;
+	MapCache mc;
 	
-	public Graphic(World world) throws IOException{
+	public Graphic(World world, MapCache mc) throws IOException{
 		this.world = world;
+		this.mc = mc;
         this.draw = new UpdateGraphic(world);
         this.playerID = world.getPlayerID();
         this.player = world.findPlayer(playerID);
@@ -66,6 +69,10 @@ public class Graphic extends JFrame implements KeyListener{
         	player.setPosy(player.getPosy() - playerSpeed);
         	draw.windowOffsetY += playerSpeed;
     		world.triggerPosChange(player);
+        }
+        else if(e.getKeyCode()== KeyEvent.VK_S)
+        {
+        	mc.checkSegment();
         }
     }
 
