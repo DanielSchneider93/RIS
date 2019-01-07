@@ -30,7 +30,7 @@ public class World {
 	}
 
 	public void removeObjectFromWorldWithID(Integer id) {
-		LinkedList<GameObject> copyList = world;
+		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
 
 		for (int z = 0; z < copyList.size(); z++) {
 			GameObject o = copyList.get(z);
@@ -41,7 +41,7 @@ public class World {
 	}
 
 	public LinkedList<GameObject> getApples() {
-		LinkedList<GameObject> copyList = world;
+		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
 		LinkedList<GameObject> result = new LinkedList<GameObject>();
 
 		for (int z = 0; z < copyList.size(); z++) {
@@ -54,7 +54,7 @@ public class World {
 	}
 
 	public LinkedList<GameObject> getPlayers() {
-		LinkedList<GameObject> copyList = world;
+		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
 		LinkedList<GameObject> result = new LinkedList<GameObject>();
 
 		for (int z = 0; z < copyList.size(); z++) {
@@ -67,7 +67,7 @@ public class World {
 	}
 
 	public GameObject findPlayer(int ObjectID) {
-		LinkedList<GameObject> copyList = world;
+		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
 		GameObject player = null;
 
 		for (int z = 0; z < copyList.size(); z++) {

@@ -26,7 +26,7 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 		PosMessage message = (PosMessage) netMessage;
 		GameObject oFromMessage = (GameObject) message.getMsg();
 		
-		System.out.println("oFromMessage " +  oFromMessage.getPosx() + " world " + world.findPlayer(world.getPlayerID()).getPosx());
+		//System.out.println("oFromMessage " +  oFromMessage.getPosx() + " world " + world.findPlayer(world.getPlayerID()).getPosx());
 
 		// -------------------------------------------Server-------------------------------------------------
 
@@ -38,9 +38,8 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 			}
 
 			boolean isInWorld = false;
-			int count = wList.size();
 
-			for (int z = 0; z < count; z++) {
+			for (int z = 0; z < wList.size(); z++) {
 				GameObject currentGameObject = wList.get(z);
 				CollisionDetection collisionDetection = new CollisionDetection();
 
@@ -50,7 +49,6 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 					collision = collisionDetection.detect(currentGameObject, oFromMessage, wList, world.getCache());
 
 					if (!collision) {
-						System.out.println("update pos in server world");
 						world.removeObjectFromWorldWithID(currentGameObject.getID());
 						world.addObjectToWorld(oFromMessage);
 					} else {
@@ -69,7 +67,6 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 								for (GameObject go : world.getWorld()) {
 
 									if (go.getID() == collidedWith.getID()) {
-										System.out.println("collided with " + collidedWith.getID());
 										world.getWorld().get(counter).setDelete(true);
 									}
 									counter++;
@@ -96,10 +93,8 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 		if (!isServer) {
 			boolean isInWorld = false;
 
-			System.out.println();
 			// Check if Object should be deleted
-			int times = wList.size();
-			for (int z = 0; z < times; z++) {
+			for (int z = 0; z < wList.size(); z++) {
 				GameObject gameO = wList.get(z);
 				if (oFromMessage.getID() == gameO.getID())
 					if (oFromMessage.isDelete() == true) {
@@ -112,8 +107,7 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 
 			// If Object is deleted -> stop
 			if (!end) {
-				int count = wList.size();
-				for (int z = 0; z < count; z++) {
+				for (int z = 0; z < wList.size(); z++) {
 					GameObject currentWorldObject = wList.get(z);
 
 					if (currentWorldObject.getID() == oFromMessage.getID()) {

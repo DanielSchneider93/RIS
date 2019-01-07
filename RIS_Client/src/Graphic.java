@@ -42,30 +42,34 @@ public class Graphic extends JFrame implements KeyListener{
 	public void keyPressed(KeyEvent e) {
     	if(e.getKeyCode()== KeyEvent.VK_LEFT) {
     		
-    		this.player = world.findPlayer(playerID);
+    		System.out.println("old player pos: " + player.getPosx() + " " + player.getPosy());
+    		//this.player = world.findPlayer(playerID);
             player.setPosx(player.getPosx() - playerSpeed);
             draw.windowOffsetX += playerSpeed;
             player.setDirection(0);
     		world.triggerPosChange(player);
+    		System.out.println("new player pos: " + player.getPosx() + " " + player.getPosy());
     	}
         else if(e.getKeyCode()== KeyEvent.VK_RIGHT)
         {
-        	this.player = world.findPlayer(playerID);
+        	System.out.println("old player pos: " + player.getPosx() + " " + player.getPosy());
+        	//this.player = world.findPlayer(playerID);
         	player.setPosx(player.getPosx() + playerSpeed);
         	draw.windowOffsetX -= playerSpeed;
         	player.setDirection(1);
     		world.triggerPosChange(player);
+    		System.out.println("new player pos: " + player.getPosx() + " " + player.getPosy());
         }
         else if(e.getKeyCode()== KeyEvent.VK_DOWN)
         {
-        	this.player = world.findPlayer(playerID);
+        	//this.player = world.findPlayer(playerID);
         	draw.windowOffsetY -= playerSpeed;
         	player.setPosy(player.getPosy() + playerSpeed);
     		world.triggerPosChange(player);
         }
         else if(e.getKeyCode()== KeyEvent.VK_UP)
         {
-        	this.player = world.findPlayer(playerID);
+        	//this.player = world.findPlayer(playerID);
         	player.setPosy(player.getPosy() - playerSpeed);
         	draw.windowOffsetY += playerSpeed;
     		world.triggerPosChange(player);

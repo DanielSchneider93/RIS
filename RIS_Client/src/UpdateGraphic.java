@@ -13,20 +13,20 @@ import common.WorldSegment;
 
 public class UpdateGraphic extends JComponent {
 	private static final long serialVersionUID = 1L;
-	public World world;
-	BufferedImage playerImage;
-	BufferedImage playerImage_r;
-	BufferedImage apple;
-	BufferedImage grass;
-	BufferedImage wall;
+	World world;
+	private BufferedImage playerImage;
+	private BufferedImage playerImage_r;
+	private BufferedImage apple;
+	private BufferedImage grass;
+	private BufferedImage wall;
 	int windowOffsetX = 0;
 	int windowOffsetY = 0;
-	int staticPlayerPos = 400;
+	private int staticPlayerPos = 400;
 
 	int playerID;
-	LinkedList<GameObject> players = new LinkedList<GameObject>();
-	LinkedList<GameObject> apples = new LinkedList<GameObject>();
-	ArrayList<WorldSegment> cache = new ArrayList<WorldSegment>();
+	LinkedList<GameObject> players;
+	LinkedList<GameObject> apples;
+	ArrayList<WorldSegment> cache;
 
 	public UpdateGraphic(World world) throws IOException {
 		this.world = world;
@@ -40,6 +40,10 @@ public class UpdateGraphic extends JComponent {
 	}
 
 	public void paintComponent(Graphics g) {
+		players = new LinkedList<GameObject>(world.getPlayers());
+		apples = new LinkedList<GameObject>(world.getApples());
+		cache = new ArrayList<WorldSegment>(world.getCache());
+		
 		if (cache != null) {
 			for (int m = 0; m < cache.size(); m++) {
 
@@ -69,9 +73,7 @@ public class UpdateGraphic extends JComponent {
 			}
 		}
 
-		players = world.getPlayers();
 		for (GameObject player : players) {
-
 			if (playerID == player.getID()) {
 				if (player.getDirection() == 0) { // Look left
 					g.drawImage(playerImage, staticPlayerPos, staticPlayerPos, null);
@@ -88,7 +90,6 @@ public class UpdateGraphic extends JComponent {
 			}
 		}
 
-		apples = world.getApples();
 		for (GameObject tempApple : apples) {
 			int tempxApple = tempApple.getPosx();
 			int tempyApple = tempApple.getPosy();

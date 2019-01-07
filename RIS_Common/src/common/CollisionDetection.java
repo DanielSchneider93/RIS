@@ -54,41 +54,42 @@ public class CollisionDetection {
 
 		if (cache != null) {
 			int countMap = cache.size();
-			System.out.println("cache size " + countMap);
 			int offset = 100;
 			int counterx = 1;
 			int countery = 0;
 
 			for (int y = 0; y < countMap; y++) {
 				WorldSegment tempSegment = cache.get(y);
+				if (tempSegment.isActive()) {
 
-				int segmentX = tempSegment.getX();
-				int segmentY = tempSegment.getY();
-				int elementY = 0;
+					int segmentX = tempSegment.getX();
+					int segmentY = tempSegment.getY();
+					int elementY = 0;
 
-				for (Integer i : tempSegment.getList()) {
+					for (Integer i : tempSegment.getList()) {
 
-					int elementX = segmentX + ((counterx - 1) * offset);
+						int elementX = segmentX + ((counterx - 1) * offset);
 
-					if (countery == 10) {
-						elementY += offset;
-						countery = 0;
-					}
-					
-					elementY = segmentY + elementY;
+						if (countery == 10) {
+							elementY += offset;
+							countery = 0;
+						}
 
-					if (counterx % 10 == 0) {
-						counterx = 0;
-					}
-					counterx++;
-					countery++;
+						elementY = segmentY + elementY;
 
-					if (i == wall) {
-						CollisionCircle cc = new CollisionCircle(50, elementX+50, elementY+50);
-						boolean coll = hasCollision(ccToCheck, cc);
-						if (coll) {
-							collisionDetected = true;
-							collisionWithThisObject = null;
+						if (counterx % 10 == 0) {
+							counterx = 0;
+						}
+						counterx++;
+						countery++;
+
+						if (i == wall) {
+							CollisionCircle cc = new CollisionCircle(50, elementX + 50, elementY + 50);
+							boolean coll = hasCollision(ccToCheck, cc);
+							if (coll) {
+								collisionDetected = true;
+								collisionWithThisObject = null;
+							}
 						}
 					}
 				}

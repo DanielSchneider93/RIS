@@ -68,7 +68,12 @@ public class MapCache implements Runnable {
 
 		world.setCache(cache);
 		
-		// tell server for collision detection
+		for(WorldSegment w : cache)
+		{
+			if(w.getID() != 999) {
+				w.setActive(true);
+			}
+		}
 	}
 
 	public WorldSegment getSegmentWithID(int id) {
