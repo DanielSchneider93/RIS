@@ -66,7 +66,7 @@ public class CollisionDetection {
 					int segmentY = tempSegment.getY();
 					int elementY = 0;
 
-					for (Integer i : tempSegment.getList()) {
+					for (int i : tempSegment.getList()) {
 
 						int elementX = segmentX + ((counterx - 1) * offset);
 

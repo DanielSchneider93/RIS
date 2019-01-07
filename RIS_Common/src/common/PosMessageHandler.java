@@ -114,7 +114,7 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 						isInWorld = true;
 						world.removeObjectFromWorldWithID(currentWorldObject.getID());
 						world.addObjectToWorld(oFromMessage);
-						break;
+						//break;
 					}
 				}
 
