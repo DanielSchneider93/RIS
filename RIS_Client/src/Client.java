@@ -56,9 +56,9 @@ public class Client {
 		
 		System.out.println("Starting Map Cache ....");
 		mapCache = new MapCache(world);
-		Thread mapThread = new Thread(mapCache); 
-		mapThread.setDaemon(true);
-		mapThread.start();
+		//Thread mapThread = new Thread(mapCache); 
+		//mapThread.setDaemon(true);
+		//mapThread.start();
 
 		System.out.println("Starting Graphic ....");
 		Graphic graphic = new Graphic(world, mapCache);

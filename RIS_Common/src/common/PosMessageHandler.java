@@ -21,20 +21,22 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 		boolean isServer = isS;
 		boolean end = false;
 		boolean collision = false;
+		boolean mapCollision = false;
 		GameObject collidedWith = null;
 		PosMessage message = (PosMessage) netMessage;
 		GameObject oFromMessage = (GameObject) message.getMsg();
+		
+		System.out.println("oFromMessage " +  oFromMessage.getPosx() + " world " + world.findPlayer(world.getPlayerID()).getPosx());
 
 		// -------------------------------------------Server-------------------------------------------------
 
 		if (isServer) {
-			
-			if(oFromMessage.getID() == 99) {
-				world.cache = oFromMessage.getCache();
-				System.out.println("Server World Cache updated");
+
+			if (oFromMessage.getID() == 99) {
+				world.setCache(oFromMessage.getCache());
 				return;
 			}
-	
+
 			boolean isInWorld = false;
 			int count = wList.size();
 
@@ -48,21 +50,30 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 					collision = collisionDetection.detect(currentGameObject, oFromMessage, wList, world.getCache());
 
 					if (!collision) {
+						System.out.println("update pos in server world");
 						world.removeObjectFromWorldWithID(currentGameObject.getID());
 						world.addObjectToWorld(oFromMessage);
 					} else {
 
 						collidedWith = collisionDetection.getCollisionWithThisObject();
 
-						if (collidedWith.isEatable()) {
-							int counter = 0;
-							for (GameObject go : world.getWorld()) {
-								
-								if (go.getID() == collidedWith.getID()) {
-									System.out.println("collided with " + collidedWith.getID());
-									world.getWorld().get(counter).setDelete(true);
+						if (collidedWith == null) {
+							mapCollision = true;
+							System.out.println("collided with wall");
+						}
+
+						if (!mapCollision) {
+
+							if (collidedWith.isEatable()) {
+								int counter = 0;
+								for (GameObject go : world.getWorld()) {
+
+									if (go.getID() == collidedWith.getID()) {
+										System.out.println("collided with " + collidedWith.getID());
+										world.getWorld().get(counter).setDelete(true);
+									}
+									counter++;
 								}
-								counter++;
 							}
 						}
 					}
@@ -72,9 +83,10 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 			if (!isInWorld) {
 				world.addObjectToWorld(oFromMessage);
 			}
+
 			world.getUpdateWorld().shareWorldWithClients();
-			
-			if(collision){
+
+			if (collision && !mapCollision) {
 				world.getWorld().remove(collidedWith);
 			}
 		}
@@ -84,6 +96,7 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 		if (!isServer) {
 			boolean isInWorld = false;
 
+			System.out.println();
 			// Check if Object should be deleted
 			int times = wList.size();
 			for (int z = 0; z < times; z++) {
@@ -107,6 +120,7 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 						isInWorld = true;
 						world.removeObjectFromWorldWithID(currentWorldObject.getID());
 						world.addObjectToWorld(oFromMessage);
+						break;
 					}
 				}
 

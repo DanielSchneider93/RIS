@@ -79,6 +79,14 @@ public class MapCache implements Runnable {
 			return emptySegment;
 		}
 	}
+	
+	public void updateManual() {
+		checkSegment();
+		GameObject mapCacheTemp = new GameObject(99, 0, 0, 0, false); // 99 = map id
+		mapCacheTemp.setCache(cache);
+		world.triggerPosChange(mapCacheTemp);
+	}
+	
 
 	@Override
 	public void run() {

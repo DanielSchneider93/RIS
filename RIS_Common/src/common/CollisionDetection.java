@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class CollisionDetection {
-	LinkedList<GameObject> worldcopy = new LinkedList<GameObject>();
+	LinkedList<GameObject> worldcopy;
 	GameObject toCheck;
 	GameObject currentWorldObject;
 	int toCheckID;
 	GameObject collisionWithThisObject;
 	ArrayList<WorldSegment> cache = null;
+	private int wall = 1;
 
 	public boolean detect(GameObject currentWorldObject, GameObject objectFromMessage,
 			LinkedList<GameObject> worldCopyToCheckCollision, ArrayList<WorldSegment> cache) {
 		boolean collisionDetected = false;
 
-		this.worldcopy = worldCopyToCheckCollision;
+		worldcopy = new LinkedList<GameObject>(worldCopyToCheckCollision);
+
 		this.currentWorldObject = currentWorldObject;
 		this.toCheck = objectFromMessage;
 		this.cache = cache;
@@ -45,6 +47,7 @@ public class CollisionDetection {
 				if (collison) {
 					collisionDetected = true;
 					collisionWithThisObject = tempObject;
+					break;
 				}
 			}
 		}
@@ -65,29 +68,30 @@ public class CollisionDetection {
 
 				for (Integer i : tempSegment.getList()) {
 
-					int elementX = segmentX + ((counterx-1) * 100);
-				
-					if(countery == 10) {
-						elementY += 100;
+					int elementX = segmentX + ((counterx - 1) * offset);
+
+					if (countery == 10) {
+						elementY += offset;
 						countery = 0;
 					}
+					
+					elementY = segmentY + elementY;
 
 					if (counterx % 10 == 0) {
 						counterx = 0;
 					}
 					counterx++;
 					countery++;
-					
-					if (i == 1)
-					{
-						//TODO: build collider and check
+
+					if (i == wall) {
+						CollisionCircle cc = new CollisionCircle(50, elementX+50, elementY+50);
+						boolean coll = hasCollision(ccToCheck, cc);
+						if (coll) {
+							collisionDetected = true;
+							collisionWithThisObject = null;
+						}
 					}
-
-					System.out.println("element " + i  + " x " + elementX + " y " + elementY);
 				}
-
-				// ccToCheck
-
 			}
 		}
 

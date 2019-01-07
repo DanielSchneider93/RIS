@@ -40,8 +40,8 @@ public class Event implements Comparable<Event> {
 			world.addObjectToWorld(apple);
 			world.triggerPosChange(apple);
 			
-			Event e = new Event(world, graphic, queue, 1, 10000);
-			queue.add(e);
+			//Event e = new Event(world, graphic, queue, 1, 10000);
+			//queue.add(e);
 		}
 	}
 

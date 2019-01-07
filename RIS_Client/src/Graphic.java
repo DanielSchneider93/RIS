@@ -72,7 +72,7 @@ public class Graphic extends JFrame implements KeyListener{
         }
         else if(e.getKeyCode()== KeyEvent.VK_S)
         {
-        	mc.checkSegment();
+        	mc.updateManual();
         }
     }
 
