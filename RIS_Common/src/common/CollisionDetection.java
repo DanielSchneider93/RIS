@@ -1,5 +1,6 @@
 package common;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class CollisionDetection {
@@ -8,13 +9,16 @@ public class CollisionDetection {
 	GameObject currentWorldObject;
 	int toCheckID;
 	GameObject collisionWithThisObject;
+	ArrayList<WorldSegment> cache = null;
 
 	public boolean detect(GameObject currentWorldObject, GameObject objectFromMessage,
-			LinkedList<GameObject> worldCopyToCheckCollision) {
+			LinkedList<GameObject> worldCopyToCheckCollision, ArrayList<WorldSegment> cache) {
 		boolean collisionDetected = false;
+
 		this.worldcopy = worldCopyToCheckCollision;
 		this.currentWorldObject = currentWorldObject;
 		this.toCheck = objectFromMessage;
+		this.cache = cache;
 		toCheckID = toCheck.getID();
 		worldcopy.remove(currentWorldObject);
 		worldcopy.add(objectFromMessage);
@@ -44,6 +48,49 @@ public class CollisionDetection {
 				}
 			}
 		}
+
+		if (cache != null) {
+			int countMap = cache.size();
+			System.out.println("cache size " + countMap);
+			int offset = 100;
+			int counterx = 1;
+			int countery = 0;
+
+			for (int y = 0; y < countMap; y++) {
+				WorldSegment tempSegment = cache.get(y);
+
+				int segmentX = tempSegment.getX();
+				int segmentY = tempSegment.getY();
+				int elementY = 0;
+
+				for (Integer i : tempSegment.getList()) {
+
+					int elementX = segmentX + ((counterx-1) * 100);
+				
+					if(countery == 10) {
+						elementY += 100;
+						countery = 0;
+					}
+
+					if (counterx % 10 == 0) {
+						counterx = 0;
+					}
+					counterx++;
+					countery++;
+					
+					if (i == 1)
+					{
+						//TODO: build collider and check
+					}
+
+					System.out.println("element " + i  + " x " + elementX + " y " + elementY);
+				}
+
+				// ccToCheck
+
+			}
+		}
+
 		return collisionDetected;
 	}
 

@@ -1,8 +1,9 @@
 package common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class WorldSegment {
+public class WorldSegment implements Serializable{
 
 	ArrayList<Integer> list = new ArrayList<Integer>();
 	int size = 1000; // 1000px in x and y

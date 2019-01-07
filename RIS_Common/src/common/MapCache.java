@@ -20,7 +20,7 @@ public class MapCache implements Runnable {
 		emptySegment = new WorldSegment();
 		emptySegment.setX(0);
 		emptySegment.setY(0);
-		emptySegment.setID(0);
+		emptySegment.setID(999); //999 = empty Segment, dont check for collision
 	}
 
 	public void checkSegment() {
@@ -32,7 +32,7 @@ public class MapCache implements Runnable {
 			if (playerX > ws.getX() && playerX < ws.getX() + ws.getSize()) {
 				if (playerY > ws.getY() && playerY < ws.getY() + ws.getSize()) {
 					// player is in that segment
-					System.out.println("player in segment " + ws.getID());
+					//System.out.println("player in segment " + ws.getID());
 					segmentPos = ws.getID();
 					break;
 				}
@@ -67,6 +67,7 @@ public class MapCache implements Runnable {
 		cache.add(rightup);
 
 		world.setCache(cache);
+		
 		// tell server for collision detection
 	}
 
@@ -83,8 +84,13 @@ public class MapCache implements Runnable {
 	public void run() {
 		while (true) {
 			checkSegment();
+			GameObject mapCacheTemp = new GameObject(99, 0, 0, 0, false); // 99 = map id
+			mapCacheTemp.setCache(cache);
+			world.triggerPosChange(mapCacheTemp);
+			world.setCache(cache);
 			try {
-				Thread.sleep(1000);
+				//TODO: only do when player enters next segemnt or gets in range
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

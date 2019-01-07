@@ -23,6 +23,8 @@ public class Manager implements Runnable {
 	public void write(NetMessage netMessage) {
 		try {
 			OutputStream.writeUnshared(netMessage);
+			//OutputStream.flush();
+			OutputStream.reset();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -30,6 +32,8 @@ public class Manager implements Runnable {
 
 	public void writeID(NetMessage netMessage) throws IOException {
 		OutputStream.writeUnshared(netMessage);
+		//OutputStream.flush();
+		OutputStream.reset();
 	}
 
 	public ObjectOutputStream getOutputStream() {

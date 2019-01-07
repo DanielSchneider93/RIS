@@ -30,11 +30,18 @@ public class Event implements Comparable<Event> {
 			queue.add(e);
 		}
 		if (type == 1) { // Apple Event
-			int rnd1 = random.nextInt(200 + 1 - 100) + 100;
-			int rnd2 = random.nextInt(200 + 1 - 100) + 100;
-			GameObject apple = new GameObject(20, rnd1, rnd2, 50, true);
+			
+			//TODO: spawn apples near Player
+			int rnd1 = random.nextInt(Math.abs(world.getPlayerPosX()) + 1 - 100) + 100;
+			int rnd2 = random.nextInt(Math.abs(world.getPlayerPosY()) + 1 - 100) + 100;
+			
+			GameObject apple = new GameObject(20+world.getPlayerID(), rnd1, rnd2, 50, true);
+			
 			world.addObjectToWorld(apple);
 			world.triggerPosChange(apple);
+			
+			Event e = new Event(world, graphic, queue, 1, 10000);
+			queue.add(e);
 		}
 	}
 

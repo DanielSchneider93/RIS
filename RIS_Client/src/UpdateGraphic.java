@@ -41,7 +41,10 @@ public class UpdateGraphic extends JComponent {
 
 	public void paintComponent(Graphics g) {
 		if (cache != null) {
-			for (WorldSegment s : cache) {
+			for (int m = 0; m < cache.size(); m++) {
+
+				WorldSegment s = cache.get(m);
+
 				if (s.getList() != null) {
 					ArrayList<Integer> list = s.getList();
 					int posx = s.getX();

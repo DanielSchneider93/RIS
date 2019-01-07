@@ -1,6 +1,7 @@
 package common;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class GameObject implements Serializable {
 
@@ -12,6 +13,15 @@ public class GameObject implements Serializable {
 	private int collisonRadius = 0;
 	private boolean eatable = false;
 	private boolean delete = false;
+	private ArrayList<WorldSegment> cache = null;
+
+	public ArrayList<WorldSegment> getCache() {
+		return cache;
+	}
+
+	public void setCache(ArrayList<WorldSegment> cache) {
+		this.cache = cache;
+	}
 
 	public GameObject(int objectID, int posx, int posy, int collisonRadius, boolean eatable) {
 		this.objectID = objectID;
