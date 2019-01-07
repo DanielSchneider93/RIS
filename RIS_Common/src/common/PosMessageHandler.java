@@ -46,7 +46,7 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 				if (currentGameObject.getID() == oFromMessage.getID()) {
 					isInWorld = true;
 
-					collision = collisionDetection.detect(currentGameObject, oFromMessage, wList, world.getCache());
+					collision = collisionDetection.detect(currentGameObject, oFromMessage, wList, world.getCache(),false);
 
 					if (!collision) {
 						world.removeObjectFromWorldWithID(currentGameObject.getID());
