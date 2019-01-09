@@ -24,9 +24,8 @@ public class World {
 	}
 	
 	
-	public void triggerPosChange(GameObject object) {
-		GameObject p = object;
-		updateWorld.sendPlayerMessage(p);
+	public void triggerPosChange(GameObject o) {
+		updateWorld.sendPlayerMessage(o);
 	}
 
 	public void removeObjectFromWorldWithID(Integer id) {
@@ -81,7 +80,7 @@ public class World {
 
 	public int getPlayerPosX() {
 		int playerPosX = 0;
-		LinkedList<GameObject> copyList = world;
+		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
 
 		for (int z = 0; z < copyList.size(); z++) {
 			GameObject o = copyList.get(z);
@@ -94,7 +93,7 @@ public class World {
 
 	public int getPlayerPosY() {
 		int playerPosY = 0;
-		LinkedList<GameObject> copyList = world;
+		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
 
 		for (int z = 0; z < copyList.size(); z++) {
 			GameObject o = copyList.get(z);

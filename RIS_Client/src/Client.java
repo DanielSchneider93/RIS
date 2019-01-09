@@ -41,7 +41,7 @@ public class Client {
 		ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
 		System.out.println("Starting Manager Thread ....");
-		manager = new Manager(inputStream, outputStream, workingThread, ManagerList);
+		manager = new Manager(inputStream, outputStream, workingThread);
 		Thread thread = new Thread(manager); 
 		thread.setDaemon(true);
 		thread.start();
@@ -52,7 +52,6 @@ public class Client {
 		GenerateWorld gw = new GenerateWorld();
 		ArrayList<WorldSegment> segmentList = gw.generateMap();
 		world.setSegmentList(segmentList);
-		
 		
 		System.out.println("Starting Map Cache ....");
 		mapCache = new MapCache(world);

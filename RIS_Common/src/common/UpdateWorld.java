@@ -15,23 +15,26 @@ public class UpdateWorld {
 
 	//Send Solo Message
 	public void sendPlayerMessage(GameObject p) {
-		PosMessage msg = new PosMessage(p);
+		GameObject temp = new GameObject(p);
+		PosMessage msg = new PosMessage(temp);
 		for (Manager m : managerList) {
 			m.write(msg);
 		}
 	}
 
 	//Server send Player
-	public void sendClientThePlayer(GameObject p, Manager connectionManager) {
-		PosMessage msg = new PosMessage(p);
-		connectionManager.write(msg);
+	public void sendClientThePlayer(GameObject p, Manager m) {
+		GameObject temp = new GameObject(p);
+		PosMessage msg = new PosMessage(temp);
+		m.write(msg);
 	}
 
 	//Share Whole World
 	public void shareWorldWithClients() {
 		for (GameObject o : world) {
-			PosMessage msg = new PosMessage(o);
 			for (Manager m : managerList) {
+				GameObject temp = new GameObject(o);
+				PosMessage msg = new PosMessage(temp);
 				m.write(msg);
 			}
 		}

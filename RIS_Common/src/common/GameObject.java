@@ -14,8 +14,6 @@ public class GameObject implements Serializable {
 	private boolean eatable = false;
 	private boolean delete = false;
 	private ArrayList<WorldSegment> cache = null;
-	private int windowOffsetX = 0;
-	private int windowOffsetY = 0; //?
 
 	public ArrayList<WorldSegment> getCache() {
 		return cache;
@@ -33,20 +31,15 @@ public class GameObject implements Serializable {
 		this.eatable = eatable;
 	}
 
-	public int getWindowOffsetX() {
-		return windowOffsetX;
-	}
-
-	public void setWindowOffsetX(int windowOffsetX) {
-		this.windowOffsetX = windowOffsetX;
-	}
-
-	public int getWindowOffsetY() {
-		return windowOffsetY;
-	}
-
-	public void setWindowOffsetY(int windowOffsetY) {
-		this.windowOffsetY = windowOffsetY;
+	public GameObject(GameObject o) {
+		this.posx = o.getPosx();
+		this.posy = o.getPosy();
+		this.objectID = o.getID(); // 1-10 = player 20-30 = apple
+		this.direction = o.getDirection(); // 0 = left - 1 = right
+		this.collisonRadius = o.getCollisonRadius();
+		this.eatable = o.isEatable();
+		this.delete = o.isDelete();
+		this.cache = o.getCache();
 	}
 
 	public boolean isDelete() {

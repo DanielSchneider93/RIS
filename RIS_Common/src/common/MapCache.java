@@ -26,47 +26,44 @@ public class MapCache implements Runnable {
 	public void checkSegment() {
 		int playerX = world.getPlayerPosX();
 		int playerY = world.getPlayerPosY();
-		int segmentPos = -1;
+		int segmentID = -1;
 
 		for (WorldSegment ws : segmentList) {
 			if (playerX > ws.getX() && playerX < ws.getX() + ws.getSize()) {
 				if (playerY > ws.getY() && playerY < ws.getY() + ws.getSize()) {
 					// player is in that segment
-					//System.out.println("player in segment " + ws.getID());
-					segmentPos = ws.getID();
+					segmentID = ws.getID();
 					break;
 				}
 			}
 		}
 
-		if (segmentPos == -1) {
+		if (segmentID == -1) {
 			System.out.println("cant find segment ");
 		}
 
 		cache.clear();
 
-		WorldSegment mid = getSegmentWithID(segmentPos);
+		WorldSegment mid = getSegmentWithID(segmentID);
 		cache.add(mid);
-		WorldSegment up = getSegmentWithID(segmentPos - 1);
+		WorldSegment up = getSegmentWithID(segmentID - 1);
 		cache.add(up);
-		WorldSegment down = getSegmentWithID(segmentPos + 1);
+		WorldSegment down = getSegmentWithID(segmentID + 1);
 		cache.add(down);
 
-		WorldSegment left = getSegmentWithID(segmentPos - segmentSize);
+		WorldSegment left = getSegmentWithID(segmentID - segmentSize);
 		cache.add(left);
-		WorldSegment leftdown = getSegmentWithID(segmentPos - segmentSize + 1);
+		WorldSegment leftdown = getSegmentWithID(segmentID - segmentSize + 1);
 		cache.add(leftdown);
-		WorldSegment leftup = getSegmentWithID(segmentPos - segmentSize - 1);
+		WorldSegment leftup = getSegmentWithID(segmentID - segmentSize - 1);
 		cache.add(leftup);
 
-		WorldSegment right = getSegmentWithID(segmentPos + segmentSize);
+		WorldSegment right = getSegmentWithID(segmentID + segmentSize);
 		cache.add(right);
-		WorldSegment rightdown = getSegmentWithID(segmentPos + segmentSize + 1);
+		WorldSegment rightdown = getSegmentWithID(segmentID + segmentSize + 1);
 		cache.add(rightdown);
-		WorldSegment rightup = getSegmentWithID(segmentPos + segmentSize - 1);
+		WorldSegment rightup = getSegmentWithID(segmentID + segmentSize - 1);
 		cache.add(rightup);
-
-		world.setCache(cache);
 		
 		for(WorldSegment w : cache)
 		{
@@ -100,10 +97,10 @@ public class MapCache implements Runnable {
 			GameObject mapCacheTemp = new GameObject(99, 0, 0, 0, false); // 99 = map id
 			mapCacheTemp.setCache(cache);
 			world.triggerPosChange(mapCacheTemp);
-			world.setCache(cache);
+			
 			try {
 				//TODO: only do when player enters next segemnt or gets in range
-				Thread.sleep(500);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

@@ -121,7 +121,7 @@ public class CollisionDetection {
 						countery = 0;
 					}
 
-					elementY = segmentY + elementY;
+					//elementY = segmentY + elementY;
 
 					if (counterx % 10 == 0) {
 						counterx = 0;
@@ -130,7 +130,7 @@ public class CollisionDetection {
 					countery++;
 
 					if (tempInt == wall) {
-						CollisionCircle cc = new CollisionCircle(50, elementX + 50, elementY + 50);
+						CollisionCircle cc = new CollisionCircle(50, elementX + 50, elementY + 50 + segmentY);
 						boolean coll = hasCollision(ccToCheck, cc);
 						if (coll) {
 							collisionDetected = true;

@@ -57,7 +57,7 @@ public class ServerMain {
 			ObjectOutputStream outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
 			ObjectInputStream inputStream = new ObjectInputStream(clientSocket.getInputStream());
 			
-			Manager connectionManager = new Manager(inputStream, outputStream, workingThread, ManagerList);
+			Manager connectionManager = new Manager(inputStream, outputStream, workingThread);
 			Thread thread = new Thread(connectionManager); 
 			thread.start();
 			
