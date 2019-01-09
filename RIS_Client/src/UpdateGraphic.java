@@ -19,6 +19,7 @@ public class UpdateGraphic extends JComponent {
 	private BufferedImage apple;
 	private BufferedImage grass;
 	private BufferedImage wall;
+	private BufferedImage trap;
 	int windowOffsetX = 0;
 	int windowOffsetY = 0;
 	private int staticPlayerPos = 400;
@@ -26,6 +27,7 @@ public class UpdateGraphic extends JComponent {
 	int playerID;
 	LinkedList<GameObject> players;
 	LinkedList<GameObject> apples;
+	LinkedList<GameObject> traps;
 	ArrayList<WorldSegment> cache;
 
 	public UpdateGraphic(World world) throws IOException {
@@ -35,6 +37,8 @@ public class UpdateGraphic extends JComponent {
 		apple = ImageIO.read(getClass().getResource("apple.png"));
 		grass = ImageIO.read(getClass().getResource("gras.png"));
 		wall = ImageIO.read(getClass().getResource("wall.png"));
+		trap = ImageIO.read(getClass().getResource("trap.png"));
+		
 		this.playerID = world.getPlayerID();
 		cache = world.getCache();
 	}
@@ -43,6 +47,7 @@ public class UpdateGraphic extends JComponent {
 		players = new LinkedList<GameObject>(world.getPlayers());
 		apples = new LinkedList<GameObject>(world.getApples());
 		cache = new ArrayList<WorldSegment>(world.getCache());
+		traps = new LinkedList<GameObject>(world.getBombs());
 		
 		if (cache != null) {
 			for (int m = 0; m < cache.size(); m++) {
@@ -72,6 +77,18 @@ public class UpdateGraphic extends JComponent {
 				}
 			}
 		}
+		
+		for (GameObject tempApple : apples) {
+			int tempxApple = tempApple.getPosx();
+			int tempyApple = tempApple.getPosy();
+			g.drawImage(apple, tempxApple + windowOffsetX, tempyApple + windowOffsetY, null);
+		}
+		
+		for (GameObject t : traps) {
+			int trapX = t.getPosx();
+			int trapY = t.getPosy();
+			g.drawImage(trap, trapX + windowOffsetX, trapY + windowOffsetY, null);
+		}
 
 		for (GameObject player : players) {
 			if (playerID == player.getID()) {
@@ -90,13 +107,7 @@ public class UpdateGraphic extends JComponent {
 			}
 		}
 
-		for (GameObject tempApple : apples) {
-			int tempxApple = tempApple.getPosx();
-			int tempyApple = tempApple.getPosy();
-			g.drawImage(apple, tempxApple + windowOffsetX, tempyApple + windowOffsetY, null);
-		}
-
-		// Segments
+		// SegmentsLines
 		g.setColor(Color.RED);
 		for (int i = 0; i <= 20; i++) {
 			g.drawLine(0 + windowOffsetX, i * 1000 + windowOffsetY, 20 * 1000 + windowOffsetX,

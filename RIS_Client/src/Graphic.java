@@ -18,6 +18,8 @@ public class Graphic extends JFrame implements KeyListener {
 	int playerSpeed = 50;
 	MapCache mc;
 	CollisionDetection collisionDetection = new CollisionDetection();
+	boolean onWindow = false;
+	int bombID = 1000;
 
 	public Graphic(World world, MapCache mc) throws IOException {
 		this.world = world;
@@ -30,6 +32,7 @@ public class Graphic extends JFrame implements KeyListener {
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
 		setTitle("Daniel Schneider - RIS");
+		// important
 		setResizable(false);
 		add(draw);
 		setSize(1000, 1000);
@@ -56,7 +59,7 @@ public class Graphic extends JFrame implements KeyListener {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		if (e.getKeyCode() == KeyEvent.VK_A) {
 
 			GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
 					player.getCollisonRadius(), false);
@@ -68,7 +71,7 @@ public class Graphic extends JFrame implements KeyListener {
 				player.setDirection(0);
 				world.triggerPosChange(player);
 			}
-		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		} else if (e.getKeyCode() == KeyEvent.VK_D) {
 
 			GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
 					player.getCollisonRadius(), false);
@@ -81,7 +84,7 @@ public class Graphic extends JFrame implements KeyListener {
 				world.triggerPosChange(player);
 			}
 
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+		} else if (e.getKeyCode() == KeyEvent.VK_S) {
 			GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
 					player.getCollisonRadius(), false);
 			GameObject newPlayer = new GameObject(playerID, player.getPosx(), player.getPosy() + playerSpeed,
@@ -93,7 +96,7 @@ public class Graphic extends JFrame implements KeyListener {
 				world.triggerPosChange(player);
 			}
 
-		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+		} else if (e.getKeyCode() == KeyEvent.VK_W) {
 
 			GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
 					player.getCollisonRadius(), false);
@@ -106,8 +109,10 @@ public class Graphic extends JFrame implements KeyListener {
 				world.triggerPosChange(player);
 			}
 
-		} else if (e.getKeyCode() == KeyEvent.VK_S) {
-			mc.updateManual();
+		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			GameObject bomb = new GameObject(bombID, player.getPosx(), player.getPosy());
+			world.triggerPosChange(bomb);
+			bombID++;
 		}
 	}
 

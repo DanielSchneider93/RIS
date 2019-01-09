@@ -29,8 +29,8 @@ public class MapCache implements Runnable {
 		int segmentID = -1;
 
 		for (WorldSegment ws : segmentList) {
-			if (playerX > ws.getX() && playerX < ws.getX() + ws.getSize()) {
-				if (playerY > ws.getY() && playerY < ws.getY() + ws.getSize()) {
+			if (playerX >= ws.getX() && playerX <= ws.getX() + ws.getSize()) {
+				if (playerY >= ws.getY() && playerY <= ws.getY() + ws.getSize()) {
 					// player is in that segment
 					segmentID = ws.getID();
 					break;
@@ -97,9 +97,7 @@ public class MapCache implements Runnable {
 			GameObject mapCacheTemp = new GameObject(99, 0, 0, 0, false); // 99 = map id
 			mapCacheTemp.setCache(cache);
 			world.triggerPosChange(mapCacheTemp);
-			
 			try {
-				//TODO: only do when player enters next segemnt or gets in range
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

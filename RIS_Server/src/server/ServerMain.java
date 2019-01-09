@@ -59,6 +59,7 @@ public class ServerMain {
 			
 			Manager connectionManager = new Manager(inputStream, outputStream, workingThread);
 			Thread thread = new Thread(connectionManager); 
+			thread.setDaemon(true);
 			thread.start();
 			
 			System.out.println("Created Server Manager for Client " + playerID);

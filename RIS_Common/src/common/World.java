@@ -15,15 +15,15 @@ public class World {
 	int playerID;
 	Class<?> playerclass;
 	Class<?> appleclass;
-	
+
 	public World(List<Manager> managerList) {
 		this.managerList = managerList;
 		cache = new ArrayList<WorldSegment>();
 		world = new LinkedList<GameObject>();
 		updateWorld = new UpdateWorld(world, managerList);
 	}
-	
-	
+
+
 	public void triggerPosChange(GameObject o) {
 		updateWorld.sendPlayerMessage(o);
 	}
@@ -59,6 +59,19 @@ public class World {
 		for (int z = 0; z < copyList.size(); z++) {
 			GameObject o = copyList.get(z);
 			if (o.getID() >= 1 && o.getID() <= 10) {
+				result.add(o);
+			}
+		}
+		return result;
+	}
+
+	public LinkedList<GameObject> getBombs() {
+		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
+		LinkedList<GameObject> result = new LinkedList<GameObject>();
+
+		for (int z = 0; z < copyList.size(); z++) {
+			GameObject o = copyList.get(z);
+			if (o.getID() >= 1000) {
 				result.add(o);
 			}
 		}
@@ -103,7 +116,7 @@ public class World {
 		}
 		return playerPosY;
 	}
-	
+
 	public ArrayList<WorldSegment> getCache() {
 		return cache;
 	}
@@ -143,6 +156,5 @@ public class World {
 	public LinkedList<GameObject> getWorld() {
 		return world;
 	}
-
 
 }

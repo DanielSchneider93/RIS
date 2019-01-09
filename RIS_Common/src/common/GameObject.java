@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 public class GameObject implements Serializable {
 
+	// TODO: make enum out of ID chaos
+
 	private static final long serialVersionUID = 1L;
 	private int posx = 0;
 	private int posy = 0;
-	private int objectID = 0; // 1-10 = player 20-30 = apple
+	private int objectID = 0; // 1-10 = player 20-30 = apple, 1000++ = bullet
 	private int direction = 0; // 0 = left - 1 = right
 	private int collisonRadius = 0;
 	private boolean eatable = false;
@@ -23,6 +25,7 @@ public class GameObject implements Serializable {
 		this.cache = cache;
 	}
 
+	// new Player or Apple
 	public GameObject(int objectID, int posx, int posy, int collisonRadius, boolean eatable) {
 		this.objectID = objectID;
 		this.posx = posx;
@@ -31,6 +34,7 @@ public class GameObject implements Serializable {
 		this.eatable = eatable;
 	}
 
+	// for Messaging
 	public GameObject(GameObject o) {
 		this.posx = o.getPosx();
 		this.posy = o.getPosy();
@@ -40,6 +44,13 @@ public class GameObject implements Serializable {
 		this.eatable = o.isEatable();
 		this.delete = o.isDelete();
 		this.cache = o.getCache();
+	}
+
+	// bullets
+	public GameObject(int ID, int x, int y) {
+		this.objectID = ID;
+		this.posx = x;
+		this.posy = y;
 	}
 
 	public boolean isDelete() {

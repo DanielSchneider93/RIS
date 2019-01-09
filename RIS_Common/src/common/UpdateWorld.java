@@ -15,9 +15,9 @@ public class UpdateWorld {
 
 	//Send Solo Message
 	public void sendPlayerMessage(GameObject p) {
-		GameObject temp = new GameObject(p);
-		PosMessage msg = new PosMessage(temp);
 		for (Manager m : managerList) {
+			GameObject temp = new GameObject(p);
+			PosMessage msg = new PosMessage(temp);
 			m.write(msg);
 		}
 	}
