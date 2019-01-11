@@ -64,6 +64,19 @@ public class World {
 		}
 		return result;
 	}
+	
+	public LinkedList<GameObject> getEnemys() {
+		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
+		LinkedList<GameObject> result = new LinkedList<GameObject>();
+
+		for (int z = 0; z < copyList.size(); z++) {
+			GameObject o = copyList.get(z);
+			if (o.getID() == 50) {
+				result.add(o);
+			}
+		}
+		return result;
+	}
 
 	public LinkedList<GameObject> getBombs() {
 		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);

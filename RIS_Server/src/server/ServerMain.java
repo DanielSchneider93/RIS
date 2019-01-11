@@ -67,6 +67,10 @@ public class ServerMain {
 			//Create Player, Add to World with ID and send ID to the new Client to let him know what his player is
 			GameObject player = new GameObject(playerID, 400, 400, playerHitBox, isEatable);
 			world.addObjectToWorld(player);
+			
+			GameObject enemy = new GameObject(50, 600, 600, playerHitBox, isEatable);
+			world.addObjectToWorld(enemy);
+			
 			ManagerList.add(connectionManager); 
 
 			IDMessage msg = new IDMessage(playerID);

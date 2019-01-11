@@ -23,6 +23,8 @@ public class UpdateGraphic extends JComponent {
 	private BufferedImage wall;
 	private BufferedImage trap;
 	private BufferedImage block;
+	private BufferedImage enemy;
+	private BufferedImage enemy_left;
 	int windowOffsetX = 0;
 	int windowOffsetY = 0;
 	private int staticPlayerPos = 400;
@@ -32,6 +34,7 @@ public class UpdateGraphic extends JComponent {
 	LinkedList<GameObject> apples;
 	LinkedList<GameObject> traps;
 	ArrayList<WorldSegment> cache;
+	LinkedList<GameObject> enemys;
 
 	int mapSizeX;
 	int mapSizeY;
@@ -47,6 +50,8 @@ public class UpdateGraphic extends JComponent {
 		wall = ImageIO.read(getClass().getResource("wall.png"));
 		trap = ImageIO.read(getClass().getResource("trap.png"));
 		block = ImageIO.read(getClass().getResource("block.png"));
+		enemy = ImageIO.read(getClass().getResource("enemy.png"));
+		enemy_left = ImageIO.read(getClass().getResource("enemy_left.png"));
 
 		this.playerID = world.getPlayerID();
 		cache = world.getCache();
@@ -61,6 +66,7 @@ public class UpdateGraphic extends JComponent {
 		apples = new LinkedList<GameObject>(world.getApples());
 		cache = new ArrayList<WorldSegment>(world.getCache());
 		traps = new LinkedList<GameObject>(world.getBombs());
+		enemys = new LinkedList<GameObject>(world.getEnemys());
 
 		if (cache != null) {
 			for (int m = 0; m < cache.size(); m++) {
@@ -120,8 +126,18 @@ public class UpdateGraphic extends JComponent {
 			}
 		}
 
+		for (GameObject e : enemys) {
+			if (e.getDirection() == 0) {
+				g.drawImage(enemy_left, e.getPosx()+ windowOffsetX, e.getPosy() + windowOffsetY, null);
+			} else {
+				g.drawImage(enemy, e.getPosx()+ windowOffsetX, e.getPosy() + windowOffsetY, null);
+			}
+		}
+
 		// borders
-		for (int i = 0; i <= mapSizeX * 10; i++) {
+		for (
+
+				int i = 0; i <= mapSizeX * 10; i++) {
 			g.drawImage(block, ((i - 1) * segmentSize) + windowOffsetX, -segmentSize + windowOffsetY, null);
 		}
 		for (int i = 0; i <= mapSizeY * 10; i++) {
