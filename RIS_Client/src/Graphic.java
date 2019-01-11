@@ -68,7 +68,7 @@ public class Graphic extends JFrame implements KeyListener {
 					player.getCollisonRadius(), false);
 			GameObject newPlayer = new GameObject(playerID, player.getPosx() - playerSpeed, player.getPosy(),
 					player.getCollisonRadius(), false);
-			if (!fastMapCollisionCheck(oldPlayer, newPlayer)) {
+			if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
 				player.setPosx(player.getPosx() - playerSpeed);
 				draw.windowOffsetX += playerSpeed;
 				player.setDirection(0);
@@ -80,7 +80,7 @@ public class Graphic extends JFrame implements KeyListener {
 					player.getCollisonRadius(), false);
 			GameObject newPlayer = new GameObject(playerID, player.getPosx() + playerSpeed, player.getPosy(),
 					player.getCollisonRadius(), false);
-			if (!fastMapCollisionCheck(oldPlayer, newPlayer)) {
+			if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
 				player.setPosx(player.getPosx() + playerSpeed);
 				draw.windowOffsetX -= playerSpeed;
 				player.setDirection(1);
@@ -93,7 +93,7 @@ public class Graphic extends JFrame implements KeyListener {
 			GameObject newPlayer = new GameObject(playerID, player.getPosx(), player.getPosy() + playerSpeed,
 					player.getCollisonRadius(), false);
 
-			if (!fastMapCollisionCheck(oldPlayer, newPlayer)) {
+			if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
 				player.setPosy(player.getPosy() + playerSpeed);
 				draw.windowOffsetY -= playerSpeed;
 				world.triggerPosChange(player);
@@ -106,7 +106,7 @@ public class Graphic extends JFrame implements KeyListener {
 			GameObject newPlayer = new GameObject(playerID, player.getPosx(), player.getPosy() - playerSpeed,
 					player.getCollisonRadius(), false);
 
-			if (!fastMapCollisionCheck(oldPlayer, newPlayer)) {
+			if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
 				player.setPosy(player.getPosy() - playerSpeed);
 				draw.windowOffsetY += playerSpeed;
 				world.triggerPosChange(player);
@@ -117,6 +117,16 @@ public class Graphic extends JFrame implements KeyListener {
 			world.triggerPosChange(bomb);
 			bombID++;
 		}
+	}
+	
+	public boolean checkMapBoundarys(GameObject newPlayer) {
+		boolean isInMap = false;
+		if(newPlayer.getPosx() >= 0 && newPlayer.getPosx() <= (gw.getSegmentSize() * gw.getHowMuchSegmentX())) {
+			if (newPlayer.getPosy() >= 0 && newPlayer.getPosy() <= (gw.getSegmentSize() * gw.getHowMuchSegmentY())) {
+				isInMap = true;
+			}
+		}
+		return isInMap;
 	}
 
 	public void keyReleased(KeyEvent e) {
