@@ -56,50 +56,6 @@ public class CollisionDetection {
 				}
 			}
 
-			if (cache != null) {
-				int countMap = cache.size();
-				int offset = 100;
-				int counterx = 1;
-				int countery = 0;
-
-				for (int y = 0; y < countMap; y++) {
-					WorldSegment tempSegment = cache.get(y);
-					if (tempSegment.isActive()) {
-
-						int segmentX = tempSegment.getX();
-						int segmentY = tempSegment.getY();
-						int elementY = 0;
-
-						for (int i = 0; i < tempSegment.getList().size(); i++) {
-							int tempInt = tempSegment.getList().get(i);
-
-							int elementX = segmentX + ((counterx - 1) * offset);
-
-							if (countery == 10) {
-								elementY += offset;
-								countery = 0;
-							}
-
-							elementY = segmentY + elementY;
-
-							if (counterx % 10 == 0) {
-								counterx = 0;
-							}
-							counterx++;
-							countery++;
-
-							if (tempInt == wall) {
-								CollisionCircle cc = new CollisionCircle(50, elementX + 50, elementY + 50);
-								boolean coll = hasCollision(ccToCheck, cc);
-								if (coll) {
-									collisionDetected = true;
-									collisionWithThisObject = null;
-								}
-							}
-						}
-					}
-				}
-			}
 		} else {// Fast check for client -> only the segment that the player is standing on
 			if (cache != null) {
 				int counterx = 1;

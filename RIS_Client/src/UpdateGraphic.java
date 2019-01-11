@@ -8,18 +8,21 @@ import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import common.GameObject;
+import common.GenerateWorld;
 import common.World;
 import common.WorldSegment;
 
 public class UpdateGraphic extends JComponent {
 	private static final long serialVersionUID = 1L;
 	World world;
+	GenerateWorld gw;
 	private BufferedImage playerImage;
 	private BufferedImage playerImage_r;
 	private BufferedImage apple;
 	private BufferedImage grass;
 	private BufferedImage wall;
 	private BufferedImage trap;
+	private BufferedImage block;
 	int windowOffsetX = 0;
 	int windowOffsetY = 0;
 	private int staticPlayerPos = 400;
@@ -30,17 +33,27 @@ public class UpdateGraphic extends JComponent {
 	LinkedList<GameObject> traps;
 	ArrayList<WorldSegment> cache;
 
-	public UpdateGraphic(World world) throws IOException {
+	int mapSizeX;
+	int mapSizeY;
+	int segmentSize;
+
+	public UpdateGraphic(World world, GenerateWorld gw) throws IOException {
 		this.world = world;
+		this.gw = gw;
 		playerImage = ImageIO.read(getClass().getResource("worm.png"));
 		playerImage_r = ImageIO.read(getClass().getResource("worm_r.png"));
 		apple = ImageIO.read(getClass().getResource("apple.png"));
 		grass = ImageIO.read(getClass().getResource("gras.png"));
 		wall = ImageIO.read(getClass().getResource("wall.png"));
 		trap = ImageIO.read(getClass().getResource("trap.png"));
-		
+		block = ImageIO.read(getClass().getResource("block.png"));
+
 		this.playerID = world.getPlayerID();
 		cache = world.getCache();
+
+		mapSizeX = gw.getHowMuchSegmentX();
+		mapSizeY = gw.getHowMuchSegmentY();
+		segmentSize = gw.getSegmentSize();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -48,7 +61,7 @@ public class UpdateGraphic extends JComponent {
 		apples = new LinkedList<GameObject>(world.getApples());
 		cache = new ArrayList<WorldSegment>(world.getCache());
 		traps = new LinkedList<GameObject>(world.getBombs());
-		
+
 		if (cache != null) {
 			for (int m = 0; m < cache.size(); m++) {
 
@@ -77,13 +90,13 @@ public class UpdateGraphic extends JComponent {
 				}
 			}
 		}
-		
+
 		for (GameObject tempApple : apples) {
 			int tempxApple = tempApple.getPosx();
 			int tempyApple = tempApple.getPosy();
 			g.drawImage(apple, tempxApple + windowOffsetX, tempyApple + windowOffsetY, null);
 		}
-		
+
 		for (GameObject t : traps) {
 			int trapX = t.getPosx();
 			int trapY = t.getPosy();
@@ -106,6 +119,22 @@ public class UpdateGraphic extends JComponent {
 				}
 			}
 		}
+
+		// borders
+		for (int i = 0; i <= mapSizeX * 10; i++) {
+			g.drawImage(block, ((i - 1) * segmentSize) + windowOffsetX, -segmentSize + windowOffsetY, null);
+		}
+		for (int i = 0; i <= mapSizeY * 10; i++) {
+			g.drawImage(block, -segmentSize + windowOffsetX, ((i - 1) * segmentSize) + windowOffsetY, null);
+		}
+		for (int i = 0; i <= mapSizeX * 10; i++) {
+			g.drawImage(block, ((i - 1) * segmentSize) + windowOffsetX, mapSizeX * 1000 + windowOffsetY, null);
+		}
+		for (int i = 0; i <= mapSizeY * 10; i++) {
+			g.drawImage(block, mapSizeX * 1000 + windowOffsetX, ((i - 1) * segmentSize) + windowOffsetY, null);
+		}
+
+		g.drawImage(block, mapSizeX * 1000 + windowOffsetX, mapSizeY * 1000 + windowOffsetY, null);
 
 		// SegmentsLines
 		g.setColor(Color.RED);

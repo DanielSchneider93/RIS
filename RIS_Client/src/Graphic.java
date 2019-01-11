@@ -7,11 +7,13 @@ import javax.swing.JFrame;
 
 import common.CollisionDetection;
 import common.GameObject;
+import common.GenerateWorld;
 import common.MapCache;
 import common.World;
 
 public class Graphic extends JFrame implements KeyListener {
 	private UpdateGraphic draw;
+	GenerateWorld gw;
 	public World world;
 	int playerID;
 	GameObject player;
@@ -21,10 +23,11 @@ public class Graphic extends JFrame implements KeyListener {
 	boolean onWindow = false;
 	int bombID = 1000;
 
-	public Graphic(World world, MapCache mc) throws IOException {
+	public Graphic(World world, MapCache mc, GenerateWorld gw) throws IOException {
 		this.world = world;
 		this.mc = mc;
-		this.draw = new UpdateGraphic(world);
+		this.gw = gw;
+		this.draw = new UpdateGraphic(world, gw);
 		this.playerID = world.getPlayerID();
 		this.player = world.findPlayer(playerID);
 

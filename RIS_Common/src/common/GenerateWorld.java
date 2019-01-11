@@ -42,4 +42,17 @@ public class GenerateWorld {
 			}
 		}
 	}
+
+	public int getHowMuchSegmentX() {
+		return howMuchSegmentX;
+	}
+
+	public int getHowMuchSegmentY() {
+		return howMuchSegmentY;
+	}
+
+	public int getSegmentSize() {
+		return segmentSize;
+	}
+
 }

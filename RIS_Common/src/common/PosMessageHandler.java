@@ -21,12 +21,9 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 		boolean isServer = isS;
 		boolean end = false;
 		boolean collision = false;
-		boolean mapCollision = false;
 		GameObject collidedWith = null;
 		PosMessage message = (PosMessage) netMessage;
 		GameObject oFromMessage = (GameObject) message.getMsg();
-		
-		//System.out.println("oFromMessage " +  oFromMessage.getPosx() + " world " + world.findPlayer(world.getPlayerID()).getPosx());
 
 		// -------------------------------------------Server-------------------------------------------------
 
@@ -46,33 +43,26 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 				if (currentGameObject.getID() == oFromMessage.getID()) {
 					isInWorld = true;
 
-					collision = collisionDetection.detect(currentGameObject, oFromMessage, wList, world.getCache(),false);
+					collision = collisionDetection.detect(currentGameObject, oFromMessage, wList, null,
+							false);
 
 					if (!collision) {
 						world.removeObjectFromWorldWithID(currentGameObject.getID());
 						world.addObjectToWorld(oFromMessage);
 					} else {
-
 						collidedWith = collisionDetection.getCollisionWithThisObject();
+						if (collidedWith.isEatable()) {
+							int counter = 0;
+							for (GameObject go : world.getWorld()) {
 
-						if (collidedWith == null) {
-							mapCollision = true;
-							System.out.println("collided with wall");
-						}
-
-						if (!mapCollision) {
-
-							if (collidedWith.isEatable()) {
-								int counter = 0;
-								for (GameObject go : world.getWorld()) {
-
-									if (go.getID() == collidedWith.getID()) {
-										world.getWorld().get(counter).setDelete(true);
-									}
-									counter++;
+								if (go.getID() == collidedWith.getID()) {
+									world.getWorld().get(counter).setDelete(true);
 								}
+								counter++;
 							}
 						}
+						world.removeObjectFromWorldWithID(currentGameObject.getID());
+						world.addObjectToWorld(oFromMessage);
 					}
 				}
 			}
@@ -83,7 +73,7 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 
 			world.getUpdateWorld().shareWorldWithClients();
 
-			if (collision && !mapCollision) {
+			if (collision) {
 				world.getWorld().remove(collidedWith);
 			}
 		}
@@ -114,7 +104,7 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 						isInWorld = true;
 						world.removeObjectFromWorldWithID(currentWorldObject.getID());
 						world.addObjectToWorld(oFromMessage);
-						//break;
+						// break;
 					}
 				}
 

@@ -60,7 +60,7 @@ public class Client {
 		mapThread.start();
 
 		System.out.println("Starting Graphic ....");
-		Graphic graphic = new Graphic(world, mapCache);
+		Graphic graphic = new Graphic(world, mapCache, gw);
 		ug = graphic.getUpdategraphic();
 		
 		System.out.println("Starting Event Queue ....");
