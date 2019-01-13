@@ -2,46 +2,67 @@ import java.util.PriorityQueue;
 import java.util.Random;
 
 import common.GameObject;
+import common.KI;
 import common.World;
 
 public class Event implements Comparable<Event> {
 
-	public long time; 
+	public long time;
 	UpdateGraphic graphic;
 	PriorityQueue<Event> queue;
 	World world;
 	int type;
 	int duration;
-	Random random;
+	KI ki;
 
-	public Event(World world, UpdateGraphic ug, PriorityQueue<Event> queue, Integer type, Integer duration) {
+	public Event(World world, UpdateGraphic ug, PriorityQueue<Event> queue, Integer type, Integer duration, KI ki) {
 		this.time = System.currentTimeMillis() + duration;
 		this.graphic = ug;
 		this.queue = queue;
 		this.type = type;
 		this.world = world;
-		random = new Random();
+		this.ki = ki;
 	}
 
 	public void execute() {
 		if (type == 0) { // Render Event
 			graphic.repaint();
-			Event e = new Event(world, graphic, queue, 0, 16); // circa 60Hz = 16 ms
+			Event e = new Event(world, graphic, queue, 0, 16, ki); // circa 60Hz = 16 ms
 			queue.add(e);
 		}
 		if (type == 1) { // Apple Event
+			int tempPlayerPosX = world.getPlayerPosX();
+			int tempPlayerPosY = world.getPlayerPosY();
 			
-			//TODO: spawn apples near Player
-			int rnd1 = random.nextInt(Math.abs(world.getPlayerPosX()) + 1 - 100) + 100;
-			int rnd2 = random.nextInt(Math.abs(world.getPlayerPosY()) + 1 - 100) + 100;
+			if (tempPlayerPosX < 100) {
+				tempPlayerPosX += 100;
+			}
 			
-			GameObject apple = new GameObject(20+world.getPlayerID(), rnd1, rnd2, 50, true);
+			if (tempPlayerPosY < 100) {
+				tempPlayerPosY += 100;
+			}
 			
+			int minX = world.findPlayer(world.getPlayerID()).getPosx() - 250;
+			int maxX = world.findPlayer(world.getPlayerID()).getPosx() + 250;
+			
+			int minY = world.findPlayer(world.getPlayerID()).getPosy() - 250;
+			int maxY = world.findPlayer(world.getPlayerID()).getPosy() + 250;
+
+			int rnd1 = minX + (int)(Math.random() * ((maxX - minX) + 1));
+			int rnd2 = minY + (int)(Math.random() * ((maxY - minY) + 1));
+
+			GameObject apple = new GameObject(20 + world.getPlayerID(), rnd1, rnd2, 50, true);
+
 			world.addObjectToWorld(apple);
 			world.triggerPosChange(apple);
-			
-			//Event e = new Event(world, graphic, queue, 1, 10000);
-			//queue.add(e);
+
+			Event e = new Event(world, graphic, queue, 1, 10000, ki);
+			queue.add(e);
+		}
+		if (type == 2) {
+			Event k = new Event(world, graphic, queue, 2, 500, ki);
+			queue.add(k);
+			ki.updateKI();
 		}
 	}
 

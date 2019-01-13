@@ -29,11 +29,6 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 
 		if (isServer) {
 
-			if (oFromMessage.getID() == 99) {
-				world.setCache(oFromMessage.getCache());
-				return;
-			}
-
 			boolean isInWorld = false;
 
 			for (int z = 0; z < wList.size(); z++) {
@@ -114,6 +109,6 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 			}
 
 		}
-		System.out.println("world size end handle " + wList.size());
+		//System.out.println("world size end handle " + wList.size());
 	}
 }

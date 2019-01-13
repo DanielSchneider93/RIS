@@ -58,39 +58,42 @@ public class CollisionDetection {
 
 		} else {// Fast check for client -> only the segment that the player is standing on
 			if (cache != null) {
-				int counterx = 1;
-				int countery = 0;
+
 				int offset = 100;
 
-				WorldSegment tempSegment = cache.get(0);
-				int segmentX = tempSegment.getX();
-				int segmentY = tempSegment.getY();
-				int elementY = 0;
+				for (WorldSegment ws : cache) {
 
-				for (int i = 0; i < tempSegment.getList().size(); i++) {
-					int tempInt = tempSegment.getList().get(i);
+					WorldSegment tempSegment = ws;
 
-					int elementX = segmentX + ((counterx - 1) * offset);
+					int counterx = 1;
+					int countery = 0;
+					int segmentX = tempSegment.getX();
+					int segmentY = tempSegment.getY();
 
-					if (countery == 10) {
-						elementY += offset;
-						countery = 0;
-					}
+					int elementY = 0;
 
-					//elementY = segmentY + elementY;
+					for (int i = 0; i < tempSegment.getList().size(); i++) {
+						int tempInt = tempSegment.getList().get(i);
 
-					if (counterx % 10 == 0) {
-						counterx = 0;
-					}
-					counterx++;
-					countery++;
+						int elementX = segmentX + ((counterx - 1) * offset);
 
-					if (tempInt == wall) {
-						CollisionCircle cc = new CollisionCircle(50, elementX + 50, elementY + 50 + segmentY);
-						boolean coll = hasCollision(ccToCheck, cc);
-						if (coll) {
-							collisionDetected = true;
-							collisionWithThisObject = null;
+						if (countery == 10) {
+							elementY += offset;
+							countery = 0;
+						}
+						if (counterx % 10 == 0) {
+							counterx = 0;
+						}
+						counterx++;
+						countery++;
+
+						if (tempInt == wall) {
+							CollisionCircle cc = new CollisionCircle(50, elementX + 50, elementY + 50 + segmentY);
+							boolean coll = hasCollision(ccToCheck, cc);
+							if (coll) {
+								collisionDetected = true;
+								collisionWithThisObject = null;
+							}
 						}
 					}
 				}

@@ -65,17 +65,15 @@ public class World {
 		return result;
 	}
 	
-	public LinkedList<GameObject> getEnemys() {
+	public GameObject getEnemy() {
 		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
-		LinkedList<GameObject> result = new LinkedList<GameObject>();
-
 		for (int z = 0; z < copyList.size(); z++) {
 			GameObject o = copyList.get(z);
 			if (o.getID() == 50) {
-				result.add(o);
+				return o;
 			}
 		}
-		return result;
+		return null;
 	}
 
 	public LinkedList<GameObject> getBombs() {

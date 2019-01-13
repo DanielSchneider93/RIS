@@ -33,6 +33,7 @@ public class MapCache implements Runnable {
 				if (playerY >= ws.getY() && playerY <= ws.getY() + ws.getSize()) {
 					// player is in that segment
 					segmentID = ws.getID();
+					//System.out.println("player is in segment " + segmentID);
 					break;
 				}
 			}
@@ -74,7 +75,7 @@ public class MapCache implements Runnable {
 	}
 
 	public WorldSegment getSegmentWithID(int id) {
-		if(id >= 0 && id < 200) {
+		if(id >= 0 && id < segmentSize*segmentSize) {
 			return segmentList.get(id);
 		}
 		else {
@@ -82,21 +83,11 @@ public class MapCache implements Runnable {
 		}
 	}
 	
-	public void updateManual() {
-		checkSegment();
-		GameObject mapCacheTemp = new GameObject(99, 0, 0, 0, false); // 99 = map id
-		mapCacheTemp.setCache(cache);
-		world.triggerPosChange(mapCacheTemp);
-	}
-	
-
 	@Override
 	public void run() {
 		while (true) {
 			checkSegment();
-			GameObject mapCacheTemp = new GameObject(99, 0, 0, 0, false); // 99 = map id
-			mapCacheTemp.setCache(cache);
-			world.triggerPosChange(mapCacheTemp);
+			world.setCache(cache);
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {

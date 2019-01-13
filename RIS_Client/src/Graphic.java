@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import common.CollisionDetection;
 import common.GameObject;
 import common.GenerateWorld;
+import common.KI;
 import common.MapCache;
 import common.World;
 
@@ -22,14 +23,17 @@ public class Graphic extends JFrame implements KeyListener {
 	CollisionDetection collisionDetection = new CollisionDetection();
 	boolean onWindow = false;
 	int bombID = 1000;
+	boolean pressed = false;
+	KI ki;
 
-	public Graphic(World world, MapCache mc, GenerateWorld gw) throws IOException {
+	public Graphic(World world, MapCache mc, GenerateWorld gw, KI ki) throws IOException {
 		this.world = world;
 		this.mc = mc;
 		this.gw = gw;
 		this.draw = new UpdateGraphic(world, gw);
 		this.playerID = world.getPlayerID();
 		this.player = world.findPlayer(playerID);
+		this.ki = ki;
 
 		addKeyListener(this);
 		setFocusable(true);
@@ -62,7 +66,7 @@ public class Graphic extends JFrame implements KeyListener {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_A) {
+		if (e.getKeyCode() == KeyEvent.VK_A && !pressed) {
 
 			GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
 					player.getCollisonRadius(), false);
@@ -71,10 +75,10 @@ public class Graphic extends JFrame implements KeyListener {
 			if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
 				player.setPosx(player.getPosx() - playerSpeed);
 				draw.windowOffsetX += playerSpeed;
-				player.setDirection(0);
-				world.triggerPosChange(player);
 			}
-		} else if (e.getKeyCode() == KeyEvent.VK_D) {
+			player.setDirection(0);
+			world.triggerPosChange(player);
+		} else if (e.getKeyCode() == KeyEvent.VK_D && !pressed) {
 
 			GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
 					player.getCollisonRadius(), false);
@@ -83,11 +87,10 @@ public class Graphic extends JFrame implements KeyListener {
 			if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
 				player.setPosx(player.getPosx() + playerSpeed);
 				draw.windowOffsetX -= playerSpeed;
-				player.setDirection(1);
-				world.triggerPosChange(player);
 			}
-
-		} else if (e.getKeyCode() == KeyEvent.VK_S) {
+			player.setDirection(1);
+			world.triggerPosChange(player);
+		} else if (e.getKeyCode() == KeyEvent.VK_S && !pressed) {
 			GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
 					player.getCollisonRadius(), false);
 			GameObject newPlayer = new GameObject(playerID, player.getPosx(), player.getPosy() + playerSpeed,
@@ -99,7 +102,7 @@ public class Graphic extends JFrame implements KeyListener {
 				world.triggerPosChange(player);
 			}
 
-		} else if (e.getKeyCode() == KeyEvent.VK_W) {
+		} else if (e.getKeyCode() == KeyEvent.VK_W && !pressed) {
 
 			GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
 					player.getCollisonRadius(), false);
@@ -112,17 +115,34 @@ public class Graphic extends JFrame implements KeyListener {
 				world.triggerPosChange(player);
 			}
 
-		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			GameObject bomb = new GameObject(bombID, player.getPosx(), player.getPosy());
-			world.triggerPosChange(bomb);
-			bombID++;
+		} else if (e.getKeyCode() == KeyEvent.VK_SPACE && !pressed) {
+			boolean isBombAtPlayerPos = false;
+
+			for (GameObject bomb : world.getBombs()) {
+				if (bomb.getPosx() == player.getPosx()) {
+					if (bomb.getPosy() == player.getPosy()) {
+						isBombAtPlayerPos = true;
+					}
+				}
+			}
+			if (!isBombAtPlayerPos) {
+				GameObject bomb = new GameObject(bombID, player.getPosx(), player.getPosy());
+				world.triggerPosChange(bomb);
+				bombID++;
+			}
+		} else if (e.getKeyCode() == KeyEvent.VK_K && !pressed) {
+			ki.updateKI();
 		}
+
+		pressed = true;
 	}
-	
+
 	public boolean checkMapBoundarys(GameObject newPlayer) {
 		boolean isInMap = false;
-		if(newPlayer.getPosx() >= 0 && newPlayer.getPosx() <= (gw.getSegmentSize() * gw.getHowMuchSegmentX())) {
-			if (newPlayer.getPosy() >= 0 && newPlayer.getPosy() <= (gw.getSegmentSize() * gw.getHowMuchSegmentY())) {
+		if (newPlayer.getPosx() >= 0
+				&& newPlayer.getPosx() < (gw.getSegmentSize() * 10 * gw.getHowMuchSegmentX()) - 50) {
+			if (newPlayer.getPosy() >= 0
+					&& newPlayer.getPosy() < (gw.getSegmentSize() * 10 * gw.getHowMuchSegmentY()) - 50) {
 				isInMap = true;
 			}
 		}
@@ -130,6 +150,7 @@ public class Graphic extends JFrame implements KeyListener {
 	}
 
 	public void keyReleased(KeyEvent e) {
+		pressed = false;
 	}
 
 	public void keyTyped(KeyEvent e) {

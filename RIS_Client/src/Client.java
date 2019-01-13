@@ -3,6 +3,7 @@ import java.net.*;
 import java.util.*;
 
 import common.GenerateWorld;
+import common.KI;
 import common.Manager;
 import common.MapCache;
 import common.WorkingThread;
@@ -20,6 +21,7 @@ public class Client {
 	World world;
 	UpdateGraphic ug;
 	MapCache mapCache;
+	KI ki;
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		Client c = new Client();
@@ -36,39 +38,42 @@ public class Client {
 		Thread workingT = new Thread(workingThread);
 		workingT.setDaemon(true);
 		workingT.start();
-		
+
 		ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 		ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
 		System.out.println("Starting Manager Thread ....");
 		manager = new Manager(inputStream, outputStream, workingThread);
-		Thread thread = new Thread(manager); 
+		Thread thread = new Thread(manager);
 		thread.setDaemon(true);
 		thread.start();
 
 		ManagerList.add(manager);
-		
+
 		System.out.println("Generating Map ....");
 		GenerateWorld gw = new GenerateWorld();
 		ArrayList<WorldSegment> segmentList = gw.generateMap();
 		world.setSegmentList(segmentList);
-		
+
 		System.out.println("Starting Map Cache ....");
 		mapCache = new MapCache(world);
-		Thread mapThread = new Thread(mapCache); 
+		Thread mapThread = new Thread(mapCache);
 		mapThread.setDaemon(true);
 		mapThread.start();
 
+		System.out.println("Starting KI ....");
+		ki = new KI(world);
+
 		System.out.println("Starting Graphic ....");
-		Graphic graphic = new Graphic(world, mapCache, gw);
+		Graphic graphic = new Graphic(world, mapCache, gw, ki);
 		ug = graphic.getUpdategraphic();
-		
+
 		System.out.println("Starting Event Queue ....");
-		EventQueueThread q = new EventQueueThread(ug, world);
+		EventQueueThread q = new EventQueueThread(ug, world, ki);
 		Thread eventQueueThread = new Thread(q);
 		eventQueueThread.setDaemon(true);
 		eventQueueThread.start();
-		
+
 		System.out.println("Done!");
 	}
 }
