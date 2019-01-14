@@ -7,6 +7,9 @@ import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+
 import common.GameObject;
 import common.GenerateWorld;
 import common.World;
@@ -25,6 +28,9 @@ public class UpdateGraphic extends JComponent {
 	private BufferedImage block;
 	private BufferedImage enemy_right;
 	private BufferedImage enemy_left;
+	private BufferedImage bar;
+	private BufferedImage playerBarSegment;
+	
 	int windowOffsetX = 0;
 	int windowOffsetY = 0;
 	private int staticPlayerPos = 400;
@@ -52,6 +58,8 @@ public class UpdateGraphic extends JComponent {
 		block = ImageIO.read(getClass().getResource("block.png"));
 		enemy_right = ImageIO.read(getClass().getResource("enemy.png"));
 		enemy_left = ImageIO.read(getClass().getResource("enemy_left.png"));
+		bar = ImageIO.read(getClass().getResource("bar.png"));
+		playerBarSegment = ImageIO.read(getClass().getResource("playerBarSegment.png"));
 
 		this.playerID = world.getPlayerID();
 		cache = world.getCache();
@@ -111,26 +119,44 @@ public class UpdateGraphic extends JComponent {
 
 		for (GameObject player : players) {
 			if (playerID == player.getID()) {
+				int hp = player.getHealth();
+				for(int x = 0; x <= hp; x++) {
+					g.drawImage(playerBarSegment, staticPlayerPos+1+(x*16), staticPlayerPos - 25 +2, null);
+				}
 				if (player.getDirection() == 0) { // Look left
 					g.drawImage(playerImage, staticPlayerPos, staticPlayerPos, null);
+					g.drawImage(bar, staticPlayerPos, staticPlayerPos - 25, null);
 				} else { // Look Right
 					g.drawImage(playerImage_r, staticPlayerPos, staticPlayerPos, null);
+					g.drawImage(bar, staticPlayerPos, staticPlayerPos - 25, null);
 				}
 			} else {
+				int hp = player.getHealth();
+				for(int x = 0; x <= hp; x++) {
+					g.drawImage(playerBarSegment, player.getPosx() + windowOffsetX +1+(x*16), player.getPosy() + windowOffsetY - 25 +2, null);
+				}
 				if (player.getDirection() == 0) { // Look left
 					g.drawImage(playerImage, player.getPosx() + windowOffsetX, player.getPosy() + windowOffsetY, null);
+					g.drawImage(bar, player.getPosx() + windowOffsetX, player.getPosy() + windowOffsetY -25, null);
 				} else { // Look Right
 					g.drawImage(playerImage_r, player.getPosx() + windowOffsetX, player.getPosy() + windowOffsetY,
 							null);
+					g.drawImage(bar, player.getPosx() + windowOffsetX, player.getPosy() + windowOffsetY -25, null);
 				}
 			}
 		}
 
 		if (enemy != null) {
+			int enemy_hp = enemy.getHealth();
+			for(int x = 0; x < enemy_hp; x++) {
+				g.drawImage(playerBarSegment, enemy.getPosx() + windowOffsetX+1+x, enemy.getPosy() + windowOffsetY -25 +2, null);
+			}
 			if (enemy.getDirection() == 0) {
 				g.drawImage(enemy_left, enemy.getPosx() + windowOffsetX, enemy.getPosy() + windowOffsetY, null);
+				g.drawImage(bar, enemy.getPosx() + windowOffsetX, enemy.getPosy() + windowOffsetY -25, null);
 			} else {
 				g.drawImage(enemy_right, enemy.getPosx() + windowOffsetX, enemy.getPosy() + windowOffsetY, null);
+				g.drawImage(bar, enemy.getPosx() + windowOffsetX, enemy.getPosy() + windowOffsetY -25, null);
 			}
 		}
 
@@ -160,6 +186,5 @@ public class UpdateGraphic extends JComponent {
 			g.drawLine(j * 1000 + windowOffsetX, 0 + windowOffsetY, j * 1000 + windowOffsetX,
 					20 * 1000 + windowOffsetY);
 		}
-
 	}
 }

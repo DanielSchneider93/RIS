@@ -64,11 +64,11 @@ public class ServerMain {
 
 			// Create Player, Add to World with ID and send ID to the new Client to let him
 			// know what his player is
-			GameObject player = new GameObject(playerID, 400, 400, playerHitBox, isEatable);
+			GameObject player = new GameObject(playerID, 400, 400, playerHitBox, isEatable, 5);
 			world.addObjectToWorld(player);
 
 			if (world.getEnemy() == null) {
-				GameObject enemy = new GameObject(50, 600, 600, playerHitBox, isEatable);
+				GameObject enemy = new GameObject(50, 600, 600, playerHitBox, isEatable, 100);
 				world.addObjectToWorld(enemy);
 			}
 

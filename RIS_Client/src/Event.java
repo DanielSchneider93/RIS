@@ -51,7 +51,7 @@ public class Event implements Comparable<Event> {
 			int rnd1 = minX + (int)(Math.random() * ((maxX - minX) + 1));
 			int rnd2 = minY + (int)(Math.random() * ((maxY - minY) + 1));
 
-			GameObject apple = new GameObject(20 + world.getPlayerID(), rnd1, rnd2, 50, true);
+			GameObject apple = new GameObject(20 + world.getPlayerID(), rnd1, rnd2, 50, true, 0);
 
 			world.addObjectToWorld(apple);
 			world.triggerPosChange(apple);

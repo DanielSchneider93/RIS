@@ -41,25 +41,31 @@ public class CollisionDetection {
 
 			for (int z = 0; z < count; z++) {
 				GameObject tempObject = worldcopy.get(z);
+				boolean skip = false;
 				if (tempObject.getID() != toCheck.getID()) {
-
-					double tempradius = tempObject.getCollisonRadius() / 2;
-					double tempPosx = tempObject.getPosx() + tempradius;
-					double tempPosy = tempObject.getPosy() + tempradius;
-
-					CollisionCircle ccTemp = new CollisionCircle(tempradius, tempPosx, tempPosy);
-					boolean collison = hasCollision(ccToCheck, ccTemp);
-
-					if (collison) {
-						collisionDetected = true;
-						collisionWithThisObject = tempObject;
-						break;
+					if (toCheck.getID() <= 10 && tempObject.getID() > 1000) {
+						skip = true;
 					}
+					if (!skip) {
+						double tempradius = tempObject.getCollisonRadius() / 2;
+						double tempPosx = tempObject.getPosx() + tempradius;
+						double tempPosy = tempObject.getPosy() + tempradius;
 
+						CollisionCircle ccTemp = new CollisionCircle(tempradius, tempPosx, tempPosy);
+						boolean collison = hasCollision(ccToCheck, ccTemp);
+
+						if (collison) {
+							collisionDetected = true;
+							collisionWithThisObject = tempObject;
+							break;
+						}
+					}
 				}
 			}
 
-		} else {// Fast check for client -> only the segment that the player is standing on
+		} else
+
+		{// Fast check for client -> only the segment that the player is standing on
 			if (cache != null) {
 
 				int offset = 100;

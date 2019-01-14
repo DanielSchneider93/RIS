@@ -16,6 +16,7 @@ public class GameObject implements Serializable {
 	private boolean eatable = false;
 	private boolean delete = false;
 	private ArrayList<WorldSegment> cache = null;
+	private int health = 0;
 
 	public ArrayList<WorldSegment> getCache() {
 		return cache;
@@ -26,12 +27,13 @@ public class GameObject implements Serializable {
 	}
 
 	// new Player or Apple
-	public GameObject(int objectID, int posx, int posy, int collisonRadius, boolean eatable) {
+	public GameObject(int objectID, int posx, int posy, int collisonRadius, boolean eatable, int health) {
 		this.objectID = objectID;
 		this.posx = posx;
 		this.posy = posy;
 		this.collisonRadius = collisonRadius;
 		this.eatable = eatable;
+		this.health = health;
 	}
 
 	// for Messaging
@@ -44,6 +46,7 @@ public class GameObject implements Serializable {
 		this.eatable = o.isEatable();
 		this.delete = o.isDelete();
 		this.cache = o.getCache();
+		this.health = o.getHealth();
 	}
 
 	// bullets
@@ -51,6 +54,16 @@ public class GameObject implements Serializable {
 		this.objectID = ID;
 		this.posx = x;
 		this.posy = y;
+	}
+	
+	
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
 	}
 
 	public boolean isDelete() {
