@@ -12,10 +12,12 @@ public class CollisionDetection {
 	ArrayList<WorldSegment> cache_local = null;
 	private int wall = 1;
 	boolean fast = false;
+	World world;
 
 	public boolean detect(GameObject currentWorldObject, GameObject objectFromMessage,
-			LinkedList<GameObject> worldCopyToCheckCollision, ArrayList<WorldSegment> cache, boolean fast) {
+			LinkedList<GameObject> worldCopyToCheckCollision, ArrayList<WorldSegment> cache, boolean fast, World world) {
 		this.fast = fast;
+		this.world = world;
 
 		boolean collisionDetected = false;
 
@@ -57,6 +59,21 @@ public class CollisionDetection {
 						if (collison) {
 							collisionDetected = true;
 							collisionWithThisObject = tempObject;
+							
+							// if collision with apple -> add player health
+							if(collisionWithThisObject.getID() < 30 && collisionWithThisObject.getID() > 20) {
+								if(toCheck.getID() < 10) {
+									objectFromMessage.setHealth(objectFromMessage.getHealth() + 1);
+									//world.updateWorld.shareWorldWithClients();
+									System.out.println("added 1 healt to player hp");
+								}
+							}
+							
+							if(collisionWithThisObject.getID() > 1000 && toCheck.getID() == 50) {
+								objectFromMessage.setHealth(objectFromMessage.getHealth() - 1);
+							}
+							
+							
 							break;
 						}
 					}

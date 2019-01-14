@@ -39,7 +39,7 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 					isInWorld = true;
 
 					collision = collisionDetection.detect(currentGameObject, oFromMessage, wList, null,
-							false);
+							false, world);
 
 					if (!collision) {
 						world.removeObjectFromWorldWithID(currentGameObject.getID());

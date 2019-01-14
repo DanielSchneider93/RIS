@@ -52,7 +52,7 @@ public class Graphic extends JFrame implements KeyListener {
 	public boolean fastMapCollisionCheck(GameObject oldPlayer, GameObject newPlayer) {
 
 		LinkedList<GameObject> worldcopy = new LinkedList<GameObject>(world.getWorld());
-		boolean collision = collisionDetection.detect(oldPlayer, newPlayer, worldcopy, world.getCache(), true);
+		boolean collision = collisionDetection.detect(oldPlayer, newPlayer, worldcopy, world.getCache(), true, world);
 		if (collisionDetection.getCollisionWithThisObject() == null && collision == true) {
 			System.out.println("collision at input check");
 			return true;

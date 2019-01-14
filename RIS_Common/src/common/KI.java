@@ -124,7 +124,7 @@ public class KI implements Runnable {
 						}
 					}
 
-					collision = collisionDetection.detect(ki, ki_temp, null, world.getCache(), true);
+					collision = collisionDetection.detect(ki, ki_temp, null, world.getCache(), true, world);
 
 				} while (collision == true);
 				world.getEnemy().setPosx(ki_temp.getPosx());
