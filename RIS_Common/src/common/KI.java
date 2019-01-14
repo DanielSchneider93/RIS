@@ -27,13 +27,17 @@ public class KI {
 	double weight1 = 0;
 	double weight2 = 0;
 
-	int threshholdDistancePlayerKI = 25;
-	int threshholdDistanceObstacleKI = 100;
+	int threshholdDistancePlayerKI = 50;
+	int threshholdDistanceObstacleKI = 70;
 
 	double finalDirectionX = 0;
 	double finalDirectionY = 0;
 
+	boolean collision = true;
+
 	public void updateKI() {
+		CollisionDetection collisionDetection = new CollisionDetection();
+		GameObject ki_temp;
 		closestPlayerDist = 100000;
 		if (world.getEnemy() != null) {
 			GameObject ki = new GameObject(world.getEnemy());
@@ -47,7 +51,7 @@ public class KI {
 					closestPlayerID = tempID;
 				}
 			}
-			
+
 			player = world.findPlayer(closestPlayerID);
 
 			ClosestWall cw = findClosestWall(ki);
@@ -61,9 +65,9 @@ public class KI {
 
 			double distPlayerKI = dist(player, ki);
 
-			if (distPlayerKI > 25) {
+			if (distPlayerKI > 30) {
 				if (distPlayerKI < threshholdDistancePlayerKI) {
-					weight1 = 0;
+					weight1 = 10;
 				} else {
 					weight1 = distPlayerKI;
 				}
@@ -73,35 +77,40 @@ public class KI {
 				if (distObstacleKI < threshholdDistanceObstacleKI) {
 					weight2 = 10000;
 				} else {
-					weight2 = 1 / distObstacleKI;
+					weight2 = 10000 / distObstacleKI;
 				}
 
 				finalDirectionX = weight1 * directionToUserX + weight2 * directionFromHX;
 				finalDirectionY = weight1 * directionToUserY + weight2 * directionFromHY;
 
-				// Normalisieren?? wie bei zwei werten??
+				System.out.println("weight1 (player-ki) " + weight1);
+				System.out.println("weight2 (ki-objective) " + weight2);
 
-				System.out.println(finalDirectionX);
-				System.out.println(finalDirectionY);
+				do {
+					ki_temp = new GameObject(ki);
 
-				GameObject p = world.findPlayer(50);
-				// möglich mit den 4 Richtungen?
-				if (Math.abs(finalDirectionX) > Math.abs(finalDirectionY)) {
-					if (finalDirectionX > 0) {
-						p.setPosx(p.getPosx() + 25);
-						p.setDirection(1);
+					if (Math.random() > 0.6) {
+						if (finalDirectionX > 0) {
+							ki_temp.setPosx(ki_temp.getPosx() + 50);
+							ki_temp.setDirection(1);
+						} else {
+							ki_temp.setPosx(ki_temp.getPosx() - 50);
+							ki_temp.setDirection(0);
+						}
 					} else {
-						p.setPosx(p.getPosx() - 25);
-						p.setDirection(0);
+						if (finalDirectionY > 0) {
+							ki_temp.setPosy(ki_temp.getPosy() + 50);
+						} else {
+							ki_temp.setPosy(ki_temp.getPosy() - 50);
+						}
 					}
-				} else {
-					if (finalDirectionY > 0) {
-						p.setPosy(p.getPosy() + 25);
-					} else {
-						p.setPosy(p.getPosy() - 25);
-					}
-				}
-				world.triggerPosChange(p);
+
+					collision = collisionDetection.detect(ki, ki_temp, null, world.getCache(), true);
+
+				} while (collision == true);
+				world.getEnemy().setPosx(ki_temp.getPosx());
+				world.getEnemy().setPosy(ki_temp.getPosy());
+				world.triggerPosChange(ki_temp);
 			}
 		}
 	}

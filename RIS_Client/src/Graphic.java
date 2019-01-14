@@ -126,7 +126,7 @@ public class Graphic extends JFrame implements KeyListener {
 				}
 			}
 			if (!isBombAtPlayerPos) {
-				GameObject bomb = new GameObject(bombID, player.getPosx(), player.getPosy());
+				GameObject bomb = new GameObject(bombID, player.getPosx(), player.getPosy(), 100, true);
 				world.triggerPosChange(bomb);
 				bombID++;
 			}

@@ -9,7 +9,7 @@ public class CollisionDetection {
 	GameObject currentWorldObject;
 	int toCheckID;
 	GameObject collisionWithThisObject;
-	ArrayList<WorldSegment> cache = null;
+	ArrayList<WorldSegment> cache_local = null;
 	private int wall = 1;
 	boolean fast = false;
 
@@ -21,7 +21,9 @@ public class CollisionDetection {
 
 		this.currentWorldObject = currentWorldObject;
 		this.toCheck = objectFromMessage;
-		this.cache = cache;
+		if (cache != null) {
+			this.cache_local = new ArrayList<WorldSegment>(cache);
+		}
 		toCheckID = toCheck.getID();
 
 		double radius = toCheck.getCollisonRadius() / 2;
@@ -53,6 +55,7 @@ public class CollisionDetection {
 						collisionWithThisObject = tempObject;
 						break;
 					}
+
 				}
 			}
 
@@ -61,38 +64,41 @@ public class CollisionDetection {
 
 				int offset = 100;
 
-				for (WorldSegment ws : cache) {
+				for (WorldSegment ws : cache_local) {
 
 					WorldSegment tempSegment = ws;
 
-					int counterx = 1;
-					int countery = 0;
-					int segmentX = tempSegment.getX();
-					int segmentY = tempSegment.getY();
+					if (tempSegment.getID() != 999) {
 
-					int elementY = 0;
+						int counterx = 1;
+						int countery = 0;
+						int segmentX = tempSegment.getX();
+						int segmentY = tempSegment.getY();
 
-					for (int i = 0; i < tempSegment.getList().size(); i++) {
-						int tempInt = tempSegment.getList().get(i);
+						int elementY = 0;
 
-						int elementX = segmentX + ((counterx - 1) * offset);
+						for (int i = 0; i < tempSegment.getList().size(); i++) {
+							int tempInt = tempSegment.getList().get(i);
 
-						if (countery == 10) {
-							elementY += offset;
-							countery = 0;
-						}
-						if (counterx % 10 == 0) {
-							counterx = 0;
-						}
-						counterx++;
-						countery++;
+							int elementX = segmentX + ((counterx - 1) * offset);
 
-						if (tempInt == wall) {
-							CollisionCircle cc = new CollisionCircle(50, elementX + 50, elementY + 50 + segmentY);
-							boolean coll = hasCollision(ccToCheck, cc);
-							if (coll) {
-								collisionDetected = true;
-								collisionWithThisObject = null;
+							if (countery == 10) {
+								elementY += offset;
+								countery = 0;
+							}
+							if (counterx % 10 == 0) {
+								counterx = 0;
+							}
+							counterx++;
+							countery++;
+
+							if (tempInt == wall) {
+								CollisionCircle cc = new CollisionCircle(50, elementX + 50, elementY + 50 + segmentY);
+								boolean coll = hasCollision(ccToCheck, cc);
+								if (coll) {
+									collisionDetected = true;
+									collisionWithThisObject = null;
+								}
 							}
 						}
 					}

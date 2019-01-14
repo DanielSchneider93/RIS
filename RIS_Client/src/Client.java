@@ -12,7 +12,9 @@ import common.WorldSegment;
 
 public class Client {
 	final int port = 9090;
+	//final String host = "192.168.0.3";
 	final String host = "localhost";
+	
 
 	WorkingThread workingThread;
 	Manager manager;

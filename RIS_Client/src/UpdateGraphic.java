@@ -135,9 +135,7 @@ public class UpdateGraphic extends JComponent {
 		}
 
 		// borders
-		for (
-
-				int i = 0; i <= mapSizeX * 10; i++) {
+		for (int i = 0; i <= mapSizeX * 10; i++) {
 			g.drawImage(block, ((i - 1) * segmentSize) + windowOffsetX, -segmentSize + windowOffsetY, null);
 		}
 		for (int i = 0; i <= mapSizeY * 10; i++) {

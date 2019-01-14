@@ -30,10 +30,10 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 		if (isServer) {
 
 			boolean isInWorld = false;
+			CollisionDetection collisionDetection = new CollisionDetection();
 
 			for (int z = 0; z < wList.size(); z++) {
 				GameObject currentGameObject = wList.get(z);
-				CollisionDetection collisionDetection = new CollisionDetection();
 
 				if (currentGameObject.getID() == oFromMessage.getID()) {
 					isInWorld = true;
