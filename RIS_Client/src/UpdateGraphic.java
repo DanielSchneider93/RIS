@@ -30,6 +30,7 @@ public class UpdateGraphic extends JComponent {
 	private BufferedImage enemy_left;
 	private BufferedImage bar;
 	private BufferedImage playerBarSegment;
+	private BufferedImage enemyBarSegment;
 	
 	int windowOffsetX = 0;
 	int windowOffsetY = 0;
@@ -60,7 +61,8 @@ public class UpdateGraphic extends JComponent {
 		enemy_left = ImageIO.read(getClass().getResource("enemy_left.png"));
 		bar = ImageIO.read(getClass().getResource("bar.png"));
 		playerBarSegment = ImageIO.read(getClass().getResource("playerBarSegment.png"));
-
+		enemyBarSegment = ImageIO.read(getClass().getResource("enemyBarSegment.png"));
+		
 		this.playerID = world.getPlayerID();
 		cache = world.getCache();
 
@@ -120,8 +122,8 @@ public class UpdateGraphic extends JComponent {
 		for (GameObject player : players) {
 			if (playerID == player.getID()) {
 				int hp = player.getHealth();
-				for(int x = 0; x <= hp; x++) {
-					g.drawImage(playerBarSegment, staticPlayerPos+1+(x*16), staticPlayerPos - 25 +2, null);
+				for(int x = 0; x < hp; x++) {
+					g.drawImage(playerBarSegment, staticPlayerPos+(x*10), staticPlayerPos - 25 +2, null);
 				}
 				if (player.getDirection() == 0) { // Look left
 					g.drawImage(playerImage, staticPlayerPos, staticPlayerPos, null);
@@ -132,8 +134,8 @@ public class UpdateGraphic extends JComponent {
 				}
 			} else {
 				int hp = player.getHealth();
-				for(int x = 0; x <= hp; x++) {
-					g.drawImage(playerBarSegment, player.getPosx() + windowOffsetX +1+(x*16), player.getPosy() + windowOffsetY - 25 +2, null);
+				for(int x = 0; x < hp; x++) {
+					g.drawImage(playerBarSegment, player.getPosx() + windowOffsetX +(x*10), player.getPosy() + windowOffsetY - 25 +2, null);
 				}
 				if (player.getDirection() == 0) { // Look left
 					g.drawImage(playerImage, player.getPosx() + windowOffsetX, player.getPosy() + windowOffsetY, null);
@@ -149,7 +151,7 @@ public class UpdateGraphic extends JComponent {
 		if (enemy != null) {
 			int enemy_hp = enemy.getHealth();
 			for(int x = 0; x < enemy_hp; x++) {
-				g.drawImage(playerBarSegment, enemy.getPosx() + windowOffsetX+1+x, enemy.getPosy() + windowOffsetY -25 +2, null);
+				g.drawImage(enemyBarSegment, enemy.getPosx() + windowOffsetX+x, enemy.getPosy() + windowOffsetY -25 +2, null);
 			}
 			if (enemy.getDirection() == 0) {
 				g.drawImage(enemy_left, enemy.getPosx() + windowOffsetX, enemy.getPosy() + windowOffsetY, null);

@@ -13,21 +13,19 @@ public class Event implements Comparable<Event> {
 	World world;
 	int type;
 	int duration;
-	KI ki;
 
-	public Event(World world, UpdateGraphic ug, PriorityQueue<Event> queue, Integer type, Integer duration, KI ki) {
+	public Event(World world, UpdateGraphic ug, PriorityQueue<Event> queue, Integer type, Integer duration) {
 		this.time = System.currentTimeMillis() + duration;
 		this.graphic = ug;
 		this.queue = queue;
 		this.type = type;
 		this.world = world;
-		this.ki = ki;
 	}
 
 	public void execute() {
 		if (type == 0) { // Render Event
 			graphic.repaint();
-			Event e = new Event(world, graphic, queue, 0, 16, ki); // circa 60Hz = 16 ms
+			Event e = new Event(world, graphic, queue, 0, 16); // circa 60Hz = 16 ms
 			queue.add(e);
 		}
 		if (type == 1) { // Apple Event
@@ -56,7 +54,7 @@ public class Event implements Comparable<Event> {
 			world.addObjectToWorld(apple);
 			world.triggerPosChange(apple);
 
-			Event e = new Event(world, graphic, queue, 1, 15000, ki);
+			Event e = new Event(world, graphic, queue, 1, 15000);
 			queue.add(e);
 		}
 	}

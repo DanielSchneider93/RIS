@@ -24,16 +24,14 @@ public class Graphic extends JFrame implements KeyListener {
 	boolean onWindow = false;
 	int bombID = 1000;
 	boolean pressed = false;
-	KI ki;
 
-	public Graphic(World world, MapCache mc, GenerateWorld gw, KI ki) throws IOException {
+	public Graphic(World world, MapCache mc, GenerateWorld gw) throws IOException {
 		this.world = world;
 		this.mc = mc;
 		this.gw = gw;
 		this.draw = new UpdateGraphic(world, gw);
 		this.playerID = world.getPlayerID();
 		this.player = world.findPlayer(playerID);
-		this.ki = ki;
 
 		addKeyListener(this);
 		setFocusable(true);
@@ -130,10 +128,7 @@ public class Graphic extends JFrame implements KeyListener {
 				world.triggerPosChange(bomb);
 				bombID++;
 			}
-		} else if (e.getKeyCode() == KeyEvent.VK_K && !pressed) {
-			ki.updateKI();
-		}
-
+		} 
 		pressed = true;
 	}
 

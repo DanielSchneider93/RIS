@@ -9,18 +9,16 @@ public class EventQueueThread implements Runnable {
 	private PriorityQueue<Event> queue = new PriorityQueue<Event>();
 	private UpdateGraphic updategraphic;
 	private World world;
-	KI ki;
 	
-	public EventQueueThread(UpdateGraphic ug, World world1, KI ki) {
+	public EventQueueThread(UpdateGraphic ug, World world1) {
 		this.updategraphic = ug;
 		this.world = world1;
-		this.ki = ki;
 		
-		ie = new Event(world, updategraphic, queue, 0, 16,ki); //0 = RenderEvent 16 = 16 ms -> 60 Hz
+		ie = new Event(world, updategraphic, queue, 0, 16); //0 = RenderEvent 16 = 16 ms -> 60 Hz
 		queue.add(ie);
 		System.out.println("Started Rendering Event");
 		
-		Event e = new Event(world, updategraphic, queue, 1, 2000,ki);
+		Event e = new Event(world, updategraphic, queue, 1, 2000);
 		queue.add(e);
 		System.out.println("Started Apple Event");
 	}

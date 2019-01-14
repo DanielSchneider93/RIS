@@ -12,9 +12,7 @@ import common.WorldSegment;
 
 public class Client {
 	final int port = 9090;
-	//final String host = "192.168.0.3";
 	final String host = "localhost";
-	
 
 	WorkingThread workingThread;
 	Manager manager;
@@ -64,18 +62,17 @@ public class Client {
 		mapThread.start();
 
 		System.out.println("Starting KI ....");
-		
 		ki = new KI(world);
-		Thread ki_thread = new Thread(ki);
-		ki_thread.setDaemon(true);
-		ki_thread.start();
+		Thread ki_t = new Thread(ki);
+		ki_t.setDaemon(true);
+		ki_t.start();
 
 		System.out.println("Starting Graphic ....");
-		Graphic graphic = new Graphic(world, mapCache, gw, ki);
+		Graphic graphic = new Graphic(world, mapCache, gw);
 		ug = graphic.getUpdategraphic();
 
 		System.out.println("Starting Event Queue ....");
-		EventQueueThread q = new EventQueueThread(ug, world, ki);
+		EventQueueThread q = new EventQueueThread(ug, world);
 		Thread eventQueueThread = new Thread(q);
 		eventQueueThread.setDaemon(true);
 		eventQueueThread.start();
