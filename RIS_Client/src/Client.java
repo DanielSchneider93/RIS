@@ -64,7 +64,11 @@ public class Client {
 		mapThread.start();
 
 		System.out.println("Starting KI ....");
+		
 		ki = new KI(world);
+		Thread ki_thread = new Thread(ki);
+		ki_thread.setDaemon(true);
+		ki_thread.start();
 
 		System.out.println("Starting Graphic ....");
 		Graphic graphic = new Graphic(world, mapCache, gw, ki);

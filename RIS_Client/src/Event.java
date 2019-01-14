@@ -59,11 +59,6 @@ public class Event implements Comparable<Event> {
 			Event e = new Event(world, graphic, queue, 1, 15000, ki);
 			queue.add(e);
 		}
-		if (type == 2) {
-			Event k = new Event(world, graphic, queue, 2, 500, ki);
-			queue.add(k);
-			ki.updateKI();
-		}
 	}
 
 	@Override

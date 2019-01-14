@@ -2,7 +2,7 @@ package common;
 
 import java.util.ArrayList;
 
-public class KI {
+public class KI implements Runnable {
 
 	World world;
 
@@ -34,6 +34,18 @@ public class KI {
 	double finalDirectionY = 0;
 
 	boolean collision = true;
+
+	@Override
+	public void run() {
+		while (true) {
+			updateKI();
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public void updateKI() {
 		CollisionDetection collisionDetection = new CollisionDetection();

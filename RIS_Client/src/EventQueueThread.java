@@ -23,10 +23,6 @@ public class EventQueueThread implements Runnable {
 		Event e = new Event(world, updategraphic, queue, 1, 2000,ki);
 		queue.add(e);
 		System.out.println("Started Apple Event");
-		
-		if(world.getPlayerID() ==1) {
-			startKI();
-		}
 	}
 
 	public void add(Event event) {
@@ -36,10 +32,6 @@ public class EventQueueThread implements Runnable {
 		}
 	}
 	
-	public void startKI() {
-		Event k = new Event(world, updategraphic, queue, 2, 500 , ki);
-		queue.add(k);
-	}
 
 	@Override
 	public void run() {
