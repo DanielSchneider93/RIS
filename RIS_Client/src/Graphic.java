@@ -31,7 +31,6 @@ public class Graphic extends JFrame implements KeyListener {
 		this.gw = gw;
 		this.draw = new UpdateGraphic(world, gw);
 		this.playerID = world.getPlayerID();
-		this.player = world.findPlayer(playerID);
 
 		addKeyListener(this);
 		setFocusable(true);
@@ -64,72 +63,85 @@ public class Graphic extends JFrame implements KeyListener {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_A && !pressed) {
+		this.player = world.findPlayer(playerID);
+		if (player.getHealth() > 0) {
+			if (e.getKeyCode() == KeyEvent.VK_A && !pressed) {
 
-			GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
-					player.getCollisonRadius(), false, 0);
-			GameObject newPlayer = new GameObject(playerID, player.getPosx() - playerSpeed, player.getPosy(),
-					player.getCollisonRadius(), false, 0);
-			if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
-				player.setPosx(player.getPosx() - playerSpeed);
-				draw.windowOffsetX += playerSpeed;
-			}
-			player.setDirection(0);
-			world.triggerPosChange(player);
-		} else if (e.getKeyCode() == KeyEvent.VK_D && !pressed) {
-
-			GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
-					player.getCollisonRadius(), false, 0);
-			GameObject newPlayer = new GameObject(playerID, player.getPosx() + playerSpeed, player.getPosy(),
-					player.getCollisonRadius(), false, 0);
-			if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
-				player.setPosx(player.getPosx() + playerSpeed);
-				draw.windowOffsetX -= playerSpeed;
-			}
-			player.setDirection(1);
-			world.triggerPosChange(player);
-		} else if (e.getKeyCode() == KeyEvent.VK_S && !pressed) {
-			GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
-					player.getCollisonRadius(), false, 0);
-			GameObject newPlayer = new GameObject(playerID, player.getPosx(), player.getPosy() + playerSpeed,
-					player.getCollisonRadius(), false, 0);
-
-			if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
-				player.setPosy(player.getPosy() + playerSpeed);
-				draw.windowOffsetY -= playerSpeed;
+				GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
+						player.getCollisonRadius(), false, 0);
+				GameObject newPlayer = new GameObject(playerID, player.getPosx() - playerSpeed, player.getPosy(),
+						player.getCollisonRadius(), false, 0);
+				if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
+					player.setPosx(player.getPosx() - playerSpeed);
+					draw.windowOffsetX += playerSpeed;
+				}
+				player.setDirection(0);
 				world.triggerPosChange(player);
-			}
+			} else if (e.getKeyCode() == KeyEvent.VK_D && !pressed) {
 
-		} else if (e.getKeyCode() == KeyEvent.VK_W && !pressed) {
-
-			GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
-					player.getCollisonRadius(), false, 0);
-			GameObject newPlayer = new GameObject(playerID, player.getPosx(), player.getPosy() - playerSpeed,
-					player.getCollisonRadius(), false, 0);
-
-			if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
-				player.setPosy(player.getPosy() - playerSpeed);
-				draw.windowOffsetY += playerSpeed;
+				GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
+						player.getCollisonRadius(), false, 0);
+				GameObject newPlayer = new GameObject(playerID, player.getPosx() + playerSpeed, player.getPosy(),
+						player.getCollisonRadius(), false, 0);
+				if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
+					player.setPosx(player.getPosx() + playerSpeed);
+					draw.windowOffsetX -= playerSpeed;
+				}
+				player.setDirection(1);
 				world.triggerPosChange(player);
-			}
+			} else if (e.getKeyCode() == KeyEvent.VK_S && !pressed) {
+				GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
+						player.getCollisonRadius(), false, 0);
+				GameObject newPlayer = new GameObject(playerID, player.getPosx(), player.getPosy() + playerSpeed,
+						player.getCollisonRadius(), false, 0);
 
-		} else if (e.getKeyCode() == KeyEvent.VK_SPACE && !pressed) {
-			boolean isBombAtPlayerPos = false;
+				if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
+					player.setPosy(player.getPosy() + playerSpeed);
+					draw.windowOffsetY -= playerSpeed;
+					world.triggerPosChange(player);
+				}
 
-			for (GameObject bomb : world.getBombs()) {
-				if (bomb.getPosx() == player.getPosx()) {
-					if (bomb.getPosy() == player.getPosy()) {
-						isBombAtPlayerPos = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_W && !pressed) {
+
+				GameObject oldPlayer = new GameObject(playerID, player.getPosx(), player.getPosy(),
+						player.getCollisonRadius(), false, 0);
+				GameObject newPlayer = new GameObject(playerID, player.getPosx(), player.getPosy() - playerSpeed,
+						player.getCollisonRadius(), false, 0);
+
+				if (!fastMapCollisionCheck(oldPlayer, newPlayer) && checkMapBoundarys(newPlayer)) {
+					player.setPosy(player.getPosy() - playerSpeed);
+					draw.windowOffsetY += playerSpeed;
+					world.triggerPosChange(player);
+				}
+
+			} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				boolean isBombAtPlayerPos = false;
+
+				for (GameObject bomb : world.getBombs()) {
+					if (bomb.getPosx() == player.getPosx()) {
+						if (bomb.getPosy() == player.getPosy()) {
+							isBombAtPlayerPos = true;
+						}
+					}
+				}
+				if (!isBombAtPlayerPos) {
+					int counter = 0;
+					for (GameObject b : world.getBombs()) {
+						if (b.getHealth() == playerID) {
+							counter++;
+						}
+					}
+
+					if (counter < 3) {
+						GameObject bomb = new GameObject(bombID, player.getPosx(), player.getPosy(), 100, true,
+								playerID);
+						world.triggerPosChange(bomb);
+						bombID++;
 					}
 				}
 			}
-			if (!isBombAtPlayerPos) {
-				GameObject bomb = new GameObject(bombID, player.getPosx(), player.getPosy(), 100, true, 0);
-				world.triggerPosChange(bomb);
-				bombID++;
-			}
-		} 
-		pressed = true;
+			pressed = true;
+		}
 	}
 
 	public boolean checkMapBoundarys(GameObject newPlayer) {

@@ -56,8 +56,6 @@ public class GameObject implements Serializable {
 		this.posy = y;
 	}
 	
-	
-
 	public int getHealth() {
 		return health;
 	}

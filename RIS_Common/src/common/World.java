@@ -82,7 +82,7 @@ public class World {
 
 		for (int z = 0; z < copyList.size(); z++) {
 			GameObject o = copyList.get(z);
-			if (o.getID() >= 1000) {
+			if (o.getID() > 1000) {
 				result.add(o);
 			}
 		}
@@ -127,7 +127,7 @@ public class World {
 		}
 		return playerPosY;
 	}
-
+	
 	public ArrayList<WorldSegment> getCache() {
 		return cache;
 	}

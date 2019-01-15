@@ -27,7 +27,7 @@ public class KI implements Runnable {
 	double weight1 = 0;
 	double weight2 = 0;
 
-	int threshholdDistancePlayerKI = 50;
+	int threshholdDistancePlayerKI = 30;
 	int threshholdDistanceObstacleKI = 70;
 
 	double finalDirectionX = 0;
@@ -46,7 +46,7 @@ public class KI implements Runnable {
 			if (world.getPlayerID() < 2) {
 				updateKI();
 				try {
-					Thread.sleep(500);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -62,12 +62,14 @@ public class KI implements Runnable {
 			GameObject ki = new GameObject(world.getEnemy());
 
 			for (GameObject p : world.getPlayers()) {
-				double tempDist = dist(p, ki);
-				int tempID = p.getID();
+				if (p.getHealth() > 0) {
+					double tempDist = dist(p, ki);
+					int tempID = p.getID();
 
-				if (tempDist < closestPlayerDist) {
-					closestPlayerDist = tempDist;
-					closestPlayerID = tempID;
+					if (tempDist < closestPlayerDist) {
+						closestPlayerDist = tempDist;
+						closestPlayerID = tempID;
+					}
 				}
 			}
 
@@ -84,7 +86,12 @@ public class KI implements Runnable {
 
 			double distPlayerKI = dist(player, ki);
 
-			if (distPlayerKI > 30) {
+			if (distPlayerKI < 20) {
+				player.setHealth(0);
+				world.triggerPosChange(player);
+			}
+
+			if (distPlayerKI > 20) {
 				if (distPlayerKI < threshholdDistancePlayerKI) {
 					weight1 = 10;
 				} else {
@@ -102,8 +109,8 @@ public class KI implements Runnable {
 				finalDirectionX = weight1 * directionToUserX + weight2 * directionFromHX;
 				finalDirectionY = weight1 * directionToUserY + weight2 * directionFromHY;
 
-				System.out.println("weight1 (player-ki) " + weight1);
-				System.out.println("weight2 (ki-objective) " + weight2);
+				// System.out.println("weight1 (player-ki) " + weight1);
+				// System.out.println("weight2 (ki-objective) " + weight2);
 
 				do {
 					ki_temp = new GameObject(ki);

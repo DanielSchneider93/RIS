@@ -15,7 +15,8 @@ public class CollisionDetection {
 	World world;
 
 	public boolean detect(GameObject currentWorldObject, GameObject objectFromMessage,
-			LinkedList<GameObject> worldCopyToCheckCollision, ArrayList<WorldSegment> cache, boolean fast, World world) {
+			LinkedList<GameObject> worldCopyToCheckCollision, ArrayList<WorldSegment> cache, boolean fast,
+			World world) {
 		this.fast = fast;
 		this.world = world;
 
@@ -45,7 +46,7 @@ public class CollisionDetection {
 				GameObject tempObject = worldcopy.get(z);
 				boolean skip = false;
 				if (tempObject.getID() != toCheck.getID()) {
-					if (toCheck.getID() <= 10 && tempObject.getID() > 1000) {
+					if (toCheck.getID() <= 10 && tempObject.getID() >= 1000) {
 						skip = true;
 					}
 					if (!skip) {
@@ -59,21 +60,44 @@ public class CollisionDetection {
 						if (collison) {
 							collisionDetected = true;
 							collisionWithThisObject = tempObject;
-							
-							// if collision with apple -> add player health
-							if(collisionWithThisObject.getID() < 30 && collisionWithThisObject.getID() > 20) {
-								if(toCheck.getID() < 10) {
-									objectFromMessage.setHealth(objectFromMessage.getHealth() + 1);
-									//world.updateWorld.shareWorldWithClients();
-									System.out.println("added 1 healt to player hp");
+
+							// player collision with apple
+							if (collisionWithThisObject.getID() < 30 && collisionWithThisObject.getID() > 20) {
+								if (toCheck.getID() < 10) {
+									if (toCheck.getHealth() < 10) {
+										objectFromMessage.setHealth(objectFromMessage.getHealth() + 1);
+									}
 								}
 							}
-							
-							if(collisionWithThisObject.getID() > 1000 && toCheck.getID() == 50) {
+
+							// ki collision with apple
+							if (collisionWithThisObject.getID() < 30 && collisionWithThisObject.getID() > 20) {
+								if (toCheck.getID() == 50) {
+									if (toCheck.getHealth() > 80) {
+										toCheck.setHealth(100);
+									}
+									else {
+										toCheck.setHealth(toCheck.getHealth() + 20);
+									}
+								}
+							}
+
+							// ki collision with bomb
+							if (collisionWithThisObject.getID() > 1000 && toCheck.getID() == 50) {
 								objectFromMessage.setHealth(objectFromMessage.getHealth() - 1);
 							}
-							
-							
+
+							// enemy collision with player
+							if (toCheck.getID() == 50 && collisionWithThisObject.getID() < 10) {
+								world.findPlayer(collisionWithThisObject.getID())
+										.setHealth(collisionWithThisObject.getHealth() - 1);
+							}
+
+							// player collision with enemy
+							if (toCheck.getID() < 10 && collisionWithThisObject.getID() == 50) {
+								world.findPlayer(toCheck.getID()).setHealth(toCheck.getHealth() - 1);
+							}
+
 							break;
 						}
 					}
@@ -90,37 +114,40 @@ public class CollisionDetection {
 				for (WorldSegment ws : cache_local) {
 
 					WorldSegment tempSegment = ws;
+					if (tempSegment != null) {
 
-					if (tempSegment.getID() != 999) {
+						if (tempSegment.getID() != 999) {
 
-						int counterx = 1;
-						int countery = 0;
-						int segmentX = tempSegment.getX();
-						int segmentY = tempSegment.getY();
+							int counterx = 1;
+							int countery = 0;
+							int segmentX = tempSegment.getX();
+							int segmentY = tempSegment.getY();
 
-						int elementY = 0;
+							int elementY = 0;
 
-						for (int i = 0; i < tempSegment.getList().size(); i++) {
-							int tempInt = tempSegment.getList().get(i);
+							for (int i = 0; i < tempSegment.getList().size(); i++) {
+								int tempInt = tempSegment.getList().get(i);
 
-							int elementX = segmentX + ((counterx - 1) * offset);
+								int elementX = segmentX + ((counterx - 1) * offset);
 
-							if (countery == 10) {
-								elementY += offset;
-								countery = 0;
-							}
-							if (counterx % 10 == 0) {
-								counterx = 0;
-							}
-							counterx++;
-							countery++;
+								if (countery == 10) {
+									elementY += offset;
+									countery = 0;
+								}
+								if (counterx % 10 == 0) {
+									counterx = 0;
+								}
+								counterx++;
+								countery++;
 
-							if (tempInt == wall) {
-								CollisionCircle cc = new CollisionCircle(50, elementX + 50, elementY + 50 + segmentY);
-								boolean coll = hasCollision(ccToCheck, cc);
-								if (coll) {
-									collisionDetected = true;
-									collisionWithThisObject = null;
+								if (tempInt == wall) {
+									CollisionCircle cc = new CollisionCircle(50, elementX + 50,
+											elementY + 50 + segmentY);
+									boolean coll = hasCollision(ccToCheck, cc);
+									if (coll) {
+										collisionDetected = true;
+										collisionWithThisObject = null;
+									}
 								}
 							}
 						}
