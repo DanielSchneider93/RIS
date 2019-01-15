@@ -11,30 +11,31 @@ import common.World;
 import common.WorldSegment;
 
 public class Client {
-	final int port = 9090;
-	final String host = "localhost";
+	private final int port = 9090;
+	private final String host = "localhost";
 
-	WorkingThread workingThread;
-	Manager manager;
-	List<Manager> ManagerList;
-	Object playerpos;
-	World world;
-	UpdateGraphic ug;
-	MapCache mapCache;
-	KI ki;
+	private Socket socket;
+	private WorkingThread workingThread;
+	private Manager manager;
+	private List<Manager> ManagerList;
+	private World world;
+	private UpdateGraphic ug;
+	private MapCache mapCache;
+	private KI ki;
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
+		@SuppressWarnings("unused")
 		Client c = new Client();
 	}
 
 	public Client() throws UnknownHostException, IOException {
 		System.out.println("Start Client ....");
 		ManagerList = new ArrayList<>();
-		Socket socket = new Socket(host, port);
-		World world = new World(ManagerList);
+		socket = new Socket(host, port);
+		world = new World(ManagerList);
 
 		System.out.println("Starting Working Thread ....");
-		workingThread = new WorkingThread(world, false); // false -> is not Server
+		workingThread = new WorkingThread(world, false); // false -> is Client
 		Thread workingT = new Thread(workingThread);
 		workingT.setDaemon(true);
 		workingT.start();
@@ -68,7 +69,7 @@ public class Client {
 		ki_t.start();
 
 		System.out.println("Starting Graphic ....");
-		Graphic graphic = new Graphic(world, mapCache, gw);
+		Graphic graphic = new Graphic(world, gw);
 		ug = graphic.getUpdategraphic();
 
 		System.out.println("Starting Event Queue ....");

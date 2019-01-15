@@ -7,11 +7,9 @@ import java.util.*;
 import common.IDMessage;
 import common.Manager;
 import common.GameObject;
-import common.GenerateWorld;
 import common.UpdateWorld;
 import common.WorkingThread;
 import common.World;
-import common.WorldSegment;
 
 public class ServerMain {
 
@@ -21,7 +19,7 @@ public class ServerMain {
 	World world;
 	private int playerID = 1;
 	int playerHitBox = 100;
-	boolean isEatable = false; // for player
+	boolean isEatable = false;
 
 	public static void main(String[] args) throws IOException {
 		new ServerMain();
@@ -41,10 +39,6 @@ public class ServerMain {
 		t.setDaemon(true);
 		t.start();
 
-		GenerateWorld gw = new GenerateWorld();
-		ArrayList<WorldSegment> segmentList = gw.generateMap();
-		world.setSegmentList(segmentList);
-
 		ServerSocket listener = new ServerSocket(port);
 		System.out.println("Server waiting for connections on Port 9090");
 
@@ -62,11 +56,12 @@ public class ServerMain {
 
 			System.out.println("Created Server Manager for Client " + playerID);
 
-			// Create Player, Add to World with ID and send ID to the new Client to let him
-			// know what his player is
+			// Create Player, Add to World and send ID to the new Client to let him know
+			// what his playerID is
 			GameObject player = new GameObject(playerID, 400, 400, playerHitBox, isEatable, 10);
 			world.addObjectToWorld(player);
 
+			// Create Enemy one time
 			if (world.getEnemy() == null) {
 				GameObject enemy = new GameObject(50, 600, 600, playerHitBox, isEatable, 100);
 				world.addObjectToWorld(enemy);

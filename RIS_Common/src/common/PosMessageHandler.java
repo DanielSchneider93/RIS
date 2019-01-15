@@ -3,8 +3,9 @@ package common;
 import java.util.LinkedList;
 
 public class PosMessageHandler implements NetMessageInterface<PosMessage> {
-	World world;
-	LinkedList<GameObject> wList;
+	private World world;
+	private LinkedList<GameObject> wList;
+	private CollisionDetection collisionDetection;
 
 	public PosMessageHandler(World w) {
 		this.world = w;
@@ -28,9 +29,8 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 		// -------------------------------------------Server-------------------------------------------------
 
 		if (isServer) {
-
 			boolean isInWorld = false;
-			CollisionDetection collisionDetection = new CollisionDetection();
+			collisionDetection = new CollisionDetection();
 
 			for (int z = 0; z < wList.size(); z++) {
 				GameObject currentGameObject = wList.get(z);
@@ -38,10 +38,9 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 				if (currentGameObject.getID() == oFromMessage.getID()) {
 					isInWorld = true;
 
-					collision = collisionDetection.detect(currentGameObject, oFromMessage, wList, null,
-							false, world);
+					collision = collisionDetection.detect(currentGameObject, oFromMessage, wList, null, false, world);
 
-					if (!collision) {
+					if (!collision) { // Update Normal if is in World and no Collision
 						world.removeObjectFromWorldWithID(currentGameObject.getID());
 						world.addObjectToWorld(oFromMessage);
 					} else {
@@ -90,7 +89,7 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 					}
 			}
 
-			// If Object is deleted -> stop
+			// If Object is deleted -> end
 			if (!end) {
 				for (int z = 0; z < wList.size(); z++) {
 					GameObject currentWorldObject = wList.get(z);
@@ -99,7 +98,6 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 						isInWorld = true;
 						world.removeObjectFromWorldWithID(currentWorldObject.getID());
 						world.addObjectToWorld(oFromMessage);
-						// break;
 					}
 				}
 
@@ -107,8 +105,6 @@ public class PosMessageHandler implements NetMessageInterface<PosMessage> {
 					world.addObjectToWorld(oFromMessage);
 				}
 			}
-
 		}
-		//System.out.println("world size end handle " + wList.size());
 	}
 }

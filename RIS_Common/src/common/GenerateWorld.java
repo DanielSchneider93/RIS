@@ -5,8 +5,7 @@ import java.util.Random;
 
 public class GenerateWorld {
 	ArrayList<WorldSegment> segmentList = new ArrayList<WorldSegment>();
-	long seed = 64542;
-
+	private long seed = 64542;
 	private int howMuchSegmentX = 20;
 	private int howMuchSegmentY = 20;
 	private int segmentSize = 100; // 10x10 each sprite has 100px so 1000x1000 pixel for each segment
@@ -24,7 +23,6 @@ public class GenerateWorld {
 
 		for (int s = 0; s < howMuchSegmentX; ++s) {
 			for (int i = 0; i < howMuchSegmentY; ++i) {
-
 				WorldSegment segment = new WorldSegment();
 				segment.setX(s * segmentSize * 10);
 				segment.setY(i * segmentSize * 10);
@@ -54,5 +52,4 @@ public class GenerateWorld {
 	public int getSegmentSize() {
 		return segmentSize;
 	}
-
 }

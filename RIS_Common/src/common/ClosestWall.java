@@ -1,9 +1,9 @@
 package common;
 
 public class ClosestWall {
-	double minDist = 10000;
-	int minX;
-	int minY;
+	private double minDist = 10000;
+	private int minX;
+	private int minY;
 	
 	public ClosestWall(double minDist, int minX, int minY) {
 		this.minDist = minDist;

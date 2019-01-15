@@ -3,11 +3,11 @@ package common;
 import java.util.ArrayList;
 
 public class MapCache implements Runnable {
-	World world;
-	ArrayList<WorldSegment> segmentList;
-	ArrayList<WorldSegment> cache;
-	int segmentSize = 20;
-	WorldSegment emptySegment;
+	private World world;
+	private ArrayList<WorldSegment> segmentList;
+	private ArrayList<WorldSegment> cache;
+	private int segmentSize = 20;
+	private WorldSegment emptySegment;
 
 	public MapCache(World world) {
 		this.world = world;
@@ -20,7 +20,7 @@ public class MapCache implements Runnable {
 		emptySegment = new WorldSegment();
 		emptySegment.setX(0);
 		emptySegment.setY(0);
-		emptySegment.setID(999); //999 = empty Segment, dont check for collision
+		emptySegment.setID(999); // 999 = empty Segment, do not check for collision
 	}
 
 	public void checkSegment() {
@@ -33,14 +33,13 @@ public class MapCache implements Runnable {
 				if (playerY >= ws.getY() && playerY <= ws.getY() + ws.getSize()) {
 					// player is in that segment
 					segmentID = ws.getID();
-					//System.out.println("player is in segment " + segmentID);
 					break;
 				}
 			}
 		}
 
 		if (segmentID == -1) {
-			System.out.println("cant find segment ");
+			System.out.println("Can not find segment!");
 		}
 
 		cache.clear();
@@ -65,31 +64,29 @@ public class MapCache implements Runnable {
 		cache.add(rightdown);
 		WorldSegment rightup = getSegmentWithID(segmentID + segmentSize - 1);
 		cache.add(rightup);
-		
-		for(WorldSegment w : cache)
-		{
-			if(w.getID() != 999) {
+
+		for (WorldSegment w : cache) {
+			if (w.getID() != 999) {
 				w.setActive(true);
 			}
 		}
 	}
 
 	public WorldSegment getSegmentWithID(int id) {
-		if(id >= 0 && id < segmentSize*segmentSize) {
+		if (id >= 0 && id < segmentSize * segmentSize) {
 			return segmentList.get(id);
-		}
-		else {
+		} else {
 			return emptySegment;
 		}
 	}
-	
+
 	@Override
 	public void run() {
 		while (true) {
 			checkSegment();
 			world.setCache(cache);
 			try {
-				Thread.sleep(500);
+				Thread.sleep(400);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

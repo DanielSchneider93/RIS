@@ -1,7 +1,7 @@
 package common;
 
 public class IDMessage implements NetMessage {
-    Integer message;
+   private Integer message;
     
     public IDMessage(Integer msg) {
         this.message = msg;

@@ -5,28 +5,20 @@ import java.util.ArrayList;
 
 public class GameObject implements Serializable {
 
-	// TODO: make enum out of ID chaos
-
 	private static final long serialVersionUID = 1L;
 	private int posx = 0;
 	private int posy = 0;
-	private int objectID = 0; // 1-10 = player 20-30 = apple, 1000++ = bullet
-	private int direction = 0; // 0 = left - 1 = right
+	private int objectID = 0; // 1-10 = player ; 20-30 = food ; 50 = enemy ; 1000++ = bullet
+	private int direction = 0; // 0 = left ; 1 = right
 	private int collisonRadius = 0;
 	private boolean eatable = false;
 	private boolean delete = false;
 	private ArrayList<WorldSegment> cache = null;
 	private int health = 0;
 
-	public ArrayList<WorldSegment> getCache() {
-		return cache;
-	}
 
-	public void setCache(ArrayList<WorldSegment> cache) {
-		this.cache = cache;
-	}
 
-	// new Player or Apple
+	// Constructor for new Player
 	public GameObject(int objectID, int posx, int posy, int collisonRadius, boolean eatable, int health) {
 		this.objectID = objectID;
 		this.posx = posx;
@@ -36,12 +28,12 @@ public class GameObject implements Serializable {
 		this.health = health;
 	}
 
-	// for Messaging
+	// Constructor for Messaging
 	public GameObject(GameObject o) {
 		this.posx = o.getPosx();
 		this.posy = o.getPosy();
-		this.objectID = o.getID(); // 1-10 = player 20-30 = apple
-		this.direction = o.getDirection(); // 0 = left - 1 = right
+		this.objectID = o.getID();
+		this.direction = o.getDirection(); 
 		this.collisonRadius = o.getCollisonRadius();
 		this.eatable = o.isEatable();
 		this.delete = o.isDelete();
@@ -49,13 +41,21 @@ public class GameObject implements Serializable {
 		this.health = o.getHealth();
 	}
 
-	// bullets
+	// Constructor for bullets
 	public GameObject(int ID, int x, int y) {
 		this.objectID = ID;
 		this.posx = x;
 		this.posy = y;
 	}
 	
+	public ArrayList<WorldSegment> getCache() {
+		return cache;
+	}
+
+	public void setCache(ArrayList<WorldSegment> cache) {
+		this.cache = cache;
+	}
+
 	public int getHealth() {
 		return health;
 	}

@@ -6,9 +6,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class WorkingThread implements Runnable {
-	BlockingQueue<NetMessage> messages;
-	World world;
-	boolean isServer;
+	private BlockingQueue<NetMessage> messages;
+	@SuppressWarnings("unused")
+	private World world;
+	private boolean isServer;
 
 	private Map<Class<? extends NetMessage>, NetMessageInterface<? extends NetMessage>> netMessageHandlerMap;
 
@@ -27,7 +28,7 @@ public class WorkingThread implements Runnable {
 
 	@Override
 	public void run() {
-		while(true) {
+		while (true) {
 			try {
 				NetMessage n = messages.take();
 				netMessageHandlerMap.get(n.getClass()).handle(n, isServer);

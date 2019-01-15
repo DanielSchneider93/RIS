@@ -4,44 +4,38 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class CollisionDetection {
-	LinkedList<GameObject> worldcopy;
-	GameObject toCheck;
-	GameObject currentWorldObject;
-	int toCheckID;
-	GameObject collisionWithThisObject;
-	ArrayList<WorldSegment> cache_local = null;
+	private LinkedList<GameObject> worldcopy;
+	private GameObject toCheck;
+	private GameObject currentWorldObject;
+	private GameObject collisionWithThisObject;
+	private ArrayList<WorldSegment> cache_local = null;
 	private int wall = 1;
-	boolean fast = false;
-	World world;
+	@SuppressWarnings("unused")
+	private boolean fast = false;
 
-	public boolean detect(GameObject currentWorldObject, GameObject objectFromMessage,
-			LinkedList<GameObject> worldCopyToCheckCollision, ArrayList<WorldSegment> cache, boolean fast,
-			World world) {
-		this.fast = fast;
-		this.world = world;
-
+	public boolean detect(GameObject cWO, GameObject ofM, LinkedList<GameObject> wccc, ArrayList<WorldSegment> cache, boolean fast, World world) {
 		boolean collisionDetected = false;
-
-		this.currentWorldObject = currentWorldObject;
-		this.toCheck = objectFromMessage;
+		this.fast = fast;
+		this.currentWorldObject = cWO;
+		this.toCheck = ofM;
+		
 		if (cache != null) {
 			this.cache_local = new ArrayList<WorldSegment>(cache);
 		}
-		toCheckID = toCheck.getID();
-
+		
 		double radius = toCheck.getCollisonRadius() / 2;
 		double posx = toCheck.getPosx() + radius;
 		double posy = toCheck.getPosy() + radius;
 
 		CollisionCircle ccToCheck = new CollisionCircle(radius, posx, posy);
 
+		// Normal Server Side Collision Check without Map Objects
 		if (!fast) {
-			worldcopy = new LinkedList<GameObject>(worldCopyToCheckCollision);
+			worldcopy = new LinkedList<GameObject>(wccc);
 			worldcopy.remove(currentWorldObject);
-			worldcopy.add(objectFromMessage);
+			worldcopy.add(toCheck);
 
 			int count = worldcopy.size();
-
 			for (int z = 0; z < count; z++) {
 				GameObject tempObject = worldcopy.get(z);
 				boolean skip = false;
@@ -65,7 +59,7 @@ public class CollisionDetection {
 							if (collisionWithThisObject.getID() < 30 && collisionWithThisObject.getID() > 20) {
 								if (toCheck.getID() < 10) {
 									if (toCheck.getHealth() < 10) {
-										objectFromMessage.setHealth(objectFromMessage.getHealth() + 1);
+										toCheck.setHealth(toCheck.getHealth() + 1);
 									}
 								}
 							}
@@ -77,14 +71,14 @@ public class CollisionDetection {
 										toCheck.setHealth(100);
 									}
 									else {
-										toCheck.setHealth(toCheck.getHealth() + 20);
+										toCheck.setHealth(toCheck.getHealth() + 10);
 									}
 								}
 							}
 
 							// ki collision with bomb
 							if (collisionWithThisObject.getID() > 1000 && toCheck.getID() == 50) {
-								objectFromMessage.setHealth(objectFromMessage.getHealth() - 1);
+								toCheck.setHealth(toCheck.getHealth() - 1);
 							}
 
 							// enemy collision with player
@@ -105,12 +99,9 @@ public class CollisionDetection {
 			}
 
 		} else
-
-		{// Fast check for client -> only the segment that the player is standing on
+		{// Fast check for client with cache
 			if (cache != null) {
-
 				int offset = 100;
-
 				for (WorldSegment ws : cache_local) {
 
 					WorldSegment tempSegment = ws;
@@ -141,8 +132,7 @@ public class CollisionDetection {
 								countery++;
 
 								if (tempInt == wall) {
-									CollisionCircle cc = new CollisionCircle(50, elementX + 50,
-											elementY + 50 + segmentY);
+									CollisionCircle cc = new CollisionCircle(50, elementX + 50,	elementY + 50 + segmentY);
 									boolean coll = hasCollision(ccToCheck, cc);
 									if (coll) {
 										collisionDetected = true;
@@ -155,7 +145,6 @@ public class CollisionDetection {
 				}
 			}
 		}
-
 		return collisionDetected;
 	}
 
@@ -167,9 +156,7 @@ public class CollisionDetection {
 		double xDiff = circle1.getX() - circle2.getX();
 		double yDiff = circle1.getY() - circle2.getY();
 		double distanceSquared = xDiff * xDiff + yDiff * yDiff;
-		boolean collision = distanceSquared < (circle1.getRadius() + circle2.getRadius())
-				* (circle1.getRadius() + circle2.getRadius());
+		boolean collision = distanceSquared < (circle1.getRadius() + circle2.getRadius()) * (circle1.getRadius() + circle2.getRadius());
 		return collision;
 	}
-
 }

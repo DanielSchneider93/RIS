@@ -3,16 +3,15 @@ package common;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class WorldSegment implements Serializable{
+public class WorldSegment implements Serializable {
 
-	ArrayList<Integer> list = new ArrayList<Integer>();
-	int size = 1000; // 1000px in x and y
-	int x = 0;
-	int y = 0;
-	boolean active = false;
-	int ID = 0;
+	private ArrayList<Integer> list = new ArrayList<Integer>();
+	private int size = 1000; // 1000px SegmentSize
+	private int x = 0;
+	private int y = 0;
+	private boolean active = false;
+	private int ID = 0;
 
-	
 	public boolean isActive() {
 		return active;
 	}

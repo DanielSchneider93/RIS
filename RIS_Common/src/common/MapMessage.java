@@ -1,7 +1,7 @@
 package common;
 
 public class MapMessage implements NetMessage {
-	Object map;
+	private Object map;
     
     public MapMessage(Object map) {
         this.map = map;

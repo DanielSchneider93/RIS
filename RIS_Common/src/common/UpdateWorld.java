@@ -5,15 +5,15 @@ import java.util.List;
 
 public class UpdateWorld {
 
-	List<Manager> managerList;
-	LinkedList<GameObject> world;
+	private List<Manager> managerList;
+	private LinkedList<GameObject> world;
 
 	public UpdateWorld(LinkedList<GameObject> world, List<Manager> managerList) {
 		this.world = world;
 		this.managerList = managerList;
 	}
 
-	//Send Solo Message
+	// Send Solo Message
 	public void sendPlayerMessage(GameObject p) {
 		for (Manager m : managerList) {
 			GameObject temp = new GameObject(p);
@@ -22,14 +22,14 @@ public class UpdateWorld {
 		}
 	}
 
-	//Server send Player
+	// Server sends Client the Player
 	public void sendClientThePlayer(GameObject p, Manager m) {
 		GameObject temp = new GameObject(p);
 		PosMessage msg = new PosMessage(temp);
 		m.write(msg);
 	}
 
-	//Share Whole World
+	// Share whole World
 	public void shareWorldWithClients() {
 		for (GameObject o : world) {
 			for (Manager m : managerList) {

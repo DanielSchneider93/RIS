@@ -2,11 +2,10 @@ package common;
 import java.util.Vector;
 
 public class Vectorlist {
-    // Vector to store active clients 
-	static Vector<Manager> clientlist = new Vector<>();
+	private Vector<Manager> clientlist = new Vector<>();
 	private Manager handlerThreads;
 
-	public static Vector<Manager> getClientlist() {
+	public Vector<Manager> getClientlist() {
 		return clientlist;
 	}
 

@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Map implements Serializable{
-
-	ArrayList<WorldSegment> segmentList;
+	private ArrayList<WorldSegment> segmentList;
 	
 	public Map(ArrayList<WorldSegment> segmentList) {
 		this.segmentList = segmentList;
@@ -17,7 +16,5 @@ public class Map implements Serializable{
 
 	public void setSegmentList(ArrayList<WorldSegment> segmentList) {
 		this.segmentList = segmentList;
-	}
-
-	
+	}	
 }

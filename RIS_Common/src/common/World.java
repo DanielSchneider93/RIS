@@ -1,4 +1,3 @@
-
 package common;
 
 import java.util.ArrayList;
@@ -7,14 +6,13 @@ import java.util.List;
 
 public class World {
 
-	List<Manager> managerList;
-	LinkedList<GameObject> world;
-	ArrayList<WorldSegment> segmentList;
-	ArrayList<WorldSegment> cache;
-	UpdateWorld updateWorld;
-	int playerID;
-	Class<?> playerclass;
-	Class<?> appleclass;
+	@SuppressWarnings("unused")
+	private List<Manager> managerList;
+	private LinkedList<GameObject> world;
+	private ArrayList<WorldSegment> segmentList;
+	private ArrayList<WorldSegment> cache;
+	private UpdateWorld updateWorld;
+	private int playerID;
 
 	public World(List<Manager> managerList) {
 		this.managerList = managerList;
@@ -23,14 +21,12 @@ public class World {
 		updateWorld = new UpdateWorld(world, managerList);
 	}
 
-
 	public void triggerPosChange(GameObject o) {
 		updateWorld.sendPlayerMessage(o);
 	}
 
 	public void removeObjectFromWorldWithID(Integer id) {
 		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
-
 		for (int z = 0; z < copyList.size(); z++) {
 			GameObject o = copyList.get(z);
 			if (o.getID() == id) {
@@ -42,7 +38,6 @@ public class World {
 	public LinkedList<GameObject> getApples() {
 		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
 		LinkedList<GameObject> result = new LinkedList<GameObject>();
-
 		for (int z = 0; z < copyList.size(); z++) {
 			GameObject o = copyList.get(z);
 			if (o.getID() >= 20 && o.getID() <= 30) {
@@ -55,7 +50,6 @@ public class World {
 	public LinkedList<GameObject> getPlayers() {
 		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
 		LinkedList<GameObject> result = new LinkedList<GameObject>();
-
 		for (int z = 0; z < copyList.size(); z++) {
 			GameObject o = copyList.get(z);
 			if (o.getID() >= 1 && o.getID() <= 10) {
@@ -64,7 +58,7 @@ public class World {
 		}
 		return result;
 	}
-	
+
 	public GameObject getEnemy() {
 		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
 		for (int z = 0; z < copyList.size(); z++) {
@@ -79,7 +73,6 @@ public class World {
 	public LinkedList<GameObject> getBombs() {
 		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
 		LinkedList<GameObject> result = new LinkedList<GameObject>();
-
 		for (int z = 0; z < copyList.size(); z++) {
 			GameObject o = copyList.get(z);
 			if (o.getID() > 1000) {
@@ -92,7 +85,6 @@ public class World {
 	public GameObject findPlayer(int ObjectID) {
 		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
 		GameObject player = null;
-
 		for (int z = 0; z < copyList.size(); z++) {
 			GameObject o = copyList.get(z);
 			if (o.getID() == ObjectID) {
@@ -105,7 +97,6 @@ public class World {
 	public int getPlayerPosX() {
 		int playerPosX = 0;
 		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
-
 		for (int z = 0; z < copyList.size(); z++) {
 			GameObject o = copyList.get(z);
 			if (o.getID() == playerID) {
@@ -118,7 +109,6 @@ public class World {
 	public int getPlayerPosY() {
 		int playerPosY = 0;
 		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
-
 		for (int z = 0; z < copyList.size(); z++) {
 			GameObject o = copyList.get(z);
 			if (o.getID() == playerID) {
@@ -127,7 +117,7 @@ public class World {
 		}
 		return playerPosY;
 	}
-	
+
 	public ArrayList<WorldSegment> getCache() {
 		return cache;
 	}
@@ -167,5 +157,4 @@ public class World {
 	public LinkedList<GameObject> getWorld() {
 		return world;
 	}
-
 }
