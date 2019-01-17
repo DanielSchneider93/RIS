@@ -85,10 +85,10 @@ public class UpdateGraphic extends JComponent {
 	}
 
 	public void paintComponent(Graphics g) {
-		players = new LinkedList<GameObject>(world.getPlayers());
-		foods = new LinkedList<GameObject>(world.getApples());
-		cache = new ArrayList<WorldSegment>(world.getCache());
-		bombs = new LinkedList<GameObject>(world.getBombs());
+		players = world.getPlayers();
+		foods = world.getFood();
+		cache = world.getCache();
+		bombs = world.getBombs();
 		enemy = world.getEnemy();
 
 		BufferedImage playerImage;

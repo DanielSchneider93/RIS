@@ -11,7 +11,7 @@ import common.World;
 import common.WorldSegment;
 
 public class Client {
-	private final int port = 9090;
+	private final int port = 9091;
 	private final String host = "localhost";
 
 	private Socket socket;
@@ -62,15 +62,15 @@ public class Client {
 		mapThread.setDaemon(true);
 		mapThread.start();
 
-		System.out.println("Starting KI ....");
-		ki = new KI(world);
-		Thread ki_t = new Thread(ki);
-		ki_t.setDaemon(true);
-		ki_t.start();
-
 		System.out.println("Starting Graphic ....");
 		Graphic graphic = new Graphic(world, gw);
 		ug = graphic.getUpdategraphic();
+		
+		System.out.println("Starting KI ....");
+		ki = new KI(world,gw);
+		Thread ki_t = new Thread(ki);
+		ki_t.setDaemon(true);
+		ki_t.start();
 
 		System.out.println("Starting Event Queue ....");
 		EventQueueThread q = new EventQueueThread(ug, world);

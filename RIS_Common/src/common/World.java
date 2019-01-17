@@ -35,7 +35,7 @@ public class World {
 		}
 	}
 
-	public LinkedList<GameObject> getApples() {
+	public LinkedList<GameObject> getFood() {
 		LinkedList<GameObject> copyList = new LinkedList<GameObject>(world);
 		LinkedList<GameObject> result = new LinkedList<GameObject>();
 		for (int z = 0; z < copyList.size(); z++) {

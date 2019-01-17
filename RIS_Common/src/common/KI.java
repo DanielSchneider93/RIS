@@ -26,9 +26,11 @@ public class KI implements Runnable {
 	private int KiUpdateInterval = 500;
 	private CollisionDetection collisionDetection;
 	private GameObject ki_temp;
+	private GenerateWorld gw;
 
-	public KI(World world) {
+	public KI(World world, GenerateWorld gw) {
 		this.world = world;
+		this.gw = gw;
 	}
 
 	@Override
@@ -49,6 +51,12 @@ public class KI implements Runnable {
 						e.printStackTrace();
 					}
 				}
+			} else {
+				try {
+					Thread.sleep(10000000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -56,6 +64,7 @@ public class KI implements Runnable {
 	public void updateKI() {
 		collisionDetection = new CollisionDetection();
 		closestPlayerDist = 100000;
+		boolean isInMap = false;
 
 		if (world.getEnemy() != null) {
 			ki = new GameObject(world.getEnemy());
@@ -109,27 +118,30 @@ public class KI implements Runnable {
 				finalDirectionY = weight1 * directionToUserY + weight2 * directionFromHY;
 
 				do {
-					ki_temp = new GameObject(ki);
+					do {
+						ki_temp = new GameObject(ki);
 
-					if (Math.random() > 0.5) {
-						if (finalDirectionX > 0) {
-							ki_temp.setPosx(ki_temp.getPosx() + 50);
-							ki_temp.setDirection(1);
+						if (Math.random() > 0.5) {
+							if (finalDirectionX > 0) {
+								ki_temp.setPosx(ki_temp.getPosx() + 50);
+								ki_temp.setDirection(1);
+							} else {
+								ki_temp.setPosx(ki_temp.getPosx() - 50);
+								ki_temp.setDirection(0);
+							}
 						} else {
-							ki_temp.setPosx(ki_temp.getPosx() - 50);
-							ki_temp.setDirection(0);
+							if (finalDirectionY > 0) {
+								ki_temp.setPosy(ki_temp.getPosy() + 50);
+							} else {
+								ki_temp.setPosy(ki_temp.getPosy() - 50);
+							}
 						}
-					} else {
-						if (finalDirectionY > 0) {
-							ki_temp.setPosy(ki_temp.getPosy() + 50);
-						} else {
-							ki_temp.setPosy(ki_temp.getPosy() - 50);
-						}
-					}
 
-					collision = collisionDetection.detect(ki, ki_temp, null, world.getCache(), true, world);
+						collision = collisionDetection.detect(ki, ki_temp, null, world.getCache(), true, world);
+						isInMap = checkMapBoundarys(ki_temp);
 
-				} while (collision == true);
+					} while (collision == true);
+				} while (isInMap == false);
 
 				world.getEnemy().setPosx(ki_temp.getPosx());
 				world.getEnemy().setPosy(ki_temp.getPosy());
@@ -172,6 +184,18 @@ public class KI implements Runnable {
 		}
 		cw = new ClosestWall(minDist, minX, minY);
 		return cw;
+	}
+
+	public boolean checkMapBoundarys(GameObject newPlayer) {
+		boolean isInMap = false;
+		if (newPlayer.getPosx() >= 0
+				&& newPlayer.getPosx() < (gw.getSegmentSize() * 10 * gw.getHowMuchSegmentX()) - 50) {
+			if (newPlayer.getPosy() >= 0
+					&& newPlayer.getPosy() < (gw.getSegmentSize() * 10 * gw.getHowMuchSegmentY()) - 50) {
+				isInMap = true;
+			}
+		}
+		return isInMap;
 	}
 
 	private double dist(int Hx, int Hy, GameObject ki) {

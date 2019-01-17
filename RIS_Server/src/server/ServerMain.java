@@ -13,7 +13,7 @@ import common.World;
 
 public class ServerMain {
 
-	static int port = 9090;
+	static int port = 9091;
 	List<Manager> ManagerList;
 	WorkingThread workingThread;
 	World world;

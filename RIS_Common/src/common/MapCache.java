@@ -23,24 +23,8 @@ public class MapCache implements Runnable {
 		emptySegment.setID(999); // 999 = empty Segment, do not check for collision
 	}
 
-	public void checkSegment() {
-		int playerX = world.getPlayerPosX();
-		int playerY = world.getPlayerPosY();
-		int segmentID = -1;
-
-		for (WorldSegment ws : segmentList) {
-			if (playerX >= ws.getX() && playerX <= ws.getX() + ws.getSize()) {
-				if (playerY >= ws.getY() && playerY <= ws.getY() + ws.getSize()) {
-					// player is in that segment
-					segmentID = ws.getID();
-					break;
-				}
-			}
-		}
-
-		if (segmentID == -1) {
-			System.out.println("Can not find segment!");
-		}
+	public void updateCache(int newSegment) {
+		int segmentID = newSegment;
 
 		cache.clear();
 
@@ -80,15 +64,43 @@ public class MapCache implements Runnable {
 		}
 	}
 
+	public int getPlayerSegment() {
+		int playerX = world.getPlayerPosX();
+		int playerY = world.getPlayerPosY();
+		int segmentID = -1;
+
+		for (WorldSegment ws : segmentList) {
+			if (playerX >= ws.getX() && playerX <= ws.getX() + ws.getSize()) {
+				if (playerY >= ws.getY() && playerY <= ws.getY() + ws.getSize()) {
+					// player is in that segment
+					segmentID = ws.getID();
+					break;
+				}
+			}
+		}
+
+		if (segmentID == -1) {
+			System.out.println("Can not find segment!");
+		}
+
+		return segmentID;
+	}
+
 	@Override
 	public void run() {
 		while (true) {
-			checkSegment();
-			world.setCache(cache);
-			try {
-				Thread.sleep(400);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			int lastSegment = -1;
+			int newSegment = getPlayerSegment();
+
+			if (lastSegment != newSegment) {
+				lastSegment = newSegment;
+				updateCache(newSegment);
+				world.setCache(cache);
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
